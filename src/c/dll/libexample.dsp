@@ -90,7 +90,7 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=.\lib\libexample.cpp
+SOURCE=.\lib\libexample.c
 # End Source File
 # Begin Source File
 
@@ -103,10 +103,6 @@ SOURCE=.\libexample.def
 # Begin Source File
 
 SOURCE=.\include\example.h
-# End Source File
-# Begin Source File
-
-SOURCE=".\lib\libexample-functions.h"
 # End Source File
 # Begin Source File
 

@@ -1,8 +1,7 @@
 LIBRARY     libexample
-DESCRIPTION exampleDLL
 EXPORTS
     ; Explicit exports can go here
-    helloworld
-    example_stringcreate @1
-    example_stringdestroy @2
-    example_sum @3
+    helloworld				@1
+	example_stringcreate	@2
+    example_stringdestroy	@3
+	example_sum				@4

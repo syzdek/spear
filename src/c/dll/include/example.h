@@ -35,24 +35,6 @@
 #define EXAMPLE_STRING_SIZE   12
 #define EXAMPLE_STRING_DATA   "Hello Riley"
 
-/* DLL Definitions */
-#ifndef EXAMPLE_FUNCTION_PREFIX
-#ifdef WIN32
-#define EXAMPLE_FUNCTION_PREFIX extern "C" __declspec(dllexport)
-#else 
-#define EXAMPLE_FUNCTION_PREFIX
-#endif
-#endif
-
-/* Needed by Windows DLL */
-#ifndef PASCAL
-#define PASCAL
-#endif
-#ifndef EXPORT
-#define EXPORT
-#endif
-
-
 //////////////////////////
 //                      //
 //  Struct Definitions  //
@@ -90,9 +72,9 @@
 //              //
 //////////////////
 
-   EXAMPLE_FUNCTION_PREFIX long helloworld(void);
-   EXAMPLE_FUNCTION_PREFIX char *example_stringcreate(void);
-   EXAMPLE_FUNCTION_PREFIX long example_stringdestroy(char **);
-   EXAMPLE_FUNCTION_PREFIX long example_sum(int, int);
+   long int helloworld(void);
+   char *example_stringcreate(void);
+   long int example_stringdestroy(char **);
+   long int example_sum(int, int);
 
 #endif
