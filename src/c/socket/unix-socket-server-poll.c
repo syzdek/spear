@@ -21,7 +21,7 @@
  */
 /*
  * Build:
- *    gcc -g -o tcp_socket_server.o tcp_socket_server.c -lresolv
+ *    gcc -g -o unix-socket-server-poll.o unix-socket-server-poll.c
  */
 
 /////////////
@@ -36,6 +36,7 @@
    #include <netinet/in.h>	/* Internet address structures */
    #include <netdb.h>		/* host to IP resolution       */
    #include <sys/poll.h>	/* wait for some event         */
+   #include <arpa/inet.h>
 
 
 /////////////////////
@@ -45,7 +46,7 @@
 /////////////////////
 
    #define PORT		8080
-   #define ADDRESS	"127.0.0.1"
+   #define ADDRESS	"10.0.102.200"
 
 
 ///////////////////
@@ -62,7 +63,12 @@ int main(int *argc, char **argv) {
       int	cs;		/* new connection's socket descriptor */
       struct sockaddr_in sa;	/* Internet address struct            */
       struct sockaddr_in csa;	/* client's address struct            */
+      struct sockaddr_in peer;	/* Connected peer                     */
+      int       peerlen;	/* Length                             */
       int	size_csa;	/* size of client's address struct    */
+      struct hostent *hen;	/* DNS lookups                        */
+      char hostbuf[80], serv[40];
+      char *host;
 
    /* clear out the struct, to avoid garbage */
       memset(&sa, 0, sizeof(sa));
@@ -74,7 +80,12 @@ int main(int *argc, char **argv) {
       sa.sin_port = htons(PORT);
 
    /* we will accept connections coming through any IP address that belongs to our host, using the INADDR_ANY wild-card. */
-      sa.sin_addr.s_addr = INADDR_ANY;
+      //sa.sin_addr.s_addr = INADDR_ANY;
+      hen = gethostbyname(ADDRESS);
+      if (!hen) {
+         perror("couldn't locate host entry");
+      };
+      memcpy(&sa.sin_addr.s_addr, hen->h_addr_list[0], hen->h_length);
 
    /* allocate a free socket */
       s = socket(AF_INET, SOCK_STREAM, 0);
@@ -98,16 +109,28 @@ int main(int *argc, char **argv) {
       size_csa = sizeof(csa);
 
    /* Handle Connections */
-      while(1) {
-         cs = 
+      //while(1) {
          cs = accept(s, (struct sockaddr *)&csa, &size_csa);
-         if (cs < 0)
-            continue;
+         //if (cs < 0)
+         //   continue;
+         //memset(&peer, 0, sizeof(peer));
+         //peerlen = sizeof(peer);
+         if (getpeername(s, (struct sockaddr*)&csa, &size_csa)) {
+            printf("Connection from %s\n", inet_ntoa(csa.sin_addr));
+         };
 
+         host = hostbuf;
+         getnameinfo((struct sockaddr *)&csa,size_csa,host,80,serv,40,NI_NUMERICHOST|NI_NUMERICSERV);
+         if ((strncmp(host,"::ffff:",7)==0)&&(strchr(host+7,':')==NULL))
+            host+=7;
+         printf("Connection from %s %s\n", host, serv);
+         
+            
          write(cs, "This is a test message\n", sizeof("This is a test message\n"));
 
         close(cs);
-      };
+      //};
+      close(s);
       return(0);
 
 };
