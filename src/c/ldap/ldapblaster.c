@@ -65,7 +65,7 @@
 //              //
 //////////////////
 
-   unsigned int  child_cleanup(struct childpids *);
+   unsigned int  child_cleanup(struct childpids *, time_t);
    int  child_ldap(int);
    void child_nobind(int);
    void child_noresults(int);
@@ -73,14 +73,11 @@
    void child_stats(int);
    void child_successes(int);
    int  main(void);
-   void parent_nobind(int);
-   void parent_noresults(int);
    void parent_null(int);
    void parent_shutdown(int);
    void parent_stats(int);
-   void parent_successes(int);
    void signal_init_parent();
-   int  spawn_child(int);
+   int  spawn_child(int, int *);
    void stats(void);
 
 
@@ -98,7 +95,7 @@
 #define MAX_CHILDREN	5
 #define MAX_RUNS	25000
 #define MAX_RUN_TIME	300
-#define CHILD_TIMEOUT	10
+#define CHILD_TIMEOUT	20
 #define UPDATE_FREQ	5
 
 /* LDAP configurations */
@@ -134,6 +131,7 @@
       volatile int ldapblaster_nobind = 0;
       volatile int ldapblaster_noresults = 0;
       volatile int ldapblaster_successes = 0;
+      volatile int ldapblaster_unknown = 0;
 
 
 ////////////////
@@ -143,67 +141,47 @@
 ////////////////
 
 
-   unsigned int child_cleanup(struct childpids *last_child) {
+   unsigned int child_cleanup(struct childpids pids[], time_t timestamp) {
 
       /* Declares local vars */
-         struct childpids *tmp_child;
-         pid_t pid;
-         int status;
+         pid_t pid = 0;
+         int status = 0;
+         int pidcount = 0;
 
-      /* Checks for Terminated Children */
-         while (last_child->previous != NULL) {
-            pid = waitpid(last_child->pid, &status, WNOHANG | WUNTRACED);
-            if ((WIFEXITED(status)) && (pid != 0)) {
-               ldapblaster_children--;
-               status = WEXITSTATUS(status);
-               if (status == 0) {
-                  ldapblaster_successes++;
-                 } else if (status == 1) {
-                  ldapblaster_noconn++;
-                 } else if (status == 2) {
-                  ldapblaster_nobind++;
-                 } else if (status == 3) {
-                  ldapblaster_noresults++;
-               };
-               if (last_child->next == NULL) {
-                  last_child = last_child->previous;
-                  free(last_child->next);
-                  last_child->next = NULL;
-                 } else {
-                  last_child->previous->next = last_child->next;
-                  last_child->next->previous = last_child->previous;
-                  tmp_child = last_child;
-                  last_child = last_child->previous;
-                  free(tmp_child);
+      /* Loops through */
+         for(pidcount = 0; pidcount < MAX_CHILDREN; pidcount++) {
+            if (pids[pidcount].pid > 0) {
+               pid = waitpid(pids[pidcount].pid, &status, WNOHANG | WUNTRACED);
+               if (pid != 0) {
+                  if (WIFEXITED(status)) {
+                     ldapblaster_children--;
+                     status = WEXITSTATUS(status);
+                     if (status == 0) {
+                        ldapblaster_successes++;
+                       } else if (status == 1) {
+                        ldapblaster_noconn++;
+                       } else if (status == 2) {
+                        ldapblaster_nobind++;
+                       } else if (status == 3) {
+                        ldapblaster_noresults++;
+                       } else {
+                        ldapblaster_unknown++;
+                     };
+                     pids[pidcount].pid = 0;
+                    } else {
+                     if ((pids[pidcount].timestamp + CHILD_TIMEOUT) >= timestamp) {
+                        kill(pids[pidcount].pid, SIGTERM);
+                       } else if ((pids[pidcount].timestamp + (CHILD_TIMEOUT * 2)) >= timestamp) {
+                        kill(pids[pidcount].pid, SIGKILL);
+                     };
+                  };
                };
             };
          };
-         pid = waitpid(last_child->pid, &status, WNOHANG | WUNTRACED);
-         if ((WIFEXITED(status)) && (pid != 0)) {
-            ldapblaster_children--;
-            status = WEXITSTATUS(status);
-            if (status == 0) {
-               ldapblaster_successes++;
-              } else if (status == 1) {
-               ldapblaster_noconn++;
-              } else if (status == 2) {
-               ldapblaster_nobind++;
-              } else if (status == 3) {
-               ldapblaster_noresults++;
-            };
-            if (last_child->next == NULL) {
-               free(last_child);
-               last_child = NULL;
-              } else {
-               last_child = last_child->next;
-               free(last_child->previous);
-               last_child->previous = NULL;
-            };
-         };
-                
-         
-      /* Ends function */
-         return((unsigned int) last_child);
+
+      /* Ends Function */
+         return(0);
+
 
    }
 
@@ -220,15 +198,12 @@
          struct timeval timeout;
 
       /* Starts LDAP Connection */
-         if ( (ldap = ldap_init(MY_LDAP_HOST, MY_LDAP_PORT)) == NULL) {
-            //kill(getppid(), SIGUSR1);
+         if ( (ldap = ldap_init(MY_LDAP_HOST, MY_LDAP_PORT)) == NULL)
             return(1);
-         };
 
       /* Binds to LDAP server */
          if (ldap_simple_bind_s(ldap, MY_BIND_DN, MY_BIND_PW) != LDAP_SUCCESS) {
             ldap_unbind(ldap);
-            //kill(getppid(), SIGUSR2);
             return(2);
          };
 
@@ -239,7 +214,6 @@
       /* Searches LDAP */
          if (ldap_search_st(ldap, MY_LDAP_BASEDN, LDAP_SCOPE_SUBTREE, filters[filter], NULL, 0, &timeout, &mesg) != LDAP_SUCCESS ) {
             ldap_unbind(ldap);
-            //kill(getppid(), SIGUSR2);
             return(3);
          };
 
@@ -258,27 +232,11 @@
 
       /* Disconnects from LDAP and Sends Success Sig */
          ldap_unbind(ldap);
-         //kill(getppid(), SIGWINCH);
 
       /* Ends Function */
          return(0);
    }
 
-
-   /* Catches Sig for failed no bind */
-   void parent_nobind(int sig) {
-      ldapblaster_children--;
-      ldapblaster_nobind++;
-      signal(sig, parent_nobind);
-   }
-
-
-   /* Catches Sig for failed no result */
-   void parent_noresults(int sig) {
-      signal(sig, parent_noresults);
-      ldapblaster_children--;    
-      ldapblaster_noresults++;
-   }
 
    /* Catches Sig and ignores it */
    void parent_null(int sig) {
@@ -302,13 +260,6 @@
    }
 
 
-   /* Catches Sig for successes */
-   void parent_successes(int sig) {
-      ldapblaster_children--;
-      ldapblaster_successes++;
-      signal(sig, parent_successes);
-   }
-         
 
    /* Starts Parent Signal Handling */
    void signal_init_parent() {
@@ -317,46 +268,43 @@
       signal(SIGHUP, parent_shutdown);
       signal(SIGINT, parent_shutdown);
       signal(SIGTERM, parent_shutdown);
-      //signal(SIGUSR1, parent_nobind);
-      //signal(SIGUSR2, parent_noresults);
-      //signal(SIGWINCH, parent_successes);
-      signal(SIGQUIT, parent_stats);
    }
 
 
-   /* Catches Sig for Stats */
+   /* Displays Stats */
    void stats(void) {
       int failed, success;
       printf("Stats:\n");
-      printf("   Failed Connects: %i\n", ldapblaster_nobind);
-      printf("   Failed Searches: %i\n", ldapblaster_noresults);
-      printf("   Successfull:     %i\n", ldapblaster_successes);
-      failed = ldapblaster_nobind + ldapblaster_noresults;
+      printf("   Failed Connects:  %i\n", ldapblaster_nobind);
+      printf("   Failed Searches:  %i\n", ldapblaster_noresults);
+      printf("   Unknown failures: %i\n", ldapblaster_unknown);
+      printf("   Successfull:      %i\n", ldapblaster_successes);
+      failed = ldapblaster_nobind + ldapblaster_noresults + ldapblaster_successes;
       if (failed == 0)
          failed = 1;
       success = ldapblaster_successes;
       if (success == 0)
          success = 1;
       if (failed < success) {
-         printf("   Ratio:           %i.", (success/failed));
+         printf("   Ratio:            %i.", (success/failed));
          success %= failed;
          success *= 10;
          printf("%i success to 1 failure\n", (success/failed));
         } else {
-         printf("   Ratio:           %i.", (failed/success));
+         printf("   Ratio:            %i.", (failed/success));
          failed %= success;
          failed *= 10;
          printf("%i failures to 1 success\n", (failed/success));
       };
-      printf("   Current Children: %i\n", ldapblaster_children);
-      printf("   Total Spawned:    %i\n", ldapblaster_spawned);
-      printf("   Memory Slots:     %i\n", ldapblaster_memslots);
-      printf("   Run Time:         %i\n\n", (int) (time(NULL) - ldapblaster_timestamp));
+      printf("   Current Children:  %i\n", ldapblaster_children);
+      printf("   Total Spawned:     %i\n", ldapblaster_spawned);
+      printf("   Memory Slots:      %i\n", ldapblaster_memslots);
+      printf("   Run Time:          %i\n\n", (int) (time(NULL) - ldapblaster_timestamp));
    }
 
 
    /* Spawns Child Process */
-   int spawn_child(int filter) {
+   int spawn_child(int filter, int *status) {
 
       /* Declares Local Vars */
          int pid;
@@ -375,6 +323,8 @@
                   syslog(LOG_NOTICE, "setsid(): %s", strerror(errno));
                   return(1);
                };
+               *status = child_ldap(filter);
+               return(0);
                break;
 
             default:
@@ -382,7 +332,7 @@
          };
 
       /* Test LDAP */
-         return(child_ldap(filter));
+         return(0);
    }
 
 
@@ -394,42 +344,31 @@
 int main(void) {
                            
    /* Declares Local Vars */
-      struct childpids *last_child = NULL;
+      struct childpids pids[MAX_CHILDREN];
+      time_t timestamp;
       int filtercount = 0;
       int pid = 0;
+      int pidcount = 0;
+      int status = 0;
+
+      for (filtercount = 0; filtercount < MAX_CHILDREN; filtercount++)
+         memset(&pids[filtercount], 0, sizeof(struct childpids));
 
       alarm(UPDATE_FREQ);
       ldapblaster_timestamp = time(NULL);
+      timestamp = ldapblaster_timestamp;
       signal_init_parent();
       while (ldapblaster_exit == FALSE) {
-         if (ldapblaster_children < MAX_CHILDREN) {
-            pid = spawn_child(filtercount);
-            if (pid == 0)
-               return(0);
-            if (pid > 0) {
-               if (last_child == NULL) {
-                  last_child = (struct childpids *) malloc(sizeof(struct childpids));
-                  if (last_child == NULL) {
-                     fprintf(stderr, "Out of Virtual Memory. Must exit now\n");
-                     ldapblaster_exit = TRUE;
-                    } else {
-                     memset(last_child, 0, sizeof(struct childpids));
-                     last_child->pid = pid;
-                     last_child->timestamp = time(NULL);
-                  };
-                 } else {
-                  last_child->next = (struct childpids *) malloc(sizeof(struct childpids));
-                  if (last_child == NULL) {
-                     fprintf(stderr, "Out of Virtual Memory. Must exit now\n");
-                     ldapblaster_exit = TRUE;
-                    } else {
-                     memset(last_child->next, 0, sizeof(struct childpids));
-                     last_child->next->previous = last_child;
-                     last_child = last_child->next;
-                     last_child->pid = pid;
-                     last_child->timestamp = time(NULL);
-                  };
-               };
+         timestamp = time(NULL);
+         for(pidcount = 0; pidcount < MAX_CHILDREN; pidcount++) {
+            if (pids[pidcount].pid == 0) {
+               pid = spawn_child(filtercount, &status);
+               if (pid < 0)
+                  return(-1);
+               if (pid == 0)
+                  return(status);
+               pids[pidcount].pid = pid;
+               pids[pidcount].timestamp = timestamp;
                filtercount++;
                if (filtercount > 114)
                   filtercount = 0;
@@ -437,26 +376,29 @@ int main(void) {
                ldapblaster_spawned++;
                if (ldapblaster_spawned >= MAX_RUNS)
                   ldapblaster_exit = TRUE;
-               if (time(NULL) >= (ldapblaster_timestamp + MAX_RUN_TIME))
-                  ldapblaster_exit = TRUE;
-               
             };
+            
          };
-         if (last_child != NULL)
-            last_child = (struct childpids *) child_cleanup(last_child);
+         child_cleanup(pids, timestamp);
+         if (timestamp >= (ldapblaster_timestamp + MAX_RUN_TIME))
+            ldapblaster_exit = TRUE;
       };
   
+      signal(SIGALRM, parent_null);
       setvbuf(stdout, NULL, _IONBF, 0);
-      printf("Waiting for our children to exit\n");
+      printf("\nWaiting for our children to exit\n");
       printf("|");
-      for (filtercount = 0; filtercount < 20; filtercount++)
+      for (filtercount = 0; filtercount < CHILD_TIMEOUT; filtercount++)
          printf("-");
       printf("|\n|");
-      for (filtercount = 0; filtercount < 20; filtercount++) {
-         sleep(1);
+      for (filtercount = 0; filtercount < CHILD_TIMEOUT; filtercount++) {
+         if (ldapblaster_children > 0) {
+            sleep(2);
+            child_cleanup(pids, time(NULL));
+         };
          printf(".");
       };
-      printf("|\n");
+      printf("|\n\n\n");
       stats();
       return(0);
       
