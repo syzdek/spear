@@ -8,6 +8,8 @@
 # Makefile - automate compiling on a unix platform
 #
 
+OBJECTLEN := 4097
+
 include ../../.config
 
 examples = simple-module.so simple-loader
