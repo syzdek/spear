@@ -1,5 +1,5 @@
 /*
- * libwrap.c - simple example of using libwrap
+ * select.c - simple example of using select()
  * $Source$
  * $Revision$
  * $Date$

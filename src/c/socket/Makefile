@@ -11,6 +11,7 @@ all: clean
 	gcc -g -o getpeername.o getpeername.c
 	gcc -g -o libwrap.o libwrap.c -lwrap
 	gcc -g -o select.o select.c
+	gcc -g -o select-timeout.o select-timeout.c
 
 clean:
 	if [ -f a.out ];then rm a.out;fi

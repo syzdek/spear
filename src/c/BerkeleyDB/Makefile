@@ -8,8 +8,12 @@
 
 all: clean
 	gcc -g -o simple-bdb.o simple-bdb.c -ldb-4
-	gcc -g -o simple-bdb-env.o simple-bdb-env.c -ldb-4
+	gcc -g -o simple-bdbenv.o simple-bdbenv.c -ldb-4
 
 clean: clean
 	if [ -f a.out ];then rm a.out;fi
 	-rm -f *.o
+	-rm -f databases/*db.*
+	-rm -f databases/log.*
+	-rm -f databases/db/*.db
+	-rm -f access.db

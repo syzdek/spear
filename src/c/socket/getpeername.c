@@ -41,6 +41,7 @@ int main(int argc, char *argv[]) {
       char hostbuf[80];					/* Remote host                       */
       char port[40];					/* Remote port                       */
       char *host;					/* Pointer for hostbuf               */
+      char hostint;
 							/*************************************/
 
    /* Clear structs to avoid garbage */
@@ -102,6 +103,7 @@ int main(int argc, char *argv[]) {
             write(sc, "\n\nHello computer at ", sizeof("\n\nHello computer at "));
             write(sc, host, strlen(host));
             write(sc, "\n\n", sizeof("\n\n"));
+            hostint = sic.sin_addr.s_addr;
 
          /* Close connection */ 
             close(sc);
