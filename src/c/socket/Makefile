@@ -1,6 +1,8 @@
-all:
+all: clean
 	gcc -g -o unix-socket-server.o unix-socket-server.c
 	gcc -g -o unix-socket-client.o unix-socket-client.c
+	gcc -g -o unix-socket-server-poll.o unix-socket-server-poll.c
 
 clean:
-	rm ./*.o
+	if [ -f a.out ];then rm a.out;fi
+	-rm -f *.o
