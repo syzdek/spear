@@ -14,16 +14,6 @@
 #ifndef _EXAMPLES_C_DLL_EXAMPLE_H
 #define _EXAMPLES_C_DLL_EXAMPLE_H
 
-/////////////
-//         //
-//  Notes  //
-//         //
-/////////////
-
-   /*
-    * Insert notes Here
-    */
-
 
 ////////////////////////
 //                    //
@@ -34,36 +24,6 @@
 /* String Test Data */
 #define EXAMPLE_STRING_SIZE   12
 #define EXAMPLE_STRING_DATA   "Hello Riley"
-
-//////////////////////////
-//                      //
-//  Struct Definitions  //
-//                      //
-//////////////////////////
-
-
-///////////////
-//           //
-//  Headers  //
-//           //
-///////////////
-
-/* Windows Specific Headers */
-#ifdef WIN32
-#include <windows.h>
-#endif
-
-/* General Headers */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-
-////////////////////////
-//                   //
-//  Global Settings  //
-//                   //
-///////////////////////
 
 
 //////////////////

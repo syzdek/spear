@@ -45,6 +45,15 @@
 //           //
 ///////////////
 
+/* Windows Specific Headers */
+#ifdef WIN32
+#include <windows.h>
+#endif
+
+/* General Headers */
+#include <stdio.h>
+
+/* Exported Functions */
 #include "../include/example.h"
 
 
