@@ -13,6 +13,7 @@ OBJECTLEN := 4097
 include ../../.config
 
 examples = simple-module.so simple-loader
+CC := $(CC)
 
 all: $(examples)
 
