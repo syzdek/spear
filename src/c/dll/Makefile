@@ -28,7 +28,6 @@ strictflags = -Wimplicit -Wmain -Wparentheses -Wreturn-type -Wunused -Wswitch\
 
 flags = $(generalflags) $(warningflags) $(strictflags)
 
-
 objects = lib/libexample.o
 
 shared-objects = lib/libexample.so
@@ -46,7 +45,6 @@ lib/libexample.o:
 
 clean:
 	-rm -f lib/*.o
-	-rm -f Debug/binexample-c
-	-rm -f Debug/binexample-cpp
+	-rm -f Debug/binexample
 	-rm -f Debug/*.so
 

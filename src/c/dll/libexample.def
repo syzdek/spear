@@ -1,7 +1,16 @@
+;
+; Example of Windows DLL and Unix Shared Library
+; $Source$
+; $Revision$
+; $Date$
+; $Author$
+;
+; libexample.def - Export directives for Visual Studio 6.0
+;
 LIBRARY     libexample
 EXPORTS
-    ; Explicit exports can go here
-    helloworld				@1
+	; Explicit exports can go here
+	helloworld		@1
 	example_stringcreate	@2
-    example_stringdestroy	@3
-	example_sum				@4
+	example_stringdestroy	@3
+	example_sum		@4
