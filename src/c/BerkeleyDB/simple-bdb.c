@@ -19,7 +19,7 @@
    #include	<sys/types.h>
    #include     <stdio.h>			/* standard I/O                           */
    #include     <db.h>				/* Network include file                   */
-//   #include	"example.h"			/* Configurations for example programs    */
+   #include	"example.h"			/* Configurations for example programs    */
 						/******************************************/
 
 ///////////////////
@@ -41,9 +41,9 @@ int main(int argc, char *argv[]) {
       };
 
    /* Opens database */
-      ret = dbp->open(dbp, NULL, "/tmp/access.db", NULL, DB_BTREE, DB_CREATE, 0664);
+      ret = dbp->open(dbp, NULL, DATABASE, NULL, DB_BTREE, DB_CREATE, 0664);
       if (ret != 0) {
-         dbp->err(dbp, ret, "%s", "/tmp/access.db");
+         dbp->err(dbp, ret, "%s", DATABASE);
          dbp->close(dbp, 0);
          return(1);
       };
@@ -63,7 +63,35 @@ int main(int argc, char *argv[]) {
          printf("db: %s: key stored.\n", (char *)key.data);
 	} else {
          dbp->err(dbp, ret, "DB->put");
-         //goto err;
+         dbp->close(dbp, 0);
+         return(1);
+      };
+
+   /* Pulls data from database */
+      if ((ret = dbp->get(dbp, NULL, &key, &data, 0)) == 0) {
+         printf("db: %s: key retrieved: data was %s.\n", (char *)key.data, (char *)data.data);
+	} else {
+         dbp->err(dbp, ret, "DB->get");
+         dbp->close(dbp, 0);
+         return(1);
+      };
+
+   /* Deletes key from database */
+      if ((ret = dbp->del(dbp, NULL, &key, 0)) == 0) {
+         printf("db: %s: key was deleted.\n", (char *)key.data);
+        } else {
+         dbp->err(dbp, ret, "DB->del");
+         dbp->close(dbp, 0);
+         return(1);
+      };
+
+   /* Pulls data from database */
+      if ((ret = dbp->get(dbp, NULL, &key, &data, 0)) == 0) {
+         printf("db: %s: key retrieved: data was %s.\n", (char *)key.data, (char *)data.data);
+        } else {
+         dbp->err(dbp, ret, "DB->get");
+         dbp->close(dbp, 0);
+         return(1);
       };
 
    /* Close Database and exit */

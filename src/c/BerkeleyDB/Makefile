@@ -7,8 +7,8 @@
 #
 
 all: clean
-	gcc -g -o simple-bdb.o simple-bdb.c -ldb
-	gcc -g -o simple-bdb-env.o simple-bdb-env.c -ldb
+	gcc -g -o simple-bdb.o simple-bdb.c -ldb-4
+	gcc -g -o simple-bdb-env.o simple-bdb-env.c -ldb-4
 
 clean: clean
 	if [ -f a.out ];then rm a.out;fi
