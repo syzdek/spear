@@ -1,4 +1,4 @@
-examples = example.p6.f1-1
+#examples = example.p6.f1-1
 
 syzdek = syzdek-001
 
@@ -8,11 +8,13 @@ libpath = -L/usr/X11R6/lib
 
 libs = -lglut
 
-strictflags = -Wall 
+#strictflags = -O2 -Werror -Wall -pedantic -g -Wtraditional -W -Wimplicit -Wmain -Wparentheses -Wreturn-type -Wunused -Wswitch -Wcomment -Wformat -Wchar-subscripts -Wuninitialized -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Wconversion -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs -Winline
+
+strictflags = -O2 -Werror -W
 
 flags = $(strictflags)
 
-all: $(examples) $(syzdek)
+all: $(syzdek)
 
 example.p6.f1-1:
 	$(gcc) -o example.p6.f1-1.o example.p6.f1-1.c $(flags) $(libs) $(libpath)
