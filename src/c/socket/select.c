@@ -32,16 +32,23 @@
 // Main Function //
 //               //
 ///////////////////
-int main() {
+int main(int argc, char *argv[]) {
 
    /* local Vars */
-      struct sockaddr_in si;
-      struct sockaddr_in sic;
-      int si_len;
-      int sic_len;
-      int s;
-      int sc;
-      int rc;
+      struct sockaddr_in si;		/* Internet address struct */
+      struct sockaddr_in sic;		/* client's address struct */
+      int si_len;			/* size of Internet address struct */
+      int sic_len;			/* size of client's address struct */
+      int s;				/* socket descriptor */
+      int sc;				/* new connection's socket descriptor */
+      int rc;				/* system calls return value storage */
+      fd_set rfd;			/* set of open sockets */
+      fd_set c_rfd;			/* set of sockets waiting to be read */
+      int dsize;			/* size of file descriptors table */
+      int i;				/* index counter for loop operations */
+      int ccount;			/* count of number of current connections */
+      int lcount;			/* last count of number of current connections */
+      char ibuf[INPUT_BUFFER+1];	/* buffer for incoming data */
 
    /* Clear structs to avoid garbage */
       memset(&si, 0, sizeof(si));
@@ -75,5 +82,85 @@ int main() {
          return(1);
       };
 
+   /* calculate size of file descriptors table */
+      dsize = getdtablesize();
+
+   /* close all file descriptors, except our communication socket	*/
+   /* this is done to avoid blocking on tty operations and such.	*/
+      //for (i=0; i<dsize; i++)
+      //   if (i != s)
+      //      close(i);
+
+   /* we innitialy have only one socket open,	*/
+   /* to receive new incoming connections.	*/
+      FD_ZERO(&rfd);
+      FD_SET(s, &rfd);
+
    /* loops indefinetly listening for connections */
-}
+      ccount = 0;
+      lcount = 1;
+      while(1) {
+         if (ccount != lcount) {
+            printf("Number of concurrent connections: %i\n", ccount);
+            lcount = ccount;
+         };
+         c_rfd = rfd;
+         rc = select(dsize, &c_rfd, NULL, NULL, (struct timeval *)NULL);
+
+         /* Checks to see if new connection came in */
+            if (FD_ISSET(s, &c_rfd)) {
+
+               /* Accepts connection */
+                  sc = accept(s, (struct sockaddr *)&sic, &sic_len);
+                  if (sc < 0)
+                     continue;
+
+               /* prints hello */
+                  ccount++;
+                  write(sc, argv[0], strlen(argv[0]));
+                  write(sc, " $Revision$\ntype '.' to exit\n", sizeof(" $Revision$\ntype '.' to exit\n"));
+
+               /* add the new socket to the set of open sockets */
+                  FD_SET(sc, &rfd);
+
+              /* Loop again */
+                 continue;
+            };
+
+         /* Check for sockets ready for reading */
+            for (i=0; i<dsize; i++) {
+               if (i != s && FD_ISSET(i, &c_rfd)) {
+                  memset(&ibuf, 0, INPUT_BUFFER);
+                  rc = read(i, ibuf, INPUT_BUFFER);
+                  if (rc == 0) {
+                     close(i);
+                     FD_CLR(i, &rfd);
+                     ccount--;
+                    } else {
+                     if ((rc == 3)&&(ibuf[0] == '.')) {
+                        write(i, "BYE\n", sizeof("BYE\n"));
+                        close(i);
+                        FD_CLR(i, &rfd);
+                        ccount--;
+                       } else {
+                        write(i, ibuf, rc);
+                     };
+                  };
+               };
+            };
+      };
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
