@@ -7,7 +7,7 @@
  */
 /*
  * Build:
- *    gcc -g -o simple-bdb.o simple-bdb.c -ldb   // Slackware 8.1
+ *    gcc -g -o simple-bdb.o simple-bdb.c -ldb-4   // Slackware 8.1
  */
 
 /////////////
