@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
       int si_len;								/* size of si                        */
       int sic_len;								/* size of sic                       */
       int s;									/* listening socket                  */
-      int sc;									/* Child socket                      */
+      int sc;									/* socket child                      */
       int rc;									/* return code                       */
 										/*************************************/
 
@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
       memset(&si, 0, sizeof(si));
       memset(&sic, 0, sizeof(sic));
 
-   /* sets zie of structs */
+   /* sets to size of structs */
       si_len = sizeof(si);
       sic_len = sizeof(sic);
 
@@ -80,7 +80,7 @@ int main(int argc, char *argv[]) {
       
       /* Prints to connection and closes */					/*******************************************/
          write(sc, "\n\nHello World\n\n", sizeof("\n\nHello World\n\n"));	/* Send data to client via the socket      */
-         close(sc);								/* Closes child socket (client connection) */
+         close(sc);								/* Closes socket child (client connection) */
          									/*******************************************/
 
    /* Close socket and exit */							/***************************/
