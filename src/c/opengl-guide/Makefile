@@ -1,6 +1,6 @@
 #examples = example.p6.f1-1
 
-syzdek = syzdek-001
+syzdek = syzdek-001 syzdek-002 glx
 
 gcc = gcc
 
@@ -21,6 +21,12 @@ example.p6.f1-1:
 
 syzdek-001:
 	$(gcc) -o syzdek-001.o syzdek-001.c $(flags) $(libs) $(libpath)
+
+syzdek-002:
+	$(gcc) -o syzdek-002.o syzdek-002.c $(flags) $(libs) $(libpath)
+
+glx:
+	gcc -o glx.o glx.c -O2 -Werror -W -lGL -L/usr/X11R6/lib
 
 clean:
 	-rm -f a.out

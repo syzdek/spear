@@ -12,13 +12,13 @@ flags = -std=gnu99 $(generalflags)
 
 ldaplib = -lldap -llber -lresolv 
 
+all:
+#	gcc -g -o ldapsearch.o ldapsearch.c -lldap -llber -lresolv
+#	gcc -g -o ldapurl.o ldapurl.c -lldap -llber -lresolv
+	gcc -o ldapblaster.o ldapblaster.c $(flags) $(ldaplib) -lncurses
+
 solaris: clean
 	/opt/csw/bin/gcc -o ldapblaster.o ldapblaster.c  -O2 -Werror -Wall -pedantic -g -Wtraditional -W -lldap -llber -lresolv
-
-all:
-	gcc -g -o ldapsearch.o ldapsearch.c -lldap -llber -lresolv
-	gcc -g -o ldapurl.o ldapurl.c -lldap -llber -lresolv
-	gcc -o ldapblaster.o ldapblaster.c $(flags) $(ldaplib) -lncurses
 
 clean:
 	rm -f ./*.o

@@ -26,6 +26,7 @@
 #include <stdio.h>	/*  For print statements          */
 #include <stdlib.h>     /*  needed for exit()             */
 #include <unistd.h>	/*  needed for usleep()           */
+#include <syslog.h>	/*  Logs stuff for debugging      */
 
 
 ///////////////////
@@ -127,6 +128,7 @@ void draw_square() {
          glVertex3f(0.0+offset, 1.0-offset, 0.0);
       glEnd();
       glColor3f(0.25+(offset*2), 0.0, 0.0);
+      glColor3f(0.25, 0.0, 0.0);
       glBegin(GL_POLYGON);
          glVertex3f(0.37, 0.37, 0.0);
          glVertex3f(0.63-offset, 0.37+offset, 0.0);
@@ -171,17 +173,51 @@ void keypress(unsigned char key, int x, int y) {
 int main( int argc, char * argv[] ) {
 
    /* Window variables  */
-    
+      int count;
+      int pos;
+      long win;
+
+   /* Opens log and logs debug info */
+      openlog("alpined", LOG_PID, LOG_DAEMON);
+      for (count = 0; count < argc; count++)
+         syslog(LOG_NOTICE, "Arg %i: \"%s\"", count, argv[count]);
+
+   /* Grabs commandline options */
+      win = 0;
+      for (count = 0; count < argc; count++) {
+         if (!strcmp (argv[count], "-window-id")) {
+            if ((argv[count + 1][0] == '0') && ((argv[count + 1][1] == 'x') || (argv[count + 1][1] == 'X'))) {
+               win = strtol ((char *)(argv[count + 1] + 2), (char **)NULL, 16);
+              } else {
+               win = strtol ((char *)(argv[count + 1]), (char **)NULL, 10);
+            };
+            for (pos = count + 2; pos < argc; pos++) {
+               argv[pos - 2] = argv[pos];
+            };
+            argc -= 2;
+            break;
+         };
+      };
+      //   syslog(LOG_NOTICE, "Specified Window: %i", win);
+      //   syslog(LOG_NOTICE, "Current Window: %i", glutGetWindow());
+      //   glutSetWindow(3800047+1);
+
    /* Set Initial Defaults  */
       //glutInitWindowSize(500, 500);
       //glutInitWindowPosition(100, 100);
 
    /* Initialize libs and parse GL commandline options */
       glutInit(&argc, argv);
-      glutInitDisplayMode(GLUT_DOUBLE);
+      //glutInitDisplayMode(GLUT_DOUBLE);
 
    /* Creates New window */
-      glutCreateWindow("My Test Window");
+      if (!win) {
+         glutCreateWindow("My Test Window");
+        } else {
+         syslog(LOG_NOTICE, "Specified Window: %i", win);
+         syslog(LOG_NOTICE, "Current Window: %i", glutGetWindow());
+         glutSetWindow(3800047+1);
+      };
 
    /* Defines how to handle events */
       init();

@@ -92,7 +92,7 @@
 #define TRUE	1
 
 /* Configure Serial Runs */
-#define ENABLE_SERIAL_RUNS	TRUE
+#define ENABLE_SERIAL_RUNS	FALSE
 #define MAX_SERIAL_RUNS		100
 
 /* Run time options */
