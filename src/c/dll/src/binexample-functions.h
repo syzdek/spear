@@ -50,7 +50,7 @@ int main(void) {
       printf("Calling on DLL to create string...\n");
       message = example_stringcreate();
       if (message == NULL) {
-         fprintf(stderr, "There was an error creating the string\n");
+         printf("There was an error creating the string\n");
          return(1);
       };
       backup = message;
@@ -64,7 +64,7 @@ int main(void) {
       printf("Calling on DLL to delete string...\n");
       rc = example_stringdestroy(&message);
       if (rc) {
-         fprintf(stderr, "There was an error destroying the string\n");
+         printf("There was an error destroying the string\n");
          return(1);
       };
 
