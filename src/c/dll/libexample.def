@@ -3,6 +3,6 @@ DESCRIPTION exampleDLL
 EXPORTS
     ; Explicit exports can go here
     helloworld
-    example_stringcreate
-    example_stringdestroy
-    example_sum
+    example_stringcreate @1
+    example_stringdestroy @2
+    example_sum @3
