@@ -26,25 +26,18 @@
 
 /////////////
 //         //
-// Headers //
-//         //
-/////////////
-
-   #include <stdio.h>
-   #include <stdlib.h>
-   #include <string.h>
-   #include <time.h>
-   #include <ldap.h>
-
-
-/////////////
-//         //
 // Configs //
 //         //
 /////////////
 
    /* LDAP Host configs */
-      #define LDAPHOST		"ldaptest01.prv.den.acsalaska.net"
-      #define LDAPPORT		"13891"
+      #define LDAPHOST		"ldap01.prv.nwc.acsalaska.net"
+      #define LDAPPORT		13891
       #define LDAPBINDDN	"cn=Directory Manager"
-      #define LDAPBINDPW	"@dm1n_us3r"
+      //#define LDAPBINDDN	"uid=syzdek,ou=People,o=email,o=trapline.acsalaska.net,o=acsalaska.net"
+      #define LDAPBINDPW	"Lwsu@@ps"
+
+   /* Search Criteria */
+      #define SEARCH_BASE	"o=acsalaska.net"
+      #define SEARCH_FILTER	"(mail=syzdek@mosquitonet.com)"
+
