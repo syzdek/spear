@@ -1,5 +1,5 @@
 /*
- * Alpine Auth Daemon v0.1
+ * OpenGL Programming Examples
  * $Source$
  * $Revision$
  * $Date$
@@ -8,7 +8,6 @@
 /*
  * Copyright (c) 2003 David M. Syzdek <syzdek@mosquitonet.com>
  * All Rights Reserved.
- * COPYING RESTRICTIONS APPLY, see LICENSE.TXT file
  */
 /* From:
  *    OpenGL Programming Guide (third edition)
@@ -28,9 +27,9 @@
 //           //
 ///////////////
 
-#include <GL/glut.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <GL/glut.h>	/*  Loads GLUT to by pass libX11  */
+#include <stdio.h>	/*  For print statements          */
+#include <stdlib.h>     /*  needed for exit()             */
 
 
 //////////////////
@@ -39,9 +38,9 @@
 //              //
 //////////////////
 
-   int  main(int, char **);
-   void example(void);
-   void key(unsigned char key, int x, int y);
+   int  main(int, char **);			/* umm, duh                          */
+   void example(void);				/* Prints 6 squares within a window  */
+   void key(unsigned char key, int x, int y);	/* exits when user hits 'q'          */
 
 
 /////////////////
@@ -118,15 +117,24 @@ int main( int argc, char * argv[] ) {
 
    /* Window variables  */
     
-   /* Connect to X server  */
+   /* Set Initial Defaults  */
       glutInitWindowSize(500, 500);
       glutInitWindowPosition(400, 400);
+
+   /* Initialize libs and parse GL commandline options */
       glutInit(&argc, argv);
+
+   /* Creates New window */
       glutCreateWindow("My Test Window");
+
+   /* Defines how to handle events */
       glutDisplayFunc(example);
       glutKeyboardFunc(key);
+
+   /* Kicks off the master loop */
       glutMainLoop();
 
-   /* Ends Function */
+   /* We never get Here */
+      printf("See, I told you.\n");
       return(0);
 }
