@@ -17,9 +17,9 @@ examples = simple-module.so simple-loader
 all: $(examples)
 
 simple-module.so: simple-module.o
-	gcc -shared -o simple-module.so simple-module.o $(flags)
+	gcc $(SOFLAGS) -o simple-module.so simple-module.o $(flags)
 simple-module.o: simple-module.c
-	gcc -fPIC -c simple-module.c $(flags)
+	gcc $(SOFLAGS) -c simple-module.c $(flags)
 simple-loader: simple-loader.c
 	gcc -o simple-loader simple-loader.c -ldl $(flags)
 
