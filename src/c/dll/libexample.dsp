@@ -92,6 +92,10 @@ LINK32=link.exe
 
 SOURCE=.\lib\libexample.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\libexample.def
+# End Source File
 # End Group
 # Begin Group "Header Files"
 
