@@ -1,0 +1,16 @@
+;
+;  Example DLL
+;  $Source$
+;  $Revision$
+;  $Date$
+;  $Author$
+;
+;  example.h - Header file for example DLL
+;
+LIBRARY     "exampledll"
+DESCRIPTION `exampledll Windows Dynamic Link Library'
+EXPORTS
+    ; Explicit exports can go here
+    exampleString
+    exampleSum
+
