@@ -38,6 +38,7 @@ main (int argc, const char *argv[])
   char *errormsg = NULL;
   void *module = NULL;
   entrypoint *run = NULL;
+  entrypoint *add = NULL;
   int errors = 0;
 
   if (argc != 3)
@@ -71,11 +72,29 @@ main (int argc, const char *argv[])
       if (errormsg != NULL)
         errors = dlclose (module);
     }
+  if (!errors)
+    {
+      add = (entrypoint *) dlsym (module, "add");
+      /* In principle, run might legitimately be NULL, so
+         I don't use run == NULL as an error indicator. */
+      errormsg = dlerrordup (errormsg);
+
+      if (errormsg != NULL)
+        errors = dlclose (module);
+    }
 
   /* Call the entry point function. */
   if (!errors)
     {
       int result = (*run) (argv[2]);
+      if (result < 0)
+        errormsg = (char *) strdup ("module entry point execution failed");
+      else
+        printf ("\t=> %d\n", result);
+    }
+  if (!errors)
+    {
+      int result = (*add) (argv[2]);
       if (result < 0)
         errormsg = (char *) strdup ("module entry point execution failed");
       else
