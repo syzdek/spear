@@ -64,14 +64,18 @@
    /* Destroys Example STRING */
    long int _stdcall example_stringdestroy(char **ptr) {
 
+      /* Declares local vars */
+         char *message;
+
       /* Verifies String hasn't already been cleared */
-      if (*ptr != NULL) {
-         free(*ptr);
-         *ptr = NULL;
-         return(0);
-      } else {
-         return(1);
-      };
+         message = (char *) *ptr;
+         //if (message != NULL) {
+         //   free(message);
+         //   *ptr = NULL;
+         //   return(0);
+         //} else {
+            return(1);
+         //};
 
    }
 

@@ -133,7 +133,9 @@ pointer.Caption = Message
 End Sub
 
 Private Sub Command4_Click()
-pointer.Caption = ""
+Dim ExitCode As Long
+ExitCode = example_stringdestroy(Message)
+pointer.Caption = Message
 End Sub
 
 Private Sub Form_Load()
