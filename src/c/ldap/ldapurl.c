@@ -87,6 +87,9 @@ int main(int argc, char **argv) {
             printf("\t\t%s\n", ludpp[0]->lud_exts[count]);
       };
 
+   /* Frees ludpp */
+      ldap_free_urldesc(ludpp[0]);
+
    /* Ends program */
       return(0);
 
