@@ -21,6 +21,9 @@
 //                    //
 ////////////////////////
 
+/* Defines buffer sizes */
+#define STRUCT_EXAMPLEDLL_BUFFER 1024
+
 /* String Test Data */
 #define EXAMPLE_STRING_SIZE   12
 #define EXAMPLE_STRING_DATA   "Hello Riley"
@@ -34,6 +37,20 @@
 #endif
 
 
+//////////////////////////
+//                      //
+//  Struct Definitions  //
+//                      //
+//////////////////////////
+
+/* Example Struct */
+struct exampledll {
+   long int socket;
+   long int sum;
+   char message[STRUCT_EXAMPLEDLL_BUFFER];
+};
+
+
 //////////////////
 //              //
 //  Prototypes  //
@@ -41,8 +58,8 @@
 //////////////////
 
    long int _stdcall helloworld(void);
-   long int _stdcall example_stringcreate(void);
-   long int _stdcall example_stringdestroy(long int);
+   long int _stdcall example_stringcreate(struct exampledll *);
+   long int _stdcall example_stringdestroy(struct exampledll *);
    long int _stdcall example_sum(long int, long int);
 
 

@@ -41,15 +41,15 @@
 
 
    /* Creates Example STRING */
-   long int _stdcall example_stringcreate(void) {
+   long int _stdcall example_stringcreate(struct exampledll *ptr) {
 
       /* Declares local vars */
          char *mystring;
 
       /* Allocates memory */
-         mystring = (char *) malloc(EXAMPLE_STRING_SIZE);
+         mystring = ptr->message;
          if (mystring == NULL ) {
-            return((long int)NULL);
+            return(1);
          };
 
       /* Copies Test Data */
@@ -57,25 +57,23 @@
          mystring[EXAMPLE_STRING_SIZE-1] = '\0';
 
       /* Ends Function */
-         return((long int)mystring);
+         return(0);
    }
 
 
    /* Destroys Example STRING */
-   long int _stdcall example_stringdestroy(long int ptr) {
+   long int _stdcall example_stringdestroy(struct exampledll *ptr) {
 
       /* Declares local vars */
-         char **message;
+         long int count;
 
-      /* Verifies String hasn't already been cleared */
-         message = (char **) ptr;
-         if (message != NULL) {
-            free(*message);
-            message = NULL;
-            return(0);
-         } else {
-            return(1);
+      /* Loops through and clears string */
+         for(count = 0; count < STRUCT_EXAMPLEDLL_BUFFER; count++) {
+            ptr->message[count] = '\0';
          };
+         
+      /* Ends function */
+         return(0);
 
    }
 

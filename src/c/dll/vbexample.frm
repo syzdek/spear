@@ -91,9 +91,8 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Holds Pointer returned by libexample.dll
+Dim Handle As Long
 Dim Message As String
-Dim Num1 As Long
-Dim Num2 As Long
 
 ' Lists functions we plan on calling from libexample.dll
 Private Declare Function helloworld _
@@ -102,11 +101,11 @@ Lib "C:\CVSTree\examples\c\dll\Debug\libexample.dll" ( _
    
 Private Declare Function example_stringcreate _
 Lib "C:\CVSTree\examples\c\dll\Debug\libexample.dll" ( _
-) As String
+) As Long
 
 Private Declare Function example_stringdestroy _
 Lib "C:\CVSTree\examples\c\dll\Debug\libexample.dll" ( _
-    ByRef Message As String _
+    ByRef Handle As Long _
 ) As Long
 
 Private Declare Function example_sum _
@@ -128,13 +127,14 @@ sum.Caption = Str$(0)
 End Sub
 
 Private Sub Command3_Click()
-Message = example_stringcreate()
+Handle = example_stringcreate()
+Message = Handle
 pointer.Caption = Message
 End Sub
 
 Private Sub Command4_Click()
 Dim ExitCode As Long
-ExitCode = example_stringdestroy(Message)
+ExitCode = example_stringdestroy(Handle)
 pointer.Caption = Message
 End Sub
 

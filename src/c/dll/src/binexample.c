@@ -35,8 +35,7 @@ int main(void) {
 
    /* Declares local vars */
       long int rc;                   /* return code of last function */
-      char *message;
-      char *backup;
+      struct exampledll handle;
       
    /* Calls function */
       rc = helloworld();
@@ -47,36 +46,30 @@ int main(void) {
       rc = example_sum(123, 321);
       printf("123 + 321 = %i\n\n", rc);
 
-   /* Grabs String */
+   /* Creates String */
       printf("Calling on DLL to create string...\n");
-      message = (char *) example_stringcreate();
-      if (message == NULL) {
+      rc = example_stringcreate(&handle);
+      if (rc) {
          printf("There was an error creating the string\n");
          return(1);
       };
-      backup = message;
 
    /* Prints String */
-      rc = (long int) message;
-      printf("Memory Address: %i\n", rc);
-      rc = (long int) &message;
-      printf("Pointer Address: %i\n", rc);
-      printf("My string is: \"%s\"\n\n", message);
+      printf("My string is: \"%s\"\n\n", handle.message);
 
    /* Destroys string */
       printf("Calling on DLL to delete string...\n");
-      rc = example_stringdestroy((long int) &message);
+      rc = example_stringdestroy(&handle);
       if (rc) {
          printf("There was an error destroying the string\n");
          return(1);
       };
 
    /* Prints String */
-      rc = (int) message;
-      printf("Memory Address: %i\n", rc);
-    
-      printf("My string is: \"%s\"\n\n", message);
-      printf("Backup: \"%s\"\n\n", backup);
+      //rc = (int) message;
+      //printf("Memory Address: %i\n", rc);
+      printf("My string is: \"%s\"\n\n", handle.message);
+      //printf("Backup: \"%s\"\n\n", backup);
 
    /* Ends function */
       return(rc);
