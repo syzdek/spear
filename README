@@ -1,0 +1,41 @@
+Available Variables:
+	CC		=> compiler to use
+	CFLAGS		=> Compiler options
+	SOFLAGS		=> Used to create shared objects/dynamic libraries
+	WARNINGFLAGS	=> compiler (gcc) warning flags to use
+	DEBUGFLAGS	=> compiler (gcc) debug flags to use
+
+
+Available Macros:
+	make clean	=> Cleans up binaries
+	make realclean	=> Cleans up binaries and configuration files
+	make dep	=> Make dependancies
+	make all	=> Make binaries
+
+
+Building on Slackware Linux 9.1:
+	export CC=gcc
+	export DEBUGFLAGS='-g'
+	make
+
+
+Building on OS X:
+	export CC=gcc
+	export SOFLAGS='-dynamiclib -fPIC'
+	export DEBUGFLAGS='-g'
+	export WARNINGFLAGS='-W -Wall -Werror'
+	make
+
+
+Building on Solaris 9:
+	export CC=cc
+	export DEBUGFLAGS='-g'
+	export WARNINGFLAGS='-W -Wall -Werror'
+	make
+
+
+Building on FreeBSD 4.6:
+	export CC=gcc
+	export DEBUGFLAGS='-g'
+	make
+
