@@ -13,3 +13,6 @@
       #define LOCAL_PORT	5050
       #define LOCAL_INTERFACE	"127.0.0.1"
 
+   /* Buffer Sizes */
+      #define INPUT_BUFFER	1024
+

@@ -10,6 +10,7 @@ all: clean
 	gcc -g -o socket-server.o socket-server.c
 	gcc -g -o getpeername.o getpeername.c
 	gcc -g -o libwrap.o libwrap.c -lwrap
+	gcc -g -o select.o select.c
 
 clean:
 	if [ -f a.out ];then rm a.out;fi
