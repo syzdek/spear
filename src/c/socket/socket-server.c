@@ -7,7 +7,8 @@
  */
 /*
  * Build:
- *    gcc -g -o socket-server.o socket-server.c
+ *    gcc -g -o socket-server.o socket-server.c			// Slackware 8.1
+ *    gcc -g -o socket-server.o socket-server.c -lsocket	// Solaris 5.9
  */
 
 /////////////

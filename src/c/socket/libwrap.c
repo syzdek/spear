@@ -7,7 +7,8 @@
  */
 /*
  * Build:
- *    gcc -g -o libwrap.o libwrap.c -lwrap
+ *    gcc -g -o libwrap.o libwrap.c -lwrap				// Slackware 8.1
+ *    gcc -g -o libwrap.o libwrap.c -lwrap -lwrap -lsocket -lnsl	// Solaris 5.9 
  */
 
 /////////////

@@ -7,7 +7,8 @@
  */
 /*
  * Build:
- *    gcc -g -o getpeername.o getpeername.c
+ *    gcc -g -o getpeername.o getpeername.c			// Slackware 8.1
+ *    gcc -g -o getpeername.o getpeername.c -lsocket -lnsl	// Solaris 5.9
  */
 
 /////////////
