@@ -72,6 +72,7 @@
    void child_shutdown(int);
    void child_stats(int);
    void child_successes(int);
+   int  division(int, int, int);
    int  main(void);
    void parent_null(int);
    void parent_shutdown(int);
@@ -92,19 +93,19 @@
 #define TRUE	1
 
 /* Run time options */
-#define MAX_CHILDREN	5
-#define MAX_RUNS	25000
+#define MAX_CHILDREN	300
+#define MAX_RUNS	3000
 #define MAX_RUN_TIME	300
 #define CHILD_TIMEOUT	20
 #define UPDATE_FREQ	5
 
 /* LDAP configurations */
-#define MY_LDAP_HOST	"ldap007.prv.nwc.acsalaska.net"
+#define MY_LDAP_HOST	"ozone.prv.nwc.acsalaska.net"
 #define MY_LDAP_PORT	13891
 #define MY_LDAP_BASEDN	"o=acsalaska.net"
 #define MY_LDAP_SCOPE	"sub"
 #define MY_LDAP_ATTRS	"mail"
-#define MY_LDAP_TIMEOUT	15
+#define MY_LDAP_TIMEOUT	2
 
 /* Auth Info */
 #define MY_BIND_DN		"cn=Directory Manager"
@@ -123,13 +124,14 @@
    /* Program Stats */
       volatile int ldapblaster_children = 0;
       volatile int ldapblaster_spawned = 0;
-      volatile int ldapblaster_memslots = 0;
       volatile time_t ldapblaster_timestamp = 0;
 
    /* LDAP Stats */
       volatile int ldapblaster_noconn = 0;
       volatile int ldapblaster_nobind = 0;
+      volatile int ldapblaster_noentries = 0;
       volatile int ldapblaster_noresults = 0;
+      volatile int ldapblaster_nosearch = 0;
       volatile int ldapblaster_successes = 0;
       volatile int ldapblaster_unknown = 0;
 
@@ -163,6 +165,10 @@
                        } else if (status == 2) {
                         ldapblaster_nobind++;
                        } else if (status == 3) {
+                        ldapblaster_nosearch++;
+                       } else if (status == 4) {
+                        ldapblaster_noentries++;
+                       } else if (status == 4) {
                         ldapblaster_noresults++;
                        } else {
                         ldapblaster_unknown++;
@@ -182,12 +188,23 @@
       /* Ends Function */
          return(0);
 
-
    }
 
 
 
    int child_ldap(int filter) {
+
+      /*
+       * Exit Codes
+       *   -1 - Internal Error to function
+       *    0 - Success
+       *    1 - Could make a tcp connection
+       *    2 - Could not Bind
+       *    3 - Search failed
+       *    4 - No entries were returned
+       *    5 - No Values were returned
+       *  143 - Child was killed by kill() 
+       */
 
       /* Declares Local Vars */
          LDAP *ldap;
@@ -218,7 +235,21 @@
          };
 
       /* retrieves data */
+         if (ldap_first_entry(ldap, mesg) == NULL) {
+            ldap_msgfree(mesg);
+            ldap_unbind(ldap);
+            return(4);
+         };
          for (entry = ldap_first_entry(ldap, mesg); entry != NULL; entry = ldap_next_entry(ldap, entry)) {
+            a = ldap_first_attribute(ldap, entry, &ber);
+            if (a == NULL) {
+               ldap_memfree( a );
+               if ( ber != NULL )
+                  ber_free( ber, 0 );
+               ldap_msgfree(mesg);
+               ldap_unbind(ldap);
+               return(4);
+            };
             for (a = ldap_first_attribute(ldap, entry, &ber); a != NULL; a = ldap_next_attribute(ldap, entry, ber)) {
                if ((vals = ldap_get_values(ldap, entry, a)) != NULL ) {
                   ldap_value_free( vals );
@@ -236,6 +267,9 @@
       /* Ends Function */
          return(0);
    }
+
+
+   /* Performs Division */
 
 
    /* Catches Sig and ignores it */
@@ -273,33 +307,74 @@
 
    /* Displays Stats */
    void stats(void) {
-      int failed, success;
-      printf("Stats:\n");
-      printf("   Failed Connects:  %i\n", ldapblaster_nobind);
-      printf("   Failed Searches:  %i\n", ldapblaster_noresults);
-      printf("   Unknown failures: %i\n", ldapblaster_unknown);
-      printf("   Successfull:      %i\n", ldapblaster_successes);
-      failed = ldapblaster_nobind + ldapblaster_noresults + ldapblaster_successes;
-      if (failed == 0)
-         failed = 1;
-      success = ldapblaster_successes;
-      if (success == 0)
-         success = 1;
-      if (failed < success) {
-         printf("   Ratio:            %i.", (success/failed));
-         success %= failed;
-         success *= 10;
-         printf("%i success to 1 failure\n", (success/failed));
-        } else {
-         printf("   Ratio:            %i.", (failed/success));
-         failed %= success;
-         failed *= 10;
-         printf("%i failures to 1 success\n", (failed/success));
-      };
-      printf("   Current Children:  %i\n", ldapblaster_children);
-      printf("   Total Spawned:     %i\n", ldapblaster_spawned);
-      printf("   Memory Slots:      %i\n", ldapblaster_memslots);
-      printf("   Run Time:          %i\n\n", (int) (time(NULL) - ldapblaster_timestamp));
+
+      /* Declares Local vars */
+         time_t timestamp = time(NULL);
+         int noconnects = ldapblaster_noconn;
+         int nobind = ldapblaster_nobind;
+         int noentries = ldapblaster_noentries;
+         int nosearch = ldapblaster_nosearch;
+         int noresults = ldapblaster_noresults;
+         int unknowns = ldapblaster_unknown;
+         int successes = ldapblaster_successes;
+         int children = ldapblaster_children;
+         int spawned = ldapblaster_spawned;
+         int runtime = (int) (timestamp - ldapblaster_timestamp);
+         int failed, success;
+
+      /* Computes total of Successes and Failures */
+         failed = noconnects + nobind + noentries + nosearch + noresults + unknowns;
+         if (failed == 0)
+            failed = 1;
+         success = successes;
+         if (success == 0)
+            success = 1;
+
+      /* Prints Counts */
+         printf("Stats:\n");
+         printf("   Failed Connects:    %i\n", noconnects);
+         printf("   Failed Binds:       %i\n", nobind);
+         printf("   Failed Searches:    %i\n", nosearch);
+         printf("   Failed Entries:     %i\n", noentries);
+         printf("   Failed Results:     %i\n", noresults);
+         printf("   Unknown failures:   %i\n", unknowns);
+         printf("   Successfull:        %i\n", successes);
+
+      /* Per second stats */
+         printf("\n");
+         printf("   Successes/Second:   %i\n", (success/runtime));
+         printf("   Failures/Second:    %i\n", (failed/runtime));
+
+      /* Computes Ratios */
+         printf("   Success / Failures: ");
+         if (failed < success) {
+            if (failed == 0) {
+               printf("%i/0\n", success);
+              } else {
+               printf("%i.", (success/failed));
+               success %= failed;
+               success *= 10;
+               printf("%i/1\n", (success/failed));
+            };
+           } else if (failed > success) {
+            if (success == 0) {
+               printf("0/%i\n", failed);
+              } else {
+               printf("1/%i.", (failed/success));
+               failed %= success;
+               failed *= 10;
+               printf("%i\n", (failed/success));
+            };
+           } else {
+            printf("1/1\n");
+         };
+
+      /* Print App stats */
+         printf("\n");
+         printf("   Current Children:   %i\n", children);
+         printf("   Total Spawned:      %i\n", spawned);
+         printf("   Run Time:           %i\n", runtime);
+         printf("\n\n");
    }
 
 
@@ -351,15 +426,15 @@ int main(void) {
       int pidcount = 0;
       int status = 0;
 
-      for (filtercount = 0; filtercount < MAX_CHILDREN; filtercount++)
-         memset(&pids[filtercount], 0, sizeof(struct childpids));
+      for (pidcount = 0; pidcount < MAX_CHILDREN; pidcount++)
+         memset(&pids[pidcount], 0, sizeof(struct childpids));
 
       alarm(UPDATE_FREQ);
       ldapblaster_timestamp = time(NULL);
       timestamp = ldapblaster_timestamp;
       signal_init_parent();
+
       while (ldapblaster_exit == FALSE) {
-         timestamp = time(NULL);
          for(pidcount = 0; pidcount < MAX_CHILDREN; pidcount++) {
             if (pids[pidcount].pid == 0) {
                pid = spawn_child(filtercount, &status);
@@ -374,14 +449,22 @@ int main(void) {
                   filtercount = 0;
                ldapblaster_children++;
                ldapblaster_spawned++;
-               if (ldapblaster_spawned >= MAX_RUNS)
+               if (ldapblaster_spawned >= MAX_RUNS) {
+                  signal(SIGALRM, parent_null);
+                  printf("Spawned max number of children\n");
+                  pidcount = MAX_CHILDREN;
                   ldapblaster_exit = TRUE;
+               };
             };
             
          };
          child_cleanup(pids, timestamp);
-         if (timestamp >= (ldapblaster_timestamp + MAX_RUN_TIME))
+         timestamp = time(NULL);
+         if (timestamp >= (ldapblaster_timestamp + MAX_RUN_TIME)) {
+            signal(SIGALRM, parent_null);
+            printf("Reached max run time\n");
             ldapblaster_exit = TRUE;
+         };
       };
   
       signal(SIGALRM, parent_null);
