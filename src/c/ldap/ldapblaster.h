@@ -15,6 +15,8 @@
 //           //
 ///////////////
 
+#define TOTAL_NUMBER_OF_FILTERS		114
+
    static char *filters[] = {
       "(&(|(inetMailGroupStatus=Active)(mailUserStatus=Active))(mail=@acsalaska.net))",
       "(&(|(inetMailGroupStatus=Active)(mailUserStatus=Active))(mail=@alaska.net))",
