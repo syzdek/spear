@@ -93,14 +93,14 @@
 #define TRUE	1
 
 /* Run time options */
-#define MAX_CHILDREN	300
-#define MAX_RUNS	3000
-#define MAX_RUN_TIME	300
-#define CHILD_TIMEOUT	20
-#define UPDATE_FREQ	5
+#define MAX_CHILDREN	75
+#define MAX_RUNS	100000
+#define MAX_RUN_TIME	600
+#define CHILD_TIMEOUT	10
+#define UPDATE_FREQ	10
 
 /* LDAP configurations */
-#define MY_LDAP_HOST	"ozone.prv.nwc.acsalaska.net"
+#define MY_LDAP_HOST	"ldaps.prv.nwc.acsalaska.net"
 #define MY_LDAP_PORT	13891
 #define MY_LDAP_BASEDN	"o=acsalaska.net"
 #define MY_LDAP_SCOPE	"sub"
@@ -124,6 +124,7 @@
    /* Program Stats */
       volatile int ldapblaster_children = 0;
       volatile int ldapblaster_spawned = 0;
+      volatile int ldapblaster_sincelast = 0;
       volatile time_t ldapblaster_timestamp = 0;
 
    /* LDAP Stats */
@@ -320,7 +321,11 @@
          int children = ldapblaster_children;
          int spawned = ldapblaster_spawned;
          int runtime = (int) (timestamp - ldapblaster_timestamp);
+         int sincelast = spawned - ldapblaster_sincelast;
          int failed, success;
+
+      /* Resets last count */
+         ldapblaster_sincelast = spawned;
 
       /* Computes total of Successes and Failures */
          failed = noconnects + nobind + noentries + nosearch + noresults + unknowns;
@@ -344,6 +349,7 @@
          printf("\n");
          printf("   Successes/Second:   %i\n", (success/runtime));
          printf("   Failures/Second:    %i\n", (failed/runtime));
+         printf("   Queries/Second:     %i\n", (spawned/runtime));
 
       /* Computes Ratios */
          printf("   Success / Failures: ");
@@ -372,6 +378,7 @@
       /* Print App stats */
          printf("\n");
          printf("   Current Children:   %i\n", children);
+         printf("   Spawned Last Time:  %i\n", sincelast);
          printf("   Total Spawned:      %i\n", spawned);
          printf("   Run Time:           %i\n", runtime);
          printf("\n\n");
@@ -471,12 +478,12 @@ int main(void) {
       setvbuf(stdout, NULL, _IONBF, 0);
       printf("\nWaiting for our children to exit\n");
       printf("|");
-      for (filtercount = 0; filtercount < CHILD_TIMEOUT; filtercount++)
+      for (filtercount = 0; filtercount < (CHILD_TIMEOUT *2); filtercount++)
          printf("-");
       printf("|\n|");
-      for (filtercount = 0; filtercount < CHILD_TIMEOUT; filtercount++) {
+      for (filtercount = 0; filtercount < (CHILD_TIMEOUT *2); filtercount++) {
          if (ldapblaster_children > 0) {
-            sleep(2);
+            sleep(1);
             child_cleanup(pids, time(NULL));
          };
          printf(".");
