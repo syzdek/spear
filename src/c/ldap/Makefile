@@ -16,6 +16,7 @@ all:
 	gcc -g -o ldapsearch.o ldapsearch.c -lldap -llber -lresolv
 	gcc -g -o ldapurl.o ldapurl.c -lldap -llber -lresolv
 	gcc -o ldapblaster.o ldapblaster.c $(flags) $(ldaplib) -lncurses
+	gcc -o ldapblaster2.o ldapblaster2.c $(flags) $(ldaplib) -lncurses
 
 clean:
 	rm ./*.o

@@ -93,7 +93,7 @@
 #define TRUE	1
 
 /* Run time options */
-#define MAX_CHILDREN	75
+#define MAX_CHILDREN	200
 #define MAX_RUNS	100000
 #define MAX_RUN_TIME	600
 #define CHILD_TIMEOUT	10
