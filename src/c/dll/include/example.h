@@ -31,12 +31,6 @@
 //                    //
 ////////////////////////
 
-#ifdef _EXAMPLES_C_DLL_LIBEXAMPLE_CPP
-#ifdef WIN32
-#define _EXAMPLES_C_DLL_EXAMPLE_H_EXPORT_DLL
-#endif
-#endif
-
 
 //////////////////////////
 //                      //
@@ -50,6 +44,14 @@
 //  Headers  //
 //           //
 ///////////////
+
+/* Windows Specific Headers */
+#ifdef WIN32
+#include <windows.h>
+#endif
+
+/* General Headers */
+#include <stdio.h>
 
 
 ////////////////////////
@@ -66,7 +68,7 @@
 //////////////////
 
 // Windows DLL Exports
-#ifdef _EXAMPLES_C_DLL_EXAMPLE_H_EXPORT_DLL
+#ifdef WIN32
    extern "C" __declspec(dllexport) long helloworld(void);                /* Prints Hello World  */
 #endif
 

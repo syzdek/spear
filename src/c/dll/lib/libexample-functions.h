@@ -30,14 +30,14 @@
 /////////////////
 
 /* Prints Hello World */
-#ifdef _EAMPLES_C_DLL_EXAMPLE_H_EXPORT_DLL
+#ifdef WIN32
 extern "C" __declspec(dllexport) long helloworld(void) {
 #else
 long helloworld(void) {
 #endif
 
       /* Prints Message */
-         printf("Hello World\n");
+         printf("Good Grief\n");
 
       /* Ends function */
          return(0);
