@@ -31,6 +31,10 @@
 //                    //
 ////////////////////////
 
+/* String Test Data */
+#define EXAMPLE_STRING_SIZE   12
+#define EXAMPLE_STRING_DATA   "Hello Riley"
+
 
 //////////////////////////
 //                      //
@@ -52,6 +56,8 @@
 
 /* General Headers */
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 
 ////////////////////////
@@ -69,12 +75,16 @@
 
 // Windows DLL Exports
 #ifdef WIN32
-   extern "C" __declspec(dllexport) long helloworld(void);                /* Prints Hello World  */
-#endif
-
-// Everyone Else's Exports
-#ifndef _EXAMPLES_C_DLL_EXAMPLE_H_EXPORT_DLL
-   long helloworld(void);                                                 /* Prints Hello World  */
+   extern "C" __declspec(dllexport) long helloworld(void);
+   extern "C" __declspec(dllexport) char *example_stringcreate(void);
+   extern "C" __declspec(dllexport) long example_stringdestroy(char **);
+   extern "C" __declspec(dllexport) long example_sum(int, int);
+#else
+// Everyone else's Exports
+   long helloworld(void);
+   char *example_stringcreate(void);
+   long example_stringdestroy(char **);
+   long example_sum(int, int);
 #endif
 
 
