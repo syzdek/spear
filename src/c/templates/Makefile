@@ -5,7 +5,7 @@
 # $Date$
 # $Author$
 #
-# Makefile - description of file
+# Makefile - automate compiling on a unix platform
 #
 
 gcc = gcc
