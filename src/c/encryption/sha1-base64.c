@@ -9,6 +9,12 @@
  * Build:
  *    gcc -o sha1-base64.o sha1-base64.c -lssl		// Slackware 8.1
  */
+/*
+ * Notes:
+ *    Does not make a true base64 encoding, however it's working well
+ *    enough to hash uniq data such as PID, Epoch, Client IP, and random
+ *    numbers to create a 41 byte session ID.
+ */
 
 /////////////
 //         //
