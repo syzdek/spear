@@ -34,7 +34,7 @@
 int main(void) {
 
    /* Declares local vars */
-      int rc;                   /* return code of last function */
+      long int rc;                   /* return code of last function */
       char *message;
       char *backup;
       
@@ -49,7 +49,7 @@ int main(void) {
 
    /* Grabs String */
       printf("Calling on DLL to create string...\n");
-      message = example_stringcreate();
+      message = (char *) example_stringcreate();
       if (message == NULL) {
          printf("There was an error creating the string\n");
          return(1);
@@ -57,13 +57,15 @@ int main(void) {
       backup = message;
 
    /* Prints String */
-      rc = (int) message;
+      rc = (long int) message;
       printf("Memory Address: %i\n", rc);
+      rc = (long int) &message;
+      printf("Pointer Address: %i\n", rc);
       printf("My string is: \"%s\"\n\n", message);
 
    /* Destroys string */
       printf("Calling on DLL to delete string...\n");
-      rc = example_stringdestroy(&message);
+      rc = example_stringdestroy((long int) &message);
       if (rc) {
          printf("There was an error destroying the string\n");
          return(1);
@@ -72,6 +74,7 @@ int main(void) {
    /* Prints String */
       rc = (int) message;
       printf("Memory Address: %i\n", rc);
+    
       printf("My string is: \"%s\"\n\n", message);
       printf("Backup: \"%s\"\n\n", backup);
 

@@ -41,7 +41,7 @@
 
 
    /* Creates Example STRING */
-   char * _stdcall example_stringcreate(void) {
+   long int _stdcall example_stringcreate(void) {
 
       /* Declares local vars */
          char *mystring;
@@ -49,7 +49,7 @@
       /* Allocates memory */
          mystring = (char *) malloc(EXAMPLE_STRING_SIZE);
          if (mystring == NULL ) {
-            return(NULL);
+            return((long int)NULL);
          };
 
       /* Copies Test Data */
@@ -57,25 +57,25 @@
          mystring[EXAMPLE_STRING_SIZE-1] = '\0';
 
       /* Ends Function */
-         return(mystring);
+         return((long int)mystring);
    }
 
 
    /* Destroys Example STRING */
-   long int _stdcall example_stringdestroy(char **ptr) {
+   long int _stdcall example_stringdestroy(long int ptr) {
 
       /* Declares local vars */
-         char *message;
+         char **message;
 
       /* Verifies String hasn't already been cleared */
-         message = (char *) *ptr;
-         //if (message != NULL) {
-         //   free(message);
-         //   *ptr = NULL;
-         //   return(0);
-         //} else {
+         message = (char **) ptr;
+         if (message != NULL) {
+            free(*message);
+            message = NULL;
+            return(0);
+         } else {
             return(1);
-         //};
+         };
 
    }
 

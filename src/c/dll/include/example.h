@@ -41,9 +41,9 @@
 //////////////////
 
    long int _stdcall helloworld(void);
-   char * _stdcall example_stringcreate(void);
-   long int _stdcall example_stringdestroy(char **);
-   long int _stdcall example_sum(long, long);
+   long int _stdcall example_stringcreate(void);
+   long int _stdcall example_stringdestroy(long int);
+   long int _stdcall example_sum(long int, long int);
 
 
 #endif
