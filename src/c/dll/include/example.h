@@ -25,6 +25,14 @@
 #define EXAMPLE_STRING_SIZE   12
 #define EXAMPLE_STRING_DATA   "Hello Riley"
 
+/* _stdcall is needed by Win DLLs but not C */
+#ifndef WIN32
+#ifdef _stdcall
+#undef _stdcall
+#define _stdcall
+#endif
+#endif
+
 
 //////////////////
 //              //
@@ -32,9 +40,10 @@
 //              //
 //////////////////
 
-   long int helloworld(void);
-   char *example_stringcreate(void);
-   long int example_stringdestroy(char **);
-   long int example_sum(int, int);
+   long int _stdcall helloworld(void);
+   char * _stdcall example_stringcreate(void);
+   long int _stdcall example_stringdestroy(char **);
+   long int _stdcall example_sum(long, long);
+
 
 #endif

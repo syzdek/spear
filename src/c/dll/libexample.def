@@ -8,6 +8,7 @@
 ; libexample.def - Export directives for Visual Studio 6.0
 ;
 LIBRARY     libexample
+DESCRIPTION	"Simple C DLL Example"
 EXPORTS
 	; Explicit exports can go here
 	helloworld		@1

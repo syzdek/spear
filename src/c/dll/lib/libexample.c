@@ -29,7 +29,7 @@
 /////////////////
 
    /* Prints Hello World */
-   long int helloworld(void) {
+   long int _stdcall helloworld(void) {
 
       /* Prints Message */
          printf("Good Grief\n");
@@ -41,7 +41,7 @@
 
 
    /* Creates Example STRING */
-   char *example_stringcreate(void) {
+   char * _stdcall example_stringcreate(void) {
 
       /* Declares local vars */
          char *mystring;
@@ -62,7 +62,7 @@
 
 
    /* Destroys Example STRING */
-   long int example_stringdestroy(char **ptr) {
+   long int _stdcall example_stringdestroy(char **ptr) {
 
       /* Verifies String hasn't already been cleared */
       if (*ptr != NULL) {
@@ -77,7 +77,7 @@
 
 
    /* Adds two numbers and returns the sum */
-   long int example_sum(int num1, int num2) {
+   long int _stdcall example_sum(long num1, long num2) {
 
       /* Declares local vars */
          long sum;
@@ -89,6 +89,7 @@
          return(sum);
 
    }
+
 
 
 
