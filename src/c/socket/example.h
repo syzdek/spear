@@ -6,15 +6,10 @@
  * $Author$
  */
 
+   /* Package Info */
+      #define PACKAGE "sockettest"
 
-////////////////////////////
-//                        //
-// Connection information //
-//                        //
-////////////////////////////
-
-
-   /* Local Port */
+   /* Local Connections */
       #define LOCAL_PORT	5050
       #define LOCAL_INTERFACE	"127.0.0.1"
 

@@ -37,6 +37,7 @@
    #include <netdb.h>		/* host to IP resolution       */
    #include <sys/poll.h>	/* wait for some event         */
    #include <arpa/inet.h>
+   #include <string.h>
 
 
 /////////////////////
