@@ -101,15 +101,15 @@ int main(void) {
             if (ptr1 == NULL) {					/*        a) verify that malloc allocated the memory                    */
               printf("Virtual Memory Exhausted\n");             /*           if not let user know what's happening                      */
               free(ptr2);                                       /*           exit with error                                            */
+              return(1);
             };
             memcpy(ptr1, ptr2, strlen(ptr2));			/*     3) Copy data from memory at pointer 2 to pointer 1               */
             ptr1[strlen(ptr2)] = inputchar;                     /*     4) Append the latest character from STDIN                        */
             ptr1[strlen(ptr2)+1] = '\0';			/*     5) Add the trailing NULL character at the end                    */
             toggle = 0;						/*     6) Set toggle to zero                                            */
             printf(						/*     7) Print                                                         */
-               "Current Buffer Size: %i\tData: \"%s\"\n",       /*           Description of data                                        */
-               strlen(ptr1), 					/*           Size of Buffer                                             */
-               ptr1                                             /*           Contents of Buffer                                         */
+               "Current Buffer Size: %i\n",       /*           Description of data                                        */
+               strlen(ptr1) 					/*           Size of Buffer                                             */
             );
            } else {						/*  Otherwise, assume toggle is set to zero                             */
             free(ptr2);						/*     1) free memory used by pointer 2                                 */
@@ -117,15 +117,15 @@ int main(void) {
             if (ptr2 == NULL) {					/*        a) verify that malloc allocated the memory                    */
               printf("Virtual Memory Exhausted\n");		/*           if not let user know what's happening                      */
               free(ptr1);					/*           exit with error                                            */
+              return(1);
             };
             memcpy(ptr2, ptr1, strlen(ptr1));			/*     3) Copy data from memory at pointer 1 to pointer 2               */
             ptr2[strlen(ptr1)] = inputchar;			/*     4) Append the latest character from STDIN                        */
             ptr2[strlen(ptr1)+1] = '\0';			/*     5) Add the trailing NULL character at the end                    */
             toggle = 1;						/*     6) Set toggle to zero                                            */
             printf(						/*     7) Print                                                         */
-               "Current Buffer Size: %i\tData: \"%s\"\n", 	/*           Description of data                                        */
-               strlen(ptr2), 					/*           Size of Buffer                                             */
-               ptr2						/*           Contents of Buffer                                         */
+               "Current Buffer Size: %i\n", 	/*           Description of data                                        */
+               strlen(ptr2) 					/*           Size of Buffer                                             */
             );
          };
          inputchar = (char) fgetc(stdin);			/*  Fetch next character from STDIN                                     */
