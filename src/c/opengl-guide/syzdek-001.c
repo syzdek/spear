@@ -9,15 +9,10 @@
  * Copyright (c) 2003 David M. Syzdek <syzdek@mosquitonet.com>
  * All Rights Reserved.
  */
-/* From:
- *    OpenGL Programming Guide (third edition)
- *    Mason Woo : Jackie Neider : Tom Davis : Dave Shreiner
- *    Addison Wesley (publisher)
- */
-/*  example.p6.f1-1.c - Page 6 - Figure 1.1 */
+/*  syzdek-001.c - Syzdek Playing around */
 /*
  * Build:
- *    gcc -g -o example.p6.f1-1 example.p6.f1-1.c -Wall  -lglut -L/usr/X11R6/lib
+ *    gcc -g -o syzdek-001.o syzdek-001.c -Wall  -lglut -L/usr/X11R6/lib
  */
 
 
@@ -39,8 +34,6 @@
 //////////////////
 
    int  main(int, char **);			/* umm, duh                          */
-   void example(void);				/* Prints 6 squares within a window  */
-   void key(unsigned char key, int x, int y);	/* exits when user hits 'q'          */
 
 
 /////////////////
@@ -49,13 +42,18 @@
 //             //
 /////////////////
 
+void init() {
+      glClearColor(0.0, 0.5, 0.0, 0.0);
+      glMatrixMode(GL_PROJECTION);
+      glLoadIdentity();
+      glOrtho(0.0, 1.0, 0.0, 1.0, -1.0, 1.0);
+};
+
 /* Draws Shape */
 void example() {
    /* OpenGL Examples */
-      glClearColor(0.0, 0.5, 0.0, 0.0);
       glClear(GL_COLOR_BUFFER_BIT);
       glColor3f(1.0, 1.0, 1.0);
-      glOrtho(0.0, 1.0, 0.0, 1.0, -1.0, 1.0);
       glBegin(GL_POLYGON);
          glVertex3f(0.25, 0.25, 0.0);
          glVertex3f(0.75, 0.25, 0.0);
@@ -128,6 +126,7 @@ int main( int argc, char * argv[] ) {
       glutCreateWindow("My Test Window");
 
    /* Defines how to handle events */
+      init();
       glutDisplayFunc(example);
       glutKeyboardFunc(key);
 
