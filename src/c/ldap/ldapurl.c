@@ -49,6 +49,7 @@ int main(int argc, char **argv) {
       LDAPURLDesc **ludpp;
       int rc;
       int count;
+      unsigned int var;
 
    /* Checks for CMD args */
       if (argc != 2) {
