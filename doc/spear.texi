@@ -1,0 +1,22 @@
+\input texinfo @c -*-texinfo-*-
+@c
+@c  $Id: $
+@c
+@c  Simple Programming Examples and References
+@c  Copyright (C) 2007 David M. Syzdek <syzdek@gmail.com>
+@c 
+@c  doc/spear.texi - template for documentation
+@c
+
+@setfilename spear.info
+@settitle Simple Programming Examples and References
+@c For double-sided printing, uncomment:
+@setchapternewpage odd
+@c %**end of header
+
+@include version-spear.texi
+
+@set DESCRIPTION ACS Software Development Kit
+@set COPYRIGHT Copyright @copyright{} 2005 Alaska Communications Systems Group, Inc
+
+
