@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--ProvisioningRequest.xml-->
+<!DOCTYPE ProvisioningRequest SYSTEM "ProvisioningRequest.dtd">
+<ProvisioningRequest TransactionId="0000000332" Version="1.2" TransactionType="Modify" ProductType="BlackBerry">
+    <Header>
+        <Sender id="101" name="WirelessCarrier">
+            <Login>Enter your userid here</Login>
+            <Password>Enter your password here</Password>
+        </Sender>
+        <TimeStamp>2001-11-15T13:18:08-08:00</TimeStamp>
+    </Header>
+    <Body>
+        <ProvisioningEntity name="subscriber">
+            <ProvisioningDataItem name="IMSI">Enter your IMSI here</ProvisioningDataItem>
+            <ProvisioningEntity name="service">
+                <ProvisioningDataItem name="ServiceName">Prosumer B</ProvisioningDataItem>
+            </ProvisioningEntity>
+        </ProvisioningEntity>
+    </Body>
+</ProvisioningRequest>

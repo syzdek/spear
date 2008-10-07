@@ -1,0 +1,131 @@
+/*
+ *  $Id: $
+ */
+/*
+ *  Simple Programming Examples and References
+ *  Copyright (C) 2007 David M. Syzdek <syzdek@gmail.com>
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ */
+/*
+ *  src/c/socket/socket_tcp.c - tcp socket functions
+ */
+#define _SPEAR_SRC_C_SOCKET_SOCKET_TCP_C 1
+#include "socket_tcp.h"
+
+/////////////////
+//             //
+//  Functions  //
+//             //
+/////////////////
+
+/* creates TCP socket and connects to remote IP address */
+int tcp_connect_ip(const char * host, int port)
+{
+//   int                       s;
+   int                       e;
+   int                       opt;
+//   struct sockaddr           sa;
+//   struct in_addr          * addr;
+//   struct in6_addr         * addr6;
+//   socklen_t                 sa_size;
+//   struct sockaddr_storage   sa_storage;
+
+   struct addrinfo           hints;
+   struct addrinfo         * res;
+   struct addrinfo         * r;
+
+   /* clears memory */
+   memset(&hints, 0, sizeof(hints));
+
+   hints.ai_socktype = SOCK_STREAM;
+   hints.ai_flags = AI_ADDRCONFIG;
+
+   if ((e = getaddrinfo("www.redhat.com", "http", &hints, &res)) != 0)
+   {
+      fprintf("getaddrinfo(): %s\n", gai_strerror(e));
+      return(-1);
+   };
+
+//   memset(&sa_storage, 0, sizeof(struct sockaddr_storage));
+//   memset(&sa,         0, sizeof(struct sockaddr));
+//
+//   /* casts storage struct to specific address family structs */
+//   addr  = &((struct sockaddr_in *)  &sa_storage)->sin_addr;
+//   addr6 = &((struct sockaddr_in6 *) &sa_storage)->sin6_addr;
+//
+//   /* uncomment the following to see why the above is possible */
+//   printf("sizeof(struct sockaddr)         == %lu\n", sizeof(struct sockaddr));
+//   printf("sizeof(struct sockaddr_in)      == %lu\n", sizeof(struct sockaddr_in));
+//   printf("sizeof(struct sockaddr_in6)     == %lu\n", sizeof(struct sockaddr_in6));
+//   printf("sizeof(struct sockaddr_storage) == %lu\n", sizeof(struct sockaddr_storage));
+//
+//   /* determine network address and address family */
+//   if ((inet_pton(AF_INET, ip, addr)) == 1)
+//   {
+//      sa.sa_family   = AF_INET;
+//      sa_size        = sizeof(struct sockaddr_in);
+//      ((struct sockaddr_in *) &sa_storage)->sin_family = AF_INET;
+//      ((struct sockaddr_in *) &sa_storage)->sin_port   = MY_HTONS(port);
+//      printf("%s: using AF_INET address family\n", PROGRAM_NAME);
+//   }
+//   else if ((inet_pton(AF_INET6, ip, addr6)) == 1)
+//   {
+//      sa.sa_family   = AF_INET6;
+//      sa_size        = sizeof(struct sockaddr_in6);
+//      ((struct sockaddr_in6 *) &sa_storage)->sin6_family = AF_INET6;
+//      ((struct sockaddr_in6 *) &sa_storage)->sin6_port   = MY_HTONS(port);        
+//      printf("%s: using AF_INET6 address family\n", PROGRAM_NAME);
+//   }
+//   else
+//   {
+//      fprintf(stderr, "%s: invalid address: %s\n", PROGRAM_NAME, ip);
+//      return(-1);
+//   };
+//
+   /* creates socket */
+   if ((s = socket(sa.sa_family, SOCK_STREAM, 0)) == -1)
+   {
+      perror("socket()");
+      return(-1);
+   };
+
+//   /* sets socket options */
+//   opt = 1;
+//   if (setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (void *)&opt, sizeof(int)))
+//   {
+//      perror("setsockopt()");
+//      close(s);return(-1);
+//   };
+//   opt = 1;
+//   if (setsockopt(s, SOL_SOCKET, SO_KEEPALIVE, (void *)&opt, sizeof(int)))
+//   {
+//      perror("setsockopt()");
+//      close(s);return(-1);
+//   };
+//
+//   /* connects socket to remote host */
+//   if (connect(s, (struct sockaddr *) &sa_storage, sa_size))
+//   {
+//      perror("connect()");
+//      close(s);return(-1);
+//   };
+
+   /* ends function */
+   return(-1);
+}
+
+
+/* end of source file */

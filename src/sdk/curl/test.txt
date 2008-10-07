@@ -1,0 +1,12 @@
+&lt;?xml version="1.0"?&gt;
+&lt;story&gt;
+  &lt;storyinfo reference="my attribute" genre="comedy"&gt;
+    &lt;author&gt;John Fleck&lt;/author&gt;
+    &lt;datewritten&gt;June 2, 2002&lt;/datewritten&gt;
+    &lt;keyword&gt;example keyword&lt;/keyword&gt;
+  &lt;/storyinfo&gt;
+  &lt;body&gt;
+    &lt;headline&gt;This is the headline&lt;/headline&gt;
+    &lt;para&gt;This is the body text.&lt;/para&gt;
+  &lt;/body&gt;
+&lt;/story&gt;
