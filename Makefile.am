@@ -37,7 +37,7 @@
 #
 
 # Sub directories
-SUBDIRS					=  
+SUBDIRS					=
 DIST_SUBDIRS				= 
 
 # Global flags
@@ -98,7 +98,7 @@ do_subst_dt = \
 
 
 # lists
-BUILT_SOURCES                           =
+BUILT_SOURCES				=
 TESTS					=
 XFAIL_TESTS				=
 EXTRA_MANS				=
@@ -108,12 +108,25 @@ CLEANFILES				= \
 					  $(builddir)/a.out   $(srcdir)/a.out \
 					  $(builddir)/*/a.out $(srcdir)/*/a.out \
 					  config.h.in~ $(srcdir)/config.h.in~ \
-                                          $(man_MANS) \
+					  $(man_MANS) \
 					  @PACKAGE_TARNAME@-*.tar.* \
 					  @PACKAGE_TARNAME@-*.zip
 
 
 # custom targets
+autoreconf:
+	autoreconf -i -f $(ACLOCAL_AMFLAGS)
+
+gitclean:
+	$(MAKE) -f Makefile distclean
+	rm -fR INSTALL
+	rm -fR Makefile.in
+	rm -fR aclocal.m4
+	rm -fR build-aux/*
+	rm -fR config.h.in
+	rm -fR configure
+	rm -fR m4/*
+
 
 # local targets
 install-exec-local:
@@ -121,6 +134,9 @@ install-exec-local:
 install-data-local: 
 
 uninstall-local:
+
+clean-local:
+	rm -fR $(srcdir)/build
 
 distclean-local:
 	rm -fR $(srcdir)/autom4te.cache
