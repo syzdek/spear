@@ -1,31 +1,31 @@
+/*
+ * This is a test message.
+ */
+
 #include <unistd.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <ltdl.h>
 
-int main (int argc, const char *argv[])
+int main(int argc, char * argv[]);
+void * my_dlsym(lt_dlhandle handle, const char * name);
+
+int main (int argc, char *argv[])
 {
-   int           i;
    char          modulepath[1024];
-   int         * value;
+   int         * size;
+   int         * pause;
+   int         * repeat;
    lt_dlhandle   module;
    const lt_dlinfo   * info;
+   int (*wave) (void);
 
-   int (*add) (int a);
-
-   if (argc < 3)
+   if (argc < 5)
    {
-      fprintf (stderr, "USAGE: main MODULENAME <num1> <num2> ... <numN>\n");
-      exit(1);
+      fprintf (stderr, "Usage: %s MODULENAME <size> <repeat> <pause>\n", argv[0]);
+      return(1);
    };
-
-   /* Set the module search path. */
-   memset(modulepath, 0, 1024);
-   getcwd(modulepath, 1023);
-   strncat(modulepath, "/",     1023);
-   strncat(modulepath, argv[1], 1023);
-   strncat(modulepath, ".la",   1023);
 
    if (lt_dlinit())
    {
@@ -34,8 +34,20 @@ int main (int argc, const char *argv[])
       return(1);
    };
 
+   //LTDL_SET_PRELOADED_SYMBOLS();
+
+   /* Set the module search path. */
+   memset(modulepath, 0, 1024);
+   getcwd(modulepath, 1023);
+   strncat(modulepath, "/",     1023);
+   lt_dlsetsearchpath(modulepath);
+
+   printf("DL Data:\n");
+   printf("  Search Path:           %s\n", lt_dlgetsearchpath());
+   printf("\n");
+
    /* Load the module. */
-   if (!(module = lt_dlopen(modulepath)))
+   if (!(module = lt_dlopen(argv[1])))
    {
       fprintf(stderr, "lt_dlopen(): %s\n", lt_dlerror());
       lt_dlexit();
@@ -48,29 +60,41 @@ int main (int argc, const char *argv[])
       lt_dlexit();
       return(1);
    };
-   printf("DL Info:\n");
-   printf("   File Name:         %s\n", info->filename);
-   printf("   Module Name:       %s\n", info->name);
-   printf("   Reference Count:   %i\n", info->ref_count);
+   printf("DL Module Data:\n");
+   printf("   Opened:               %s\n", argv[1]);
+   printf("   File Name:            %s\n", info->filename);
+   printf("   Module Name:          %s\n", info->name);
+   printf("   Reference Count:      %i\n", info->ref_count);
+   printf("   Available Functions:\n");
 
-   if (!(value = lt_dlsym(module, "mod_simple_value")))
+   size   = my_dlsym(module, "size");
+   pause  = my_dlsym(module, "pause");
+   repeat = my_dlsym(module, "repeat");
+   wave   = my_dlsym(module, "wave");
+
+   printf("\n");
+
+   if (size)
    {
-      fprintf(stderr, "lt_dlsym(value): %s\n", lt_dlerror());
-      lt_dlexit();
-      return(1);
+      *size = (int) atol(argv[2]);
+      printf("setting size to    argv[2] (%i)\n", *size);
+   };
+   if (repeat)
+   {
+      *repeat = (int) atol(argv[3]);
+      printf("setting repeat to  argv[3] (%i)\n", *repeat);
+   };
+   if (pause)
+   {
+      *pause = (int) atol(argv[4]);
+      printf("setting pause to   argv[4] (%i)\n", *pause);
    };
 
-   if (!(add = lt_dlsym(module, "mod_simple_add")))
+   if (wave)
    {
-      fprintf(stderr, "lt_dlsym(add): %s\n", lt_dlerror());
-      lt_dlexit();
-      return(1);
+      printf("running wave()...\n");
+      wave();
    };
-
-   (*value) = 0;
-   for(i = 2; i < argc; i++)
-      add(atol(argv[i]));
-   printf("bar:  %i\n", *value);
 
    if ((lt_dlclose(module)))
    {
@@ -84,3 +108,34 @@ int main (int argc, const char *argv[])
   return(0);
 }
 
+
+void * my_dlsym(lt_dlhandle handle, const char * name)
+{
+   void            * ptr;
+   char              newname[1024];
+   const lt_dlinfo * info;
+
+   info = lt_dlgetinfo(handle);
+
+   snprintf(newname, 1024, "%s_%s", info->name, name);
+   if ((ptr = lt_dlsym(handle, newname)))
+   {
+      printf("                         %s\n", newname);
+      return(ptr);
+   };
+
+   snprintf(newname, 1024, "%s_LTX_%s", info->name, name);
+   if ((ptr = lt_dlsym(handle, newname)))
+   {
+      printf("                         %s\n", newname);
+      return(ptr);
+   };
+
+   if ((ptr = lt_dlsym(handle, name)))
+   {
+      printf("                         %s\n", name);
+      return(ptr);
+   };
+
+   return(NULL);
+}
