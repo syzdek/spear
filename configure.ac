@@ -100,7 +100,7 @@ AC_LIBTOOL_WIN32_DLL
 AC_PROG_LIBTOOL
 
 # custom configure options
-#AC_SPEAR_ENABLE_WARNINGS
+AC_SPEAR_ENABLE_WARNINGS
 
 # enables getopt_long if header and functions were found
 AC_CHECK_HEADERS([getopt.h], [AC_DEFINE_UNQUOTED(USE_GETOPT_LONG, 1, [Use GNU getopt_long])])
