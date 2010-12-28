@@ -1,41 +1,98 @@
-Available Variables:
-	CC		=> compiler to use
-	CFLAGS		=> Compiler options
-	SOFLAGS		=> Used to create shared objects/dynamic libraries
-	WARNINGFLAGS	=> compiler (gcc) warning flags to use
-	DEBUGFLAGS	=> compiler (gcc) debug flags to use
+
+Simple Programming Examples And References
+==========================================
+
+   This package is a collection of miscellaneous programs that serve as
+   examples for performing various tasks in various programming and scripting
+   languages.
 
 
-Available Macros:
-	make clean	=> Cleans up binaries
-	make realclean	=> Cleans up binaries and configuration files
-	make dep	=> Make dependancies
-	make all	=> Make binaries
+Disclaimer
+==========
+
+   This software is provided by the copyright holders and contributors "as
+   is" and any express or implied warranties, including, but not limited to,
+   the implied warranties of merchantability and fitness for a particular
+   purpose are disclaimed. In no event shall David M. Syzdek be liable for
+   any direct, indirect, incidental, special, exemplary, or consequential
+   damages (including, but not limited to, procurement of substitute goods or
+   services; loss of use, data, or profits; or business interruption) however
+   caused and on any theory of liability, whether in contract, strict
+   liability, or tort (including negligence or otherwise) arising in any way
+   out of the use of this software, even if advised of the possibility of
+   such damage.
 
 
-Building on Slackware Linux 9.1:
-	export CC=gcc
-	export DEBUGFLAGS='-g'
-	make
+Software Requirements
+=====================
+
+   Git 1.7.2.3
+   GCC 4.2.1
+   GNU Autoconf 2.65
+   GNU Automake 1.11.1
+   GNU Libtool 2.41
+   GNU Make 3.81
+   Perl 5.8.9
 
 
-Building on OS X:
-	export CC=gcc
-	export SOFLAGS='-dynamiclib -fPIC'
-	export DEBUGFLAGS='-g'
-	export WARNINGFLAGS='-W -Wall -Werror'
-	make
+Directory Map
+=============
+
+   AUTHORS              - List of developers who have contributed to spear.
+   COPYING              - Default software license of source code included in
+                          this package unless otherwise noted.
+   ChangeLog            - List of changes made between releases
+   Makefile.am          - Configures and build example programs.
+   NEWS                 - Contains news regarding this package.
+   README               - This file.
+   Spear.xcodeproj/     - Xcode IDE project file used for editing source code.
+   acinclude.m4         - custom M4 macros for GNU Autoconf.
+   build-aux/           - directory containing support scripts and utilities
+   configure.ac         - configuration file used by GNU Autoconf to produce
+                          the configure script.
+   m4                   - contains M4 macros installed by GNU Automake and GNU
+                          Autoconf
+   src/garage           - Examples which have not been cleaned up or tested.
+   src/lang/c           - Examples written in C.
+   src/lang/objc        - Examples written in Objective-C.
+   src/lang/perl        - Examples written in Perl.
+   src/lang/sh          - Examples written in Borne Shell and Bash.
+   src/sdk/iODBC        - Examples written using the iODBC library.
+   src/sdk/openldap     - Examples written using the OpenLDAP libraries.
 
 
-Building on Solaris 9:
-	export CC=cc
-	export DEBUGFLAGS='-g'
-	export WARNINGFLAGS='-W -Wall -Werror'
-	make
+Maintainers
+===========
+
+   David M. Syzdek
+   david@syzdek.net
 
 
-Building on FreeBSD 4.6:
-	export CC=gcc
-	export DEBUGFLAGS='-g'
-	make
+Source Code
+===========
+
+   The source code for this project is maintained using git
+   (http://git-scm.com).  The following contains information to checkout the
+   source code from the git repository.
+
+   Git URLs:
+      git://github.com/syzdek/spear.git
+      git://git.scm.syzdek.net/pub/scm/net.syzdek/spear.git
+      http://http.scm.syzdek.net/pub/scm/net.syzdek/spear.git
+      ssh://ssh.scm.syzdek.net/pub/scm/net.syzdek/spear.git
+
+   Downloading Source:
+
+      $ git clone git://github.com/syzdek/spear.git
+
+   Preparing Source:
+
+      $ cd spear
+      $ autoreconf -i -f -I m4
+
+   Git Branches:
+      master - Current release of packages.
+      next   - changes staged for next release
+      pu     - proposed updates for next release
+      xx/yy+ - branch for testing new changes before merging to 'pu' branch
 
