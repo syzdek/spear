@@ -60,7 +60,7 @@ include_HEADERS				=
 lib_LTLIBRARIES				= 
 man_MANS				=
 noinst_LTLIBRARIES			= 
-noinst_HEADERS				= include/spear.h
+noinst_HEADERS				=
 
 
 # substitution routine
