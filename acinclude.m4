@@ -1,6 +1,6 @@
 #
 #   Simple Programming Examples And References
-#   Copyright (C) 2007, 2008, 2010 David M. Syzdek <syzdek@gmail.com>.
+#   Copyright (C) 2007, 2008, 2010 David M. Syzdek <david@syzdek.net>.
 #
 #   @SYZDEK_BSD_LICENSE_START@
 #
