@@ -53,7 +53,6 @@ DEFS					= -DLOCALEDIR="\"$(localedir)\"" @DEFS@
 
 
 # automake targets 
-bin_PROGRAMS				=
 check_PROGRAMS				= 
 doc_DATA				= 
 include_HEADERS				= 
@@ -61,6 +60,18 @@ lib_LTLIBRARIES				=
 man_MANS				=
 noinst_LTLIBRARIES			= 
 noinst_HEADERS				=
+noinst_PROGRAMS				=
+
+
+# macros for src/sdk/openldap/ldapsearch
+if HAVE_LDAP
+noinst_PROGRAMS += src/sdk/openldap/ldapsearch
+endif
+src_sdk_openldap_ldapsearch_DEPENDENCIES = Makefile
+src_sdk_openldap_ldapsearch_SOURCES	= $(noinst_HEADERS) \
+					  src/sdk/openldap/ldapcommon.c \
+					  src/sdk/openldap/ldapcommon.h \
+					  src/sdk/openldap/ldapsearch.c
 
 
 # substitution routine
@@ -102,7 +113,7 @@ BUILT_SOURCES				=
 TESTS					=
 XFAIL_TESTS				=
 EXTRA_MANS				=
-EXTRA_PROGRAMS				=
+EXTRA_PROGRAMS				= src/sdk/openldap/ldapsearch
 EXTRA_DIST				=
 CLEANFILES				= \
 					  $(builddir)/a.out   $(srcdir)/a.out \

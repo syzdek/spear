@@ -15,6 +15,10 @@
 		A024BFDE0EAE4ACF007B6740 /* Makefile.am */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = Makefile.am; sourceTree = "<group>"; tabWidth = 8; };
 		A024BFDF0EAE4ACF007B6740 /* NEWS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = NEWS; sourceTree = "<group>"; };
 		A024BFE00EAE4ACF007B6740 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		A0B9EB3A12CA9FB10012747E /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 8; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; tabWidth = 8; };
+		A0B9EB3B12CA9FB10012747E /* ldapcommon.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ldapcommon.c; sourceTree = "<group>"; };
+		A0B9EB3C12CA9FB10012747E /* ldapcommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ldapcommon.h; sourceTree = "<group>"; };
+		A0B9EB3D12CA9FB10012747E /* ldapsearch.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ldapsearch.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -84,8 +88,20 @@
 		A0B9EB0112CA95B00012747E /* sdk */ = {
 			isa = PBXGroup;
 			children = (
+				A0B9EB3912CA9FB10012747E /* openldap */,
 			);
 			path = sdk;
+			sourceTree = "<group>";
+		};
+		A0B9EB3912CA9FB10012747E /* openldap */ = {
+			isa = PBXGroup;
+			children = (
+				A0B9EB3A12CA9FB10012747E /* Makefile */,
+				A0B9EB3B12CA9FB10012747E /* ldapcommon.c */,
+				A0B9EB3C12CA9FB10012747E /* ldapcommon.h */,
+				A0B9EB3D12CA9FB10012747E /* ldapsearch.c */,
+			);
+			path = openldap;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

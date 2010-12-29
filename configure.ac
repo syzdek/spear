@@ -134,6 +134,28 @@ AC_SEARCH_LIBS([regfree],   [regex],,[have_regex=no])
 AC_SEARCH_LIBS([regerror],  [regex],,[have_regex=no])
 AM_CONDITIONAL([HAVE_REGEX], [test x$have_regex = xyes])
 
+# check for OpenLDAP
+have_ldap=yes
+AC_CHECK_HEADERS([ldap.h],  ,[have_ldap=no])
+AC_SEARCH_LIBS([ldap_set_option],                [ldap ber],,[have_ldap=no])
+AC_SEARCH_LIBS([ldap_err2string],                [ldap ber],,[have_ldap=no])
+AC_SEARCH_LIBS([ldap_unbind_ext_s],              [ldap ber],,[have_ldap=no])
+AC_SEARCH_LIBS([ldap_initialize],                [ldap ber],,[have_ldap=no])
+AC_SEARCH_LIBS([ldap_start_tls_s],               [ldap ber],,[have_ldap=no])
+AC_SEARCH_LIBS([ldap_sasl_bind_s],               [ldap ber],,[have_ldap=no])
+AC_SEARCH_LIBS([ldap_sasl_interactive_bind_s],   [ldap ber],,[have_ldap=no])
+AC_SEARCH_LIBS([ldap_search_ext_s],              [ldap ber],,[have_ldap=no])
+AC_SEARCH_LIBS([ldap_count_entries],             [ldap ber],,[have_ldap=no])
+AC_SEARCH_LIBS([ldap_msgfree],                   [ldap ber],,[have_ldap=no])
+AC_SEARCH_LIBS([ldap_first_entry],               [ldap ber],,[have_ldap=no])
+AC_SEARCH_LIBS([ldap_get_dn],                    [ldap ber],,[have_ldap=no])
+AC_SEARCH_LIBS([ldap_first_attribute],           [ldap ber],,[have_ldap=no])
+AC_SEARCH_LIBS([ldap_get_values_len],            [ldap ber],,[have_ldap=no])
+AC_SEARCH_LIBS([ldap_value_free_len],            [ldap ber],,[have_ldap=no])
+AC_SEARCH_LIBS([ldap_next_attribute],            [ldap ber],,[have_ldap=no])
+AC_SEARCH_LIBS([ldap_next_entry],                [ldap ber],,[have_ldap=no])
+AM_CONDITIONAL([HAVE_LDAP], [test x$have_regex = xyes])
+
 # Geek Humor check
 AC_CHECK_LIB([users],[noobs],,[AC_MSG_NOTICE([No noobs found, disabling hand_holding().])])
 
