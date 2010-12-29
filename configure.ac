@@ -38,7 +38,7 @@ AC_PREREQ(2.61)
 
 AC_COPYRIGHT([Copyright (c) 2007, 2010 David M. Syzdek <david@syzdek.net>.])
 AC_REVISION(0.1)
-AC_INIT([Simple Programming Examples And References],[0.1],[david@syzdek.net],[spear])
+AC_INIT([Simple Programming Examples And References],[10.12],[david@syzdek.net],[spear])
 
 AC_SUBST([RELEASE_MONTH],["December 2010"])
 

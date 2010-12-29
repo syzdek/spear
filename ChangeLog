@@ -2,7 +2,9 @@
 Simple Programming Examples And References
 Copyright (C) 2010 David M. Syzdek <david@syzdek.net>.
 
-0.1	2010/12/29 (syzdek)
+10.12	2010/12/29 (syzdek)
 	- Rewriting GNU Autotools files. (syzdek)
 	- Restructuring directories. (syzdek)
 	- Adding OpenLDAP examples. (syzdek)
+	- Updating release version to follow the format YY.MM of the release
+	  date. (syzdek)
