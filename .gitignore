@@ -13,6 +13,8 @@
 /Makefile.in
 /build-aux/git-package-version
 /libtool
+/spear-*.tar.*
+/spear-*.zip
 a.out
 aclocal.m4
 autom4te.cache
