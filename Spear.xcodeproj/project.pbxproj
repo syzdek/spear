@@ -9,7 +9,7 @@
 /* Begin PBXFileReference section */
 		A024BFD80EAE4ACF007B6740 /* acinclude.m4 */ = {isa = PBXFileReference; explicitFileType = text.script.sh; fileEncoding = 4; indentWidth = 3; path = acinclude.m4; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
 		A024BFD90EAE4ACF007B6740 /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
-		A024BFDA0EAE4ACF007B6740 /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; };
+		A024BFDA0EAE4ACF007B6740 /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 8; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
 		A024BFDB0EAE4ACF007B6740 /* configure.ac */ = {isa = PBXFileReference; explicitFileType = text.script.sh; fileEncoding = 4; indentWidth = 8; path = configure.ac; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
 		A024BFDC0EAE4ACF007B6740 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
 		A024BFDE0EAE4ACF007B6740 /* Makefile.am */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = Makefile.am; sourceTree = "<group>"; tabWidth = 8; };
