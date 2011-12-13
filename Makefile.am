@@ -63,15 +63,20 @@ noinst_HEADERS				=
 noinst_PROGRAMS				=
 
 
-# macros for src/sdk/openldap/ldapsearch
+# macros for src/sdk/openldap/ldapsearch-async
 if HAVE_LDAP
-noinst_PROGRAMS += src/sdk/openldap/ldapsearch
+noinst_PROGRAMS += src/sdk/openldap/ldapsearch-async
 endif
-src_sdk_openldap_ldapsearch_DEPENDENCIES = Makefile
-src_sdk_openldap_ldapsearch_SOURCES	= $(noinst_HEADERS) \
-					  src/sdk/openldap/ldapcommon.c \
-					  src/sdk/openldap/ldapcommon.h \
-					  src/sdk/openldap/ldapsearch.c
+src_sdk_openldap_ldapsearch_async_DEPENDENCIES	= Makefile
+src_sdk_openldap_ldapsearch_async_SOURCES	= src/sdk/openldap/ldapsearch-async.c
+
+
+# macros for src/sdk/openldap/ldapsearch-sync
+if HAVE_LDAP
+noinst_PROGRAMS += src/sdk/openldap/ldapsearch-sync
+endif
+src_sdk_openldap_ldapsearch_sync_DEPENDENCIES	= Makefile
+src_sdk_openldap_ldapsearch_sync_SOURCES	= src/sdk/openldap/ldapsearch-sync.c
 
 
 # substitution routine

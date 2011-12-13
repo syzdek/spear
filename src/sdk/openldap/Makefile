@@ -1,6 +1,6 @@
 #
 #   Simple Programming Examples And References
-#   Copyright (C) 2010 David M. Syzdek <david@syzdek.net>.
+#   Copyright (C) 2011 David M. Syzdek <david@syzdek.net>.
 #
 #   @SYZDEK_BSD_LICENSE_START@
 #
@@ -20,7 +20,7 @@
 #   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
 #   IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
 #   THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-#   PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL BINDLE BINARIES BE LIABLE FOR
+#   PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL DAVID M. SYZDEK BE LIABLE FOR
 #   ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
 #   DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
 #   SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
@@ -31,30 +31,16 @@
 #
 #   @SYZDEK_BSD_LICENSE_END@
 #
-#   @configure_input@
-#
-#   src/sdk/openldap/Makefile - compiles LDAP examples
-#
 
-PROGRAMS	= ldapsearch
-HEADERS		= ldapcommon.h
+PROGRAMS        = ldapsearch-sync ldapsearch-async
 
-CFLAGS		?= -std=gnu99 -pedantic -W -Wall -Werror -O2
-LDFLAGS		?= -lldap -llber
+CC              ?= gcc
+CFLAGS          ?= -std=gnu99 -pedantic -W -Wall -Werror
+LDFLAGS         ?= -lldap -llber
 
 all: $(PROGRAMS)
 
-ldapcommon.o: Makefile ldapcommon.c $(HEADERS)
-	$(CC) $(CFLAGS) -c ldapcommon.c
-
-ldapsearch.o: Makefile ldapsearch.c $(HEADERS)
-	$(CC) $(CFLAGS) -c ldapsearch.c
-
-ldapsearch: Makefile ldapcommon.o $(HEADERS) ldapsearch.o
-	$(CC) $(CFLAGS) $(LDFLAGS) -o ${@} ldapsearch.o ldapcommon.o
-
 clean:
-	rm -f $(PROGRAMS)
+	rm -f a.out
 	rm -f *.o
-
-# end of Makefile
+	rm -f $(PROGRAMS)
