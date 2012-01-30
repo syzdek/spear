@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A02A234814D625E3000B31C7 /* pipedopen.c in Sources */ = {isa = PBXBuildFile; fileRef = A02A233814D6202E000B31C7 /* pipedopen.c */; };
 		A0BC031E1496F829001D23FA /* ldapsearch-sync.c in Sources */ = {isa = PBXBuildFile; fileRef = A0BC030B1496F4A0001D23FA /* ldapsearch-sync.c */; };
 		A0BC03201496F83F001D23FA /* libldap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BC031F1496F83F001D23FA /* libldap.dylib */; };
 		A0BC03221496F84A001D23FA /* liblber.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BC03211496F84A001D23FA /* liblber.dylib */; };
@@ -16,6 +17,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		A02A233C14D625D1000B31C7 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		A0BC03111496F7A9001D23FA /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -45,6 +55,8 @@
 		A024BFDE0EAE4ACF007B6740 /* Makefile.am */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = Makefile.am; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
 		A024BFDF0EAE4ACF007B6740 /* NEWS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = NEWS; sourceTree = "<group>"; };
 		A024BFE00EAE4ACF007B6740 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		A02A233814D6202E000B31C7 /* pipedopen.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = pipedopen.c; sourceTree = "<group>"; };
+		A02A233E14D625D1000B31C7 /* pipedopen */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = pipedopen; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0B9EB3A12CA9FB10012747E /* Makefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = Makefile; sourceTree = "<group>"; tabWidth = 8; };
 		A0BC030A1496F4A0001D23FA /* ldapsearch-async.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "ldapsearch-async.c"; sourceTree = "<group>"; };
 		A0BC030B1496F4A0001D23FA /* ldapsearch-sync.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "ldapsearch-sync.c"; sourceTree = "<group>"; };
@@ -57,6 +69,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		A02A233B14D625D1000B31C7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A0BC03101496F7A9001D23FA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -98,6 +117,14 @@
 			);
 			sourceTree = "<group>";
 		};
+		A02A233714D61F4A000B31C7 /* pipe */ = {
+			isa = PBXGroup;
+			children = (
+				A02A233814D6202E000B31C7 /* pipedopen.c */,
+			);
+			path = pipe;
+			sourceTree = "<group>";
+		};
 		A0B9E9A712CA95B00012747E /* src */ = {
 			isa = PBXGroup;
 			children = (
@@ -121,6 +148,7 @@
 		A0B9EAF912CA95B00012747E /* c */ = {
 			isa = PBXGroup;
 			children = (
+				A02A233714D61F4A000B31C7 /* pipe */,
 			);
 			path = c;
 			sourceTree = "<group>";
@@ -169,6 +197,7 @@
 			children = (
 				A0BC03131496F7A9001D23FA /* ldapsearch-sync */,
 				A0BC03271496F862001D23FA /* ldapsearch-async */,
+				A02A233E14D625D1000B31C7 /* pipedopen */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -176,6 +205,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		A02A233D14D625D1000B31C7 /* pipedopen */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A02A234514D625D1000B31C7 /* Build configuration list for PBXNativeTarget "pipedopen" */;
+			buildPhases = (
+				A02A233A14D625D1000B31C7 /* Sources */,
+				A02A233B14D625D1000B31C7 /* Frameworks */,
+				A02A233C14D625D1000B31C7 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = pipedopen;
+			productName = pipedopen;
+			productReference = A02A233E14D625D1000B31C7 /* pipedopen */;
+			productType = "com.apple.product-type.tool";
+		};
 		A0BC03121496F7A9001D23FA /* ldapsearch-sync */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A0BC031D1496F7A9001D23FA /* Build configuration list for PBXNativeTarget "ldapsearch-sync" */;
@@ -235,11 +281,20 @@
 			targets = (
 				A0BC03261496F862001D23FA /* ldapsearch-async */,
 				A0BC03121496F7A9001D23FA /* ldapsearch-sync */,
+				A02A233D14D625D1000B31C7 /* pipedopen */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		A02A233A14D625D1000B31C7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A02A234814D625E3000B31C7 /* pipedopen.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A0BC030F1496F7A9001D23FA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -276,6 +331,49 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
+			};
+			name = Release;
+		};
+		A02A234614D625D1000B31C7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		A02A234714D625D1000B31C7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -372,6 +470,14 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		A02A234514D625D1000B31C7 /* Build configuration list for PBXNativeTarget "pipedopen" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A02A234614D625D1000B31C7 /* Debug */,
+				A02A234714D625D1000B31C7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		A0BC031D1496F7A9001D23FA /* Build configuration list for PBXNativeTarget "ldapsearch-sync" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -379,6 +485,7 @@
 				A0BC031C1496F7A9001D23FA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A0BC032E1496F862001D23FA /* Build configuration list for PBXNativeTarget "ldapsearch-async" */ = {
 			isa = XCConfigurationList;
@@ -387,6 +494,7 @@
 				A0BC03301496F862001D23FA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
