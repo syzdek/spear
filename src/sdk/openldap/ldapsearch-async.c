@@ -653,7 +653,7 @@ int main(int argc, char * argv[])
 
    // perform search
    ldapexample_verbose(&config, "ldap_search_ext_s()\n");
-   ldap_search_ext(
+   err = ldap_search_ext(
       ld,                         // LDAP            * ld
       config.ludp->lud_dn,        // char            * base
       config.ludp->lud_scope,     // int               scope
@@ -666,6 +666,12 @@ int main(int argc, char * argv[])
       config.search_limit,        // int               sizelimit
       &msgid                      // int             * msgidp
    );
+   if (err != LDAP_SUCCESS)
+   {
+      fprintf(stderr, "ldap_result(): %s\n", ldap_err2string(err));
+      ldap_unbind_ext_s(ld, NULL, NULL);
+      return(1);
+   };
 
    // loops through results from search
    msgtype  = LDAP_RES_SEARCH_ENTRY;
