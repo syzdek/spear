@@ -114,6 +114,7 @@ int main(int argc, char * argv[])
       char * st;
       char * l;
       char * o;
+      char * ou;
       char * cn;
       char * email;
    } x509data;
@@ -195,6 +196,8 @@ int main(int argc, char * argv[])
          x509data.l = &bol[2];
       else if (!(strncasecmp(bol, "o=", 2)))
          x509data.o = &bol[2];
+      else if (!(strncasecmp(bol, "ou=", 3)))
+         x509data.ou = &bol[3];
       else if (!(strncasecmp(bol, "cn=", 3)))
          x509data.cn = &bol[3];
       else if (!(strncasecmp(bol, "emailAddress=", 13)))
@@ -205,6 +208,8 @@ int main(int argc, char * argv[])
       printf("Common Name:  %s\n", x509data.cn);
    if ((x509data.o))
       printf("Organization: %s\n", x509data.o);
+   if ((x509data.ou))
+      printf("Department:   %s\n", x509data.ou);
    if ((x509data.l))
       printf("City:         %s\n", x509data.l);
    if ((x509data.st))
