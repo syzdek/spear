@@ -105,6 +105,18 @@ int main(int argc, char * argv[])
    const EVP_MD        * digest;
    unsigned char         md[EVP_MAX_MD_SIZE];
    unsigned int          n;
+   char                * bol;
+   char                * eol;
+
+   struct
+   {
+      char * c;
+      char * st;
+      char * l;
+      char * o;
+      char * cn;
+      char * email;
+   } x509data;
 
    // checks arguments
    if (argc != 2)
@@ -168,9 +180,42 @@ int main(int argc, char * argv[])
       return(1);
    };
 
+   memset(&x509data, 0, sizeof(x509data));
+   bol = &x->name[1];
+   while((bol))
+   {
+      eol    = index(bol, '/');
+      if ((eol))
+         eol[0] = '\0';
+      if      (!(strncasecmp(bol, "C=", 2)))
+         x509data.c = &bol[2];
+      else if (!(strncasecmp(bol, "st=", 3)))
+         x509data.st = &bol[3];
+      else if (!(strncasecmp(bol, "l=", 2)))
+         x509data.l = &bol[2];
+      else if (!(strncasecmp(bol, "o=", 2)))
+         x509data.o = &bol[2];
+      else if (!(strncasecmp(bol, "cn=", 3)))
+         x509data.cn = &bol[3];
+      else if (!(strncasecmp(bol, "emailAddress=", 13)))
+         x509data.email = &bol[13];
+      bol    = ((eol)) ? &eol[1] : NULL;
+   };
+   if ((x509data.cn))
+      printf("Common Name:  %s\n", x509data.cn);
+   if ((x509data.o))
+      printf("Organization: %s\n", x509data.o);
+   if ((x509data.l))
+      printf("City:         %s\n", x509data.l);
+   if ((x509data.st))
+      printf("State:        %s\n", x509data.st);
+   if ((x509data.c))
+      printf("Country:      %s\n", x509data.c);
+   if ((x509data.email))
+      printf("E-mail:       %s\n", x509data.email);
+
    // prints x509 info
-   printf("name:      %s\n",    x->name);
-   printf("serial:    ");
+   printf("serial:       ");
    printf("%02X", x->cert_info->serialNumber->data[0]);
    for(pos = 1; pos < x->cert_info->serialNumber->length; pos++)
       printf(":%02X", x->cert_info->serialNumber->data[pos]);
@@ -179,7 +224,7 @@ int main(int argc, char * argv[])
    // calculate & print fingerprint
    digest = EVP_get_digestbyname("sha1");
    X509_digest(x, digest, md, &n);
-   printf("Fingerprint: ");
+   printf("Fingerprint:  ");
    for(pos = 0; pos < 19; pos++)
       printf("%02x:", md[pos]);
    printf("%02x\n", md[19]);
