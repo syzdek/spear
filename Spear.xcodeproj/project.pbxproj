@@ -7,7 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A028021214F0999700095E98 /* ldapmodify-async.c in Sources */ = {isa = PBXBuildFile; fileRef = A028020314F0995700095E98 /* ldapmodify-async.c */; };
+		A028021314F099AF00095E98 /* libldap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BC03321496F883001D23FA /* libldap.dylib */; };
+		A028021414F099B800095E98 /* liblber.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BC03341496F891001D23FA /* liblber.dylib */; };
+		A028021714F09E5D00095E98 /* ldapcommon.c in Sources */ = {isa = PBXBuildFile; fileRef = A028021614F09E5D00095E98 /* ldapcommon.c */; };
 		A02A234814D625E3000B31C7 /* pipedopen.c in Sources */ = {isa = PBXBuildFile; fileRef = A02A233814D6202E000B31C7 /* pipedopen.c */; };
+		A06B5C841510B2EA003189C2 /* peminfo.c in Sources */ = {isa = PBXBuildFile; fileRef = A06B5C821510B2E1003189C2 /* peminfo.c */; };
 		A0BC031E1496F829001D23FA /* ldapsearch-sync.c in Sources */ = {isa = PBXBuildFile; fileRef = A0BC030B1496F4A0001D23FA /* ldapsearch-sync.c */; };
 		A0BC03201496F83F001D23FA /* libldap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BC031F1496F83F001D23FA /* libldap.dylib */; };
 		A0BC03221496F84A001D23FA /* liblber.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BC03211496F84A001D23FA /* liblber.dylib */; };
@@ -17,7 +22,25 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		A028020614F0997800095E98 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		A02A233C14D625D1000B31C7 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		A06B5C761510B2CB003189C2 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -55,21 +78,45 @@
 		A024BFDE0EAE4ACF007B6740 /* Makefile.am */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = Makefile.am; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
 		A024BFDF0EAE4ACF007B6740 /* NEWS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = NEWS; sourceTree = "<group>"; };
 		A024BFE00EAE4ACF007B6740 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		A028020314F0995700095E98 /* ldapmodify-async.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "ldapmodify-async.c"; sourceTree = "<group>"; };
+		A028020814F0997800095E98 /* ldapmodify-async */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "ldapmodify-async"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A028021614F09E5D00095E98 /* ldapcommon.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ldapcommon.c; sourceTree = "<group>"; };
+		A028021A14F09E7E00095E98 /* ldapcommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ldapcommon.h; sourceTree = "<group>"; };
 		A02A233814D6202E000B31C7 /* pipedopen.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = pipedopen.c; sourceTree = "<group>"; };
 		A02A233E14D625D1000B31C7 /* pipedopen */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = pipedopen; sourceTree = BUILT_PRODUCTS_DIR; };
+		A06B5C721510B257003189C2 /* Makefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; indentWidth = 8; path = Makefile; sourceTree = "<group>"; tabWidth = 8; usesTabs = 1; };
+		A06B5C731510B257003189C2 /* sha1hash.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = sha1hash.c; sourceTree = "<group>"; };
+		A06B5C781510B2CB003189C2 /* peminfo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = peminfo; sourceTree = BUILT_PRODUCTS_DIR; };
+		A06B5C821510B2E1003189C2 /* peminfo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = peminfo.c; sourceTree = "<group>"; };
 		A0B9EB3A12CA9FB10012747E /* Makefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = Makefile; sourceTree = "<group>"; tabWidth = 8; };
 		A0BC030A1496F4A0001D23FA /* ldapsearch-async.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "ldapsearch-async.c"; sourceTree = "<group>"; };
 		A0BC030B1496F4A0001D23FA /* ldapsearch-sync.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "ldapsearch-sync.c"; sourceTree = "<group>"; };
 		A0BC03131496F7A9001D23FA /* ldapsearch-sync */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "ldapsearch-sync"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A0BC031F1496F83F001D23FA /* libldap.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libldap.dylib; path = ../../../../../usr/lib/libldap.dylib; sourceTree = "<group>"; };
-		A0BC03211496F84A001D23FA /* liblber.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liblber.dylib; path = ../../../../../usr/lib/liblber.dylib; sourceTree = "<group>"; };
+		A0BC031F1496F83F001D23FA /* libldap.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libldap.dylib; path = /usr/lib/libldap.dylib; sourceTree = "<absolute>"; };
+		A0BC03211496F84A001D23FA /* liblber.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liblber.dylib; path = /usr/lib/liblber.dylib; sourceTree = "<absolute>"; };
 		A0BC03271496F862001D23FA /* ldapsearch-async */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "ldapsearch-async"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0BC03321496F883001D23FA /* libldap.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libldap.dylib; path = SDKs/MacOSX10.7.sdk/usr/lib/libldap.dylib; sourceTree = DEVELOPER_DIR; };
 		A0BC03341496F891001D23FA /* liblber.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liblber.dylib; path = SDKs/MacOSX10.7.sdk/usr/lib/liblber.dylib; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		A028020514F0997800095E98 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A028021414F099B800095E98 /* liblber.dylib in Frameworks */,
+				A028021314F099AF00095E98 /* libldap.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A02A233B14D625D1000B31C7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A06B5C751510B2CB003189C2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -100,10 +147,6 @@
 		A024BFBD0EAE49DF007B6740 = {
 			isa = PBXGroup;
 			children = (
-				A0BC03341496F891001D23FA /* liblber.dylib */,
-				A0BC03321496F883001D23FA /* libldap.dylib */,
-				A0BC03211496F84A001D23FA /* liblber.dylib */,
-				A0BC031F1496F83F001D23FA /* libldap.dylib */,
 				A024BFD90EAE4ACF007B6740 /* AUTHORS */,
 				A024BFDA0EAE4ACF007B6740 /* ChangeLog */,
 				A024BFDC0EAE4ACF007B6740 /* COPYING */,
@@ -113,8 +156,20 @@
 				A024BFDB0EAE4ACF007B6740 /* configure.ac */,
 				A024BFDE0EAE4ACF007B6740 /* Makefile.am */,
 				A0B9E9A712CA95B00012747E /* src */,
+				A028021514F09DDC00095E98 /* Frameworks */,
 				A0BC03141496F7A9001D23FA /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		A028021514F09DDC00095E98 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A0BC03341496F891001D23FA /* liblber.dylib */,
+				A0BC03321496F883001D23FA /* libldap.dylib */,
+				A0BC03211496F84A001D23FA /* liblber.dylib */,
+				A0BC031F1496F83F001D23FA /* libldap.dylib */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		A02A233714D61F4A000B31C7 /* pipe */ = {
@@ -123,6 +178,16 @@
 				A02A233814D6202E000B31C7 /* pipedopen.c */,
 			);
 			path = pipe;
+			sourceTree = "<group>";
+		};
+		A06B5C711510B233003189C2 /* openssl */ = {
+			isa = PBXGroup;
+			children = (
+				A06B5C721510B257003189C2 /* Makefile */,
+				A06B5C821510B2E1003189C2 /* peminfo.c */,
+				A06B5C731510B257003189C2 /* sha1hash.c */,
+			);
+			path = openssl;
 			sourceTree = "<group>";
 		};
 		A0B9E9A712CA95B00012747E /* src */ = {
@@ -178,6 +243,7 @@
 			isa = PBXGroup;
 			children = (
 				A0B9EB3912CA9FB10012747E /* openldap */,
+				A06B5C711510B233003189C2 /* openssl */,
 			);
 			path = sdk;
 			sourceTree = "<group>";
@@ -185,6 +251,9 @@
 		A0B9EB3912CA9FB10012747E /* openldap */ = {
 			isa = PBXGroup;
 			children = (
+				A028021A14F09E7E00095E98 /* ldapcommon.h */,
+				A028021614F09E5D00095E98 /* ldapcommon.c */,
+				A028020314F0995700095E98 /* ldapmodify-async.c */,
 				A0BC030A1496F4A0001D23FA /* ldapsearch-async.c */,
 				A0BC030B1496F4A0001D23FA /* ldapsearch-sync.c */,
 				A0B9EB3A12CA9FB10012747E /* Makefile */,
@@ -198,6 +267,8 @@
 				A0BC03131496F7A9001D23FA /* ldapsearch-sync */,
 				A0BC03271496F862001D23FA /* ldapsearch-async */,
 				A02A233E14D625D1000B31C7 /* pipedopen */,
+				A028020814F0997800095E98 /* ldapmodify-async */,
+				A06B5C781510B2CB003189C2 /* peminfo */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -205,6 +276,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		A028020714F0997800095E98 /* ldapmodify-async */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A028020F14F0997800095E98 /* Build configuration list for PBXNativeTarget "ldapmodify-async" */;
+			buildPhases = (
+				A028020414F0997800095E98 /* Sources */,
+				A028020514F0997800095E98 /* Frameworks */,
+				A028020614F0997800095E98 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ldapmodify-async";
+			productName = "ldapmodify-async";
+			productReference = A028020814F0997800095E98 /* ldapmodify-async */;
+			productType = "com.apple.product-type.tool";
+		};
 		A02A233D14D625D1000B31C7 /* pipedopen */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A02A234514D625D1000B31C7 /* Build configuration list for PBXNativeTarget "pipedopen" */;
@@ -220,6 +308,23 @@
 			name = pipedopen;
 			productName = pipedopen;
 			productReference = A02A233E14D625D1000B31C7 /* pipedopen */;
+			productType = "com.apple.product-type.tool";
+		};
+		A06B5C771510B2CB003189C2 /* peminfo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A06B5C7F1510B2CB003189C2 /* Build configuration list for PBXNativeTarget "peminfo" */;
+			buildPhases = (
+				A06B5C741510B2CB003189C2 /* Sources */,
+				A06B5C751510B2CB003189C2 /* Frameworks */,
+				A06B5C761510B2CB003189C2 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = peminfo;
+			productName = peminfo;
+			productReference = A06B5C781510B2CB003189C2 /* peminfo */;
 			productType = "com.apple.product-type.tool";
 		};
 		A0BC03121496F7A9001D23FA /* ldapsearch-sync */ = {
@@ -279,19 +384,38 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				A028020714F0997800095E98 /* ldapmodify-async */,
 				A0BC03261496F862001D23FA /* ldapsearch-async */,
 				A0BC03121496F7A9001D23FA /* ldapsearch-sync */,
 				A02A233D14D625D1000B31C7 /* pipedopen */,
+				A06B5C771510B2CB003189C2 /* peminfo */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		A028020414F0997800095E98 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A028021214F0999700095E98 /* ldapmodify-async.c in Sources */,
+				A028021714F09E5D00095E98 /* ldapcommon.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A02A233A14D625D1000B31C7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				A02A234814D625E3000B31C7 /* pipedopen.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A06B5C741510B2CB003189C2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A06B5C841510B2EA003189C2 /* peminfo.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,6 +458,49 @@
 			};
 			name = Release;
 		};
+		A028021014F0997800095E98 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		A028021114F0997800095E98 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 		A02A234614D625D1000B31C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -370,6 +537,49 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		A06B5C801510B2CB003189C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		A06B5C811510B2CB003189C2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -470,6 +680,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		A028020F14F0997800095E98 /* Build configuration list for PBXNativeTarget "ldapmodify-async" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A028021014F0997800095E98 /* Debug */,
+				A028021114F0997800095E98 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		A02A234514D625D1000B31C7 /* Build configuration list for PBXNativeTarget "pipedopen" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -477,6 +696,16 @@
 				A02A234714D625D1000B31C7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A06B5C7F1510B2CB003189C2 /* Build configuration list for PBXNativeTarget "peminfo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A06B5C801510B2CB003189C2 /* Debug */,
+				A06B5C811510B2CB003189C2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A0BC031D1496F7A9001D23FA /* Build configuration list for PBXNativeTarget "ldapsearch-sync" */ = {
 			isa = XCConfigurationList;

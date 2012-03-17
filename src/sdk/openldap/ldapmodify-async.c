@@ -32,23 +32,23 @@
  *  @SYZDEK_BSD_LICENSE_END@
  */
 /**
- *  @file src/sdk/openldap/ldapsearch-async.c an example of an LDAP asynchronous
+ *  @file src/sdk/openldap/ldapmodify-async.c an example of an LDAP asynchronous
  *                                            search using an LDAP API.
  */
 /*
  *  Simple Build:
- *     gcc -W -Wall -O2 -c ldapsearch-async.c
- *     gcc -W -Wall -O2 -lldap -llber -o ldapsearch-async ldapsearch-async.o
+ *     gcc -W -Wall -O2 -c ldapmodify-async.c
+ *     gcc -W -Wall -O2 -lldap -llber -o ldapmodify-async ldapmodify-async.o
  *
  *  GNU Libtool Build:
- *     libtool --mode=compile gcc -W -Wall -g -O2 -c ldapsearch-async.c
- *     libtool --mode=link    gcc -W -Wall -g -O2 -lldap -llber -o ldapsearch-async ldapsearch-async.lo
+ *     libtool --mode=compile gcc -W -Wall -g -O2 -c ldapmodify-async.c
+ *     libtool --mode=link    gcc -W -Wall -g -O2 -lldap -llber -o ldapmodify-async ldapmodify-async.lo
  *
  *  GNU Libtool Install:
- *     libtool --mode=install install -c ldapsearch-async /usr/local/bin/ldapsearch-async
+ *     libtool --mode=install install -c ldapmodify-async /usr/local/bin/ldapmodify-async
  *
  *  GNU Libtool Clean:
- *     libtool --mode=clean rm -f ldapsearch-async.lo ldapsearch-async
+ *     libtool --mode=clean rm -f ldapmodify-async.lo ldapmodify-async
  */
 
 
@@ -62,12 +62,9 @@
 #endif
 
 #include <stdio.h>
-#include <ldap.h>
-#include <sasl/sasl.h>
 #include <getopt.h>
-#include <inttypes.h>
-#include <stdlib.h>
-#include <stdarg.h>
+
+#include "ldapcommon.h"
 
 
 ///////////////////
@@ -80,7 +77,7 @@
 #endif
 
 #ifndef PROGRAM_NAME
-#define PROGRAM_NAME "ldapsearch-async"
+#define PROGRAM_NAME "ldapmodify-async"
 #endif
 
 #ifndef PACKAGE_BUGREPORT
@@ -94,45 +91,6 @@
 #ifndef PACKAGE_VERSION
 #define PACKAGE_VERSION ""
 #endif
-
-
-/////////////////
-//             //
-//  Datatypes  //
-//             //
-/////////////////
-#ifdef PMARK
-#pragma mark - Datatypes
-#endif
-
-/// @brief stores data for interactive SASL authentication
-typedef struct ldapexample_auth LDAPAuth;
-struct ldapexample_auth
-{
-   const char     * dn;        ///< DN to use for simple bind
-   const char     * saslmech;  ///< SASL mechanism to use for authentication
-   const char     * authuser;  ///< user to authenticate
-   const char     * user;      ///< pre-authenticated user
-   const char     * realm;     ///< SASL realm used for authentication
-   BerValue         cred;      ///< the credentials of "user" (i.e. password)
-};
-
-
-/// @brief stores data for interactive SASL authentication
-typedef struct ldapexample_config LDAPConfig;
-struct ldapexample_config
-{
-   int              verbose;
-   char             ldap_url[1024];
-   const char     * ldap_ca;
-   int              ldap_tls;
-   int              ldap_version;
-   int              search_limit;
-   struct timeval   search_timeout;
-   struct timeval   tcp_timeout;
-   LDAPURLDesc    * ludp;
-   LDAPAuth         auth;
-};
 
 
 //////////////////
@@ -151,9 +109,6 @@ int ldapexample_sasl_interact(LDAP * ld, unsigned flags, void * defaults,
 // displays usage information
 void ldapexample_usage(void);
 
-// print verbose message
-void ldapexample_verbose(LDAPConfig * cnfp, const char * fmt, ...);
-
 // displays version information
 void ldapexample_version(void);
    
@@ -170,90 +125,18 @@ int main(int argc, char * argv[]);
 #pragma mark - Functions
 #endif
 
-/// @brief retrieves information during interactive SASL auth attempt
-/// @param ld         current LDAP descriptor
-/// @param flags      type of SASL auth
-/// @param defaults   pointer to populated TestAuthData
-/// @param sin        requested information
-int ldapexample_sasl_interact(LDAP * ld, unsigned flags, void * defaults,
-   void * sin)
-{
-   LDAPAuth        * ldap_inst;
-   sasl_interact_t * interact;
-
-   if (!(ld))
-      return(LDAP_PARAM_ERROR);
-
-   if (!(defaults))
-      return(LDAP_PARAM_ERROR);
-
-   if (!(sin))
-      return(LDAP_PARAM_ERROR);
-
-   switch(flags)
-   {
-      case LDAP_SASL_AUTOMATIC:
-      case LDAP_SASL_INTERACTIVE:
-      case LDAP_SASL_QUIET:
-      default:
-      break;
-   };
-
-   ldap_inst = defaults;
-
-   for(interact = sin; (interact->id != SASL_CB_LIST_END); interact++)
-   {
-      interact->result = NULL;
-      interact->len    = 0;
-      switch(interact->id)
-      {
-         case SASL_CB_GETREALM:
-            //fprintf(stderr, "SASL Data: SASL_CB_GETREALM (%s)\n", ldap_inst->realm ? ldap_inst->realm : "");
-            interact->result = ldap_inst->realm ? ldap_inst->realm : "";
-            interact->len    = (unsigned)strlen( interact->result );
-            break;
-         case SASL_CB_AUTHNAME:
-            //fprintf(stderr, "SASL Data: SASL_CB_AUTHNAME (%s)\n", ldap_inst->authuser ? ldap_inst->authuser : "");
-            interact->result = ldap_inst->authuser ? ldap_inst->authuser : "";
-            interact->len    = (unsigned)strlen( interact->result );
-            break;
-         case SASL_CB_PASS:
-            //fprintf(stderr, "SASL Data: SASL_CB_PASS (%s)\n", ldap_inst->cred.bv_val ? ldap_inst->cred.bv_val : "");
-            interact->result = ldap_inst->cred.bv_val ? ldap_inst->cred.bv_val : "";
-            interact->len    = (unsigned)ldap_inst->cred.bv_len;
-            break;
-         case SASL_CB_USER:
-            //fprintf(stderr, "SASL Data: SASL_CB_USER (%s)\n", ldap_inst->user ? ldap_inst->user : "");
-            interact->result = ldap_inst->user ? ldap_inst->user : "";
-            interact->len    = (unsigned)strlen( interact->result );
-            break;
-         case SASL_CB_NOECHOPROMPT:
-            //fprintf(stderr, "SASL Data: SASL_CB_NOECHOPROMPT\n");
-            break;
-         case SASL_CB_ECHOPROMPT:
-            //fprintf(stderr, "SASL Data: SASL_CB_ECHOPROMPT\n");
-            break;
-         default:
-            //fprintf(stderr, "SASL Data: unknown option: %lu\n", interact->id);
-            break;
-      };
-   };
-
-   return(LDAP_SUCCESS);
-}
-
-
 /// @brief displays usage information
 void ldapexample_usage(void)
 {
-   printf(("Usage: %s [OPTIONS]\n"
+   printf(("Usage: %s [OPTIONS] add attribute value\n"
+         "         %s [OPTIONS] delete attribute [ value ]\n"
+         "         %s [OPTIONS] replace attribute [ [ oldValue ] newValue ]\n"
          "  -2                        use protocol version 2\n"
          "  -3                        use protocol version 3\n"
          "  -C file                   file containing CA certificates\n"
          "  -D dn                     bind DN\n"
          "  -H url                    LDAP URL\n"
          "  -h, --help                print this help and exit\n"
-         "  -l limit                  search limit\n"
          "  -T timeout                TCP timeout\n"
          "  -t timeout                search timeout\n"
          "  -U user                   SASL bind user\n"
@@ -261,31 +144,8 @@ void ldapexample_usage(void)
          "  -Y mech                   SASL bind mechanism\n"
          "  -Z                        Start TLS request (-ZZ verify hostname matches)\n"
          "\n"
-         "LDAP URL: ldap://hostport/dn[?attrs[?scope[?filter[?exts]]]]\n"
-         "\n"
-         "   example: ldap://ldap.example.net/dc=example,dc=net?cn,sn?sub?(cn=*)\n"
-         "\n"
          "Report bugs to <%s>.\n"
-      ), PROGRAM_NAME, PACKAGE_BUGREPORT);
-   return;
-}
-
-
-/// @brief print verbose message
-/// @param verbose    verbose level
-/// @param fmt        printf format
-/// @param ...        printf format arguments
-void ldapexample_verbose(LDAPConfig * cnfp, const char * fmt, ...)
-{
-   va_list args;
-
-   if (cnfp->verbose < 1)
-      return;
-
-   va_start(args, fmt);
-   vfprintf (stderr, fmt, args );
-   va_end(args);
-
+      ), PROGRAM_NAME, PROGRAM_NAME, PROGRAM_NAME, PACKAGE_BUGREPORT);
    return;
 }
 
@@ -296,7 +156,7 @@ void ldapexample_version(void)
    printf(("%s (%s) %s\n"
          "Written by David M. Syzdek.\n"
          "\n"
-         "Copyright 2011 David M. Syzdek <david@syzdek.net>.\n"
+         "Copyright 2012 David M. Syzdek <david@syzdek.net>.\n"
          "This is free software; see the source for copying conditions.  There is NO\n"
          "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
       ), PROGRAM_NAME, PACKAGE_NAME, PACKAGE_VERSION
@@ -318,7 +178,6 @@ int main(int argc, char * argv[])
    char           * errmsg;
    int              opt;
    BerValue       * servercredp;
-   BerValue       * authzid;
    int              msgid;
    int              msgtype;
    int              msgcount;
@@ -332,7 +191,7 @@ int main(int argc, char * argv[])
    // local variables for parsing cli arguments
    int                  c;
    int                  opt_index;
-   static char          short_opt[] = "23C:D:H:hl:T:t:U:Vvw:Y:Z";
+   static char          short_opt[] = "23C:D:H:hT:t:U:Vvw:Y:Z";
    static struct option long_opt[] =
    {
       {"help",          no_argument, 0, 'h'},
@@ -382,9 +241,6 @@ int main(int argc, char * argv[])
          case 'h':
             ldapexample_usage();
             return(0);
-         case 'l':
-            config.search_limit = (int) strtol(optarg, NULL, 0);
-            break;
          case 'T':
             config.tcp_timeout.tv_sec = (int) strtol(optarg, NULL, 0);
             break;
@@ -598,73 +454,20 @@ int main(int argc, char * argv[])
       };
    };
 
-
-   //
-   //  whoami query
-   //
-
-
-   // perform LDAP whoami query
-   ldapexample_verbose(&config, "ldap_whoami()\n");
-   ldap_whoami(ld, NULL, NULL, &msgid);
-
-   // retrieves result
-   ldapexample_verbose(&config, "ldap_result()\n");
-   err = ldap_result(ld, msgid, 0, NULL, &res);
-   switch(err)
-   {
-      case -1:
-         ldap_get_option(ld, LDAP_OPT_RESULT_CODE, &err);
-         fprintf(stderr, "ldap_result(): %s\n", ldap_err2string(err));
-         return(1);
-      case 0:
-         fprintf(stderr, "ldap_result(): timeout expired\n");
-         ldap_abandon_ext(ld, msgid, NULL, NULL);
-         ldap_unbind_ext_s(ld, NULL, NULL);
-         return(1);
-      default:
-         break;
-   };
-
-   // parses search result
-   ldapexample_verbose(&config, "ldap_parse_result()\n");
-   ldap_parse_result(ld, res, &err, &dn, NULL, NULL, NULL, 0);
-   if (err != LDAP_SUCCESS)
-   {
-      fprintf(stderr, "ldap_result(): %s\n", ldap_err2string(err));
-      ldap_unbind_ext_s(ld, NULL, NULL);
-      return(1);
-   };
-
-   // parses & displays whoami result
-   ldapexample_verbose(&config, "ldap_parse_whoami()\n");
-   ldap_parse_whoami(ld, res, &authzid);
-   printf("# whoami: %s\n\n", authzid->bv_val);
-
-   // frees whoami messages and resoures
-   ldap_memfree(authzid);
-   ldap_msgfree(res);
-
-
    //
    //  search query
    //
 
 
    // perform search
-   ldapexample_verbose(&config, "ldap_search_ext_s()\n");
-   err = ldap_search_ext(
-      ld,                         // LDAP            * ld
-      config.ludp->lud_dn,        // char            * base
-      config.ludp->lud_scope,     // int               scope
-      config.ludp->lud_filter,    // char            * filter
-      config.ludp->lud_attrs,     // char            * attrs[]
-      0,                          // int               attrsonly
-      NULL,                       // LDAPControl    ** serverctrls
-      NULL,                       // LDAPControl    ** clientctrls
-      timeoutp,                   // struct timeval  * timeout
-      config.search_limit,        // int               sizelimit
-      &msgid                      // int             * msgidp
+   ldapexample_verbose(&config, "ldap_modify_ext()\n");
+   err = ldap_modify_ext(
+      ld,                    // LDAP            * ld
+      config.ludp->lud_dn,   // char            * base
+      mods,                  // LDAPMod      * mods[]
+      NULL,                  // LDAPControl ** sctrls
+      NULL,                  // LDAPControl ** cctrls
+      &msgid                 // int          * msgidp
    );
    if (err != LDAP_SUCCESS)
    {
