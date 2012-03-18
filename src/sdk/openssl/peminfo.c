@@ -219,6 +219,10 @@ int main(int argc, char * argv[])
    if ((x509data.email))
       printf("E-mail:       %s\n", x509data.email);
 
+   // prints validity
+   printf("Issued On:    %s\n", x->cert_info->validity->notBefore->data);
+   printf("Expires On:   %s\n", x->cert_info->validity->notAfter->data);
+
    // prints x509 info
    printf("serial:       ");
    printf("%02X", x->cert_info->serialNumber->data[0]);
