@@ -70,6 +70,27 @@
 #include <openssl/bio.h>
 
 
+/////////////////
+//             //
+//  Datatypes  //
+//             //
+/////////////////
+#pragma mark - Datatypes
+
+typedef struct my_x509_name_st MY_X509_NAME;
+struct my_x509_name_st
+{
+   char * c;
+   char * st;
+   char * l;
+   char * o;
+   char * ou;
+   char * cn;
+   char * email;
+   char * description;
+};
+
+
 //////////////////
 //              //
 //  Prototypes  //
@@ -80,6 +101,8 @@
 // main statement
 int main(int argc, char * argv[]);
 
+// parses DN into componets
+void parse_dn(char * dn, MY_X509_NAME * namep);
 
 /////////////////
 //             //
@@ -104,20 +127,10 @@ int main(int argc, char * argv[])
    char                  errmsg[1024];
    const EVP_MD        * digest;
    unsigned char         md[EVP_MAX_MD_SIZE];
+   char                  xbuff[1024];
    unsigned int          n;
-   char                * bol;
-   char                * eol;
-
-   struct
-   {
-      char * c;
-      char * st;
-      char * l;
-      char * o;
-      char * ou;
-      char * cn;
-      char * email;
-   } x509data;
+   MY_X509_NAME          my_name;
+   X509_NAME           * name;
 
    // checks arguments
    if (argc != 2)
@@ -181,50 +194,58 @@ int main(int argc, char * argv[])
       return(1);
    };
 
-   memset(&x509data, 0, sizeof(x509data));
-   bol = &x->name[1];
-   while((bol))
-   {
-      eol    = index(bol, '/');
-      if ((eol))
-         eol[0] = '\0';
-      if      (!(strncasecmp(bol, "C=", 2)))
-         x509data.c = &bol[2];
-      else if (!(strncasecmp(bol, "st=", 3)))
-         x509data.st = &bol[3];
-      else if (!(strncasecmp(bol, "l=", 2)))
-         x509data.l = &bol[2];
-      else if (!(strncasecmp(bol, "o=", 2)))
-         x509data.o = &bol[2];
-      else if (!(strncasecmp(bol, "ou=", 3)))
-         x509data.ou = &bol[3];
-      else if (!(strncasecmp(bol, "cn=", 3)))
-         x509data.cn = &bol[3];
-      else if (!(strncasecmp(bol, "emailAddress=", 13)))
-         x509data.email = &bol[13];
-      bol    = ((eol)) ? &eol[1] : NULL;
-   };
-   if ((x509data.cn))
-      printf("Common Name:  %s\n", x509data.cn);
-   if ((x509data.o))
-      printf("Organization: %s\n", x509data.o);
-   if ((x509data.ou))
-      printf("Department:   %s\n", x509data.ou);
-   if ((x509data.l))
-      printf("City:         %s\n", x509data.l);
-   if ((x509data.st))
-      printf("State:        %s\n", x509data.st);
-   if ((x509data.c))
-      printf("Country:      %s\n", x509data.c);
-   if ((x509data.email))
-      printf("E-mail:       %s\n", x509data.email);
+   // prints issuer
+   name = X509_get_issuer_name(x);
+   X509_NAME_oneline(name, xbuff, 1023);
+   xbuff[1023] = '\0';
+   parse_dn(xbuff, &my_name);
+   printf("Issued By:\n");
+   if ((my_name.cn))
+      printf("   Common Name:  %s\n", my_name.cn);
+   if ((my_name.o))
+      printf("   Organization: %s\n", my_name.o);
+   if ((my_name.ou))
+      printf("   Department:   %s\n", my_name.ou);
+   if ((my_name.l))
+      printf("   City:         %s\n", my_name.l);
+   if ((my_name.st))
+      printf("   State:        %s\n", my_name.st);
+   if ((my_name.c))
+      printf("   Country:      %s\n", my_name.c);
+   if ((my_name.email))
+      printf("   E-mail:       %s\n", my_name.email);
+   if ((my_name.description))
+      printf("   Description:  %s\n", my_name.description);
+
+   // prints issuer
+   name = X509_get_subject_name(x);
+   X509_NAME_oneline(name, xbuff, 1023);
+   xbuff[1023] = '\0';
+   parse_dn(xbuff, &my_name);
+   printf("Issued To:\n");
+   if ((my_name.cn))
+      printf("   Common Name:  %s\n", my_name.cn);
+   if ((my_name.o))
+      printf("   Organization: %s\n", my_name.o);
+   if ((my_name.ou))
+      printf("   Department:   %s\n", my_name.ou);
+   if ((my_name.l))
+      printf("   City:         %s\n", my_name.l);
+   if ((my_name.st))
+      printf("   State:        %s\n", my_name.st);
+   if ((my_name.c))
+      printf("   Country:      %s\n", my_name.c);
+   if ((my_name.email))
+      printf("   E-mail:       %s\n", my_name.email);
+   if ((my_name.description))
+      printf("   Description:  %s\n", my_name.description);
 
    // prints validity
-   printf("Issued On:    %s\n", x->cert_info->validity->notBefore->data);
-   printf("Expires On:   %s\n", x->cert_info->validity->notAfter->data);
+   printf("Issued On:       %s\n", x->cert_info->validity->notBefore->data);
+   printf("Expires On:      %s\n", x->cert_info->validity->notAfter->data);
 
    // prints x509 info
-   printf("serial:       ");
+   printf("serial:          ");
    printf("%02X", x->cert_info->serialNumber->data[0]);
    for(pos = 1; pos < x->cert_info->serialNumber->length; pos++)
       printf(":%02X", x->cert_info->serialNumber->data[pos]);
@@ -233,7 +254,7 @@ int main(int argc, char * argv[])
    // calculate & print fingerprint
    digest = EVP_get_digestbyname("sha1");
    X509_digest(x, digest, md, &n);
-   printf("Fingerprint:  ");
+   printf("Fingerprint:     ");
    for(pos = 0; pos < 19; pos++)
       printf("%02x:", md[pos]);
    printf("%02x\n", md[19]);
@@ -243,6 +264,41 @@ int main(int argc, char * argv[])
    free(buff);
 
    return(0);
+}
+
+
+// parses DN into componets
+void parse_dn(char * dn, MY_X509_NAME * namep)
+{
+   char                * bol;
+   char                * eol;
+
+   memset(namep, 0, sizeof(MY_X509_NAME));
+   bol = &dn[1];
+   while((bol))
+   {
+      eol    = index(bol, '/');
+      if ((eol))
+         eol[0] = '\0';
+      if      (!(strncasecmp(bol, "C=", 2)))
+         namep->c = &bol[2];
+      else if (!(strncasecmp(bol, "st=", 3)))
+         namep->st = &bol[3];
+      else if (!(strncasecmp(bol, "l=", 2)))
+         namep->l = &bol[2];
+      else if (!(strncasecmp(bol, "o=", 2)))
+         namep->o = &bol[2];
+      else if (!(strncasecmp(bol, "ou=", 3)))
+         namep->ou = &bol[3];
+      else if (!(strncasecmp(bol, "cn=", 3)))
+         namep->cn = &bol[3];
+      else if (!(strncasecmp(bol, "emailAddress=", 13)))
+         namep->email = &bol[13];
+      else if (!(strncasecmp(bol, "description=", 13)))
+         namep->description = &bol[13];
+      bol    = ((eol)) ? &eol[1] : NULL;
+   };
+   return;
 }
 
 
