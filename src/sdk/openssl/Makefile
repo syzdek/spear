@@ -36,7 +36,7 @@
 #   src/sdk/openssl/Makefile - compiles LDAP examples
 #
 
-PROGRAMS	= sha1hash peminfo
+PROGRAMS	= sha1hash peminfo serverinfo
 HEADERS		=
 
 CFLAGS		?= -pedantic -W -Wall -Werror -O2  -Wno-deprecated
@@ -49,6 +49,12 @@ peminfo.o: Makefile peminfo.c $(HEADERS)
 
 peminfo: Makefile $(HEADERS) peminfo.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -o ${@} peminfo.o
+
+serverinfo.o: Makefile serverinfo.c $(HEADERS)
+	$(CC) $(CFLAGS) -c serverinfo.c
+
+serverinfo: Makefile $(HEADERS) serverinfo.o
+	$(CC) $(CFLAGS) $(LDFLAGS) -o ${@} serverinfo.o
 
 sha1hash.o: Makefile sha1hash.c $(HEADERS)
 	$(CC) $(CFLAGS) -c sha1hash.c
