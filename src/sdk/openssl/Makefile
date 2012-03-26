@@ -42,6 +42,10 @@ HEADERS		=
 CFLAGS		?= -pedantic -W -Wall -Werror -O2  -Wno-deprecated
 LDFLAGS		?= -lcrypto -lssl
 
+HOST		?= www.openssl.org
+PORT		?= 443
+FILE		?= test.pem
+
 all: $(PROGRAMS)
 
 peminfo.o: Makefile peminfo.c $(HEADERS)
@@ -61,6 +65,16 @@ sha1hash.o: Makefile sha1hash.c $(HEADERS)
 
 sha1hash: Makefile $(HEADERS) sha1hash.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -o ${@} sha1hash.o
+
+.PHONY: test
+
+test: $(PROGRAMS)
+	./serverinfo "$(HOST)" "$(PORT)" "$(FILE)"
+	@echo " "
+	@echo " "
+	./peminfo "$(FILE)"
+	@echo " "
+	@echo " "
 
 clean:
 	rm -f $(PROGRAMS)
