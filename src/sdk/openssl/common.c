@@ -172,4 +172,31 @@ void parse_dn(char * dn, MY_X509_NAME * namep)
 }
 
 
+// prints dn
+void print_dn(const char * prefix, MY_X509_NAME * namep)
+{
+   if (!(prefix))
+      prefix = "";
+
+   if ((namep->cn))
+      printf("%sCommon Name:  %s\n", prefix, namep->cn);
+   if ((namep->o))
+      printf("%sOrganization: %s\n", prefix, namep->o);
+   if ((namep->ou))
+      printf("%sDepartment:   %s\n", prefix, namep->ou);
+   if ((namep->l))
+      printf("%sCity:         %s\n", prefix, namep->l);
+   if ((namep->st))
+      printf("%sState:        %s\n", prefix, namep->st);
+   if ((namep->c))
+      printf("%sCountry:      %s\n", prefix, namep->c);
+   if ((namep->email))
+      printf("%sE-mail:       %s\n", prefix, namep->email);
+   if ((namep->description))
+      printf("%sDescription:  %s\n", prefix, namep->description);
+
+   return;
+}
+
+
 /* end of source */

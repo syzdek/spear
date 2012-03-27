@@ -331,22 +331,7 @@ int main(int argc, char * argv[])
    xbuff[1023] = '\0';
    parse_dn(xbuff, &my_name);
    printf("Issued By:\n");
-   if ((my_name.cn))
-      printf("   Common Name:  %s\n", my_name.cn);
-   if ((my_name.o))
-      printf("   Organization: %s\n", my_name.o);
-   if ((my_name.ou))
-      printf("   Department:   %s\n", my_name.ou);
-   if ((my_name.l))
-      printf("   City:         %s\n", my_name.l);
-   if ((my_name.st))
-      printf("   State:        %s\n", my_name.st);
-   if ((my_name.c))
-      printf("   Country:      %s\n", my_name.c);
-   if ((my_name.email))
-      printf("   E-mail:       %s\n", my_name.email);
-   if ((my_name.description))
-      printf("   Description:  %s\n", my_name.description);
+   print_dn("   ", &my_name);
 
    // prints issuer
    name = X509_get_subject_name(x);
@@ -354,22 +339,7 @@ int main(int argc, char * argv[])
    xbuff[1023] = '\0';
    parse_dn(xbuff, &my_name);
    printf("Issued To:\n");
-   if ((my_name.cn))
-      printf("   Common Name:  %s\n", my_name.cn);
-   if ((my_name.o))
-      printf("   Organization: %s\n", my_name.o);
-   if ((my_name.ou))
-      printf("   Department:   %s\n", my_name.ou);
-   if ((my_name.l))
-      printf("   City:         %s\n", my_name.l);
-   if ((my_name.st))
-      printf("   State:        %s\n", my_name.st);
-   if ((my_name.c))
-      printf("   Country:      %s\n", my_name.c);
-   if ((my_name.email))
-      printf("   E-mail:       %s\n", my_name.email);
-   if ((my_name.description))
-      printf("   Description:  %s\n", my_name.description);
+   print_dn("   ", &my_name);
 
    // prints validity
    parse_asn1_time(X509_get_notBefore(x), &ts);

@@ -81,5 +81,8 @@ int parse_asn1_time(const ASN1_TIME * atp, struct tm * tsp);
 // parses DN into componets
 void parse_dn(char * dn, MY_X509_NAME * namep);
 
+// prints dn
+void print_dn(const char * prefix, MY_X509_NAME * namep);
+
 #endif
 /* end of header */
