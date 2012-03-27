@@ -63,6 +63,8 @@ struct my_x509_name_st
    char * o;
    char * ou;
    char * cn;
+   char * gn;
+   char * sn;
    char * email;
    char * description;
 };

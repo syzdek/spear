@@ -160,6 +160,10 @@ void parse_dn(char * dn, MY_X509_NAME * namep)
          namep->o = &bol[2];
       else if (!(strncasecmp(bol, "ou=", 3)))
          namep->ou = &bol[3];
+      else if (!(strncasecmp(bol, "gn=", 3)))
+         namep->gn = &bol[3];
+      else if (!(strncasecmp(bol, "sn=", 3)))
+         namep->sn = &bol[3];
       else if (!(strncasecmp(bol, "cn=", 3)))
          namep->cn = &bol[3];
       else if (!(strncasecmp(bol, "emailAddress=", 13)))
@@ -178,6 +182,10 @@ void print_dn(const char * prefix, MY_X509_NAME * namep)
    if (!(prefix))
       prefix = "";
 
+   if ((namep->gn))
+      printf("%sGiven Name:   %s\n", prefix, namep->gn);
+   if ((namep->sn))
+      printf("%sSurname:      %s\n", prefix, namep->sn);
    if ((namep->cn))
       printf("%sCommon Name:  %s\n", prefix, namep->cn);
    if ((namep->o))
