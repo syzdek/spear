@@ -37,7 +37,7 @@
 #
 
 PROGRAMS	= sha1hash peminfo serverinfo
-HEADERS		=
+HEADERS		= common.h
 
 CFLAGS		?= -pedantic -W -Wall -Werror -O2  -Wno-deprecated
 LDFLAGS		?= -lcrypto -lssl
@@ -48,17 +48,20 @@ FILE		?= test.pem
 
 all: $(PROGRAMS)
 
+common.o: Makefile common.c $(HEADERS)
+	$(CC) $(CFLAGS) -c common.c
+
 peminfo.o: Makefile peminfo.c $(HEADERS)
 	$(CC) $(CFLAGS) -c peminfo.c
 
-peminfo: Makefile $(HEADERS) peminfo.o
-	$(CC) $(CFLAGS) $(LDFLAGS) -o ${@} peminfo.o
+peminfo: Makefile $(HEADERS) peminfo.o common.o
+	$(CC) $(CFLAGS) $(LDFLAGS) -o ${@} peminfo.o common.o
 
 serverinfo.o: Makefile serverinfo.c $(HEADERS)
 	$(CC) $(CFLAGS) -c serverinfo.c
 
-serverinfo: Makefile $(HEADERS) serverinfo.o
-	$(CC) $(CFLAGS) $(LDFLAGS) -o ${@} serverinfo.o
+serverinfo: Makefile $(HEADERS) serverinfo.o common.o
+	$(CC) $(CFLAGS) $(LDFLAGS) -o ${@} serverinfo.o common.o
 
 sha1hash.o: Makefile sha1hash.c $(HEADERS)
 	$(CC) $(CFLAGS) -c sha1hash.c

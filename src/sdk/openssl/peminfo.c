@@ -69,26 +69,7 @@
 #include <openssl/x509.h>
 #include <openssl/bio.h>
 
-
-/////////////////
-//             //
-//  Datatypes  //
-//             //
-/////////////////
-#pragma mark - Datatypes
-
-typedef struct my_x509_name_st MY_X509_NAME;
-struct my_x509_name_st
-{
-   char * c;
-   char * st;
-   char * l;
-   char * o;
-   char * ou;
-   char * cn;
-   char * email;
-   char * description;
-};
+#include "common.h"
 
 
 //////////////////
@@ -101,8 +82,6 @@ struct my_x509_name_st
 // main statement
 int main(int argc, char * argv[]);
 
-// parses DN into componets
-void parse_dn(char * dn, MY_X509_NAME * namep);
 
 /////////////////
 //             //
@@ -131,6 +110,8 @@ int main(int argc, char * argv[])
    unsigned int          n;
    MY_X509_NAME          my_name;
    X509_NAME           * name;
+   char                  timestr[27];
+   struct tm             ts;
 
    // checks arguments
    if (argc != 2)
@@ -241,8 +222,14 @@ int main(int argc, char * argv[])
       printf("   Description:  %s\n", my_name.description);
 
    // prints validity
-   printf("Issued On:       %s\n", x->cert_info->validity->notBefore->data);
-   printf("Expires On:      %s\n", x->cert_info->validity->notAfter->data);
+   parse_asn1_time(X509_get_notBefore(x), &ts);
+   asctime_r(&ts, timestr);
+   timestr[strlen(timestr)-1] = '\0';
+   printf("Issued On:       %s\n", timestr);
+   parse_asn1_time(X509_get_notAfter(x), &ts);
+   asctime_r(&ts, timestr);
+   timestr[strlen(timestr)-1] = '\0';
+   printf("Expires On:      %s\n", timestr);
 
    // prints x509 info
    printf("serial:          ");
@@ -264,41 +251,6 @@ int main(int argc, char * argv[])
    free(buff);
 
    return(0);
-}
-
-
-// parses DN into componets
-void parse_dn(char * dn, MY_X509_NAME * namep)
-{
-   char                * bol;
-   char                * eol;
-
-   memset(namep, 0, sizeof(MY_X509_NAME));
-   bol = &dn[1];
-   while((bol))
-   {
-      eol    = index(bol, '/');
-      if ((eol))
-         eol[0] = '\0';
-      if      (!(strncasecmp(bol, "C=", 2)))
-         namep->c = &bol[2];
-      else if (!(strncasecmp(bol, "st=", 3)))
-         namep->st = &bol[3];
-      else if (!(strncasecmp(bol, "l=", 2)))
-         namep->l = &bol[2];
-      else if (!(strncasecmp(bol, "o=", 2)))
-         namep->o = &bol[2];
-      else if (!(strncasecmp(bol, "ou=", 3)))
-         namep->ou = &bol[3];
-      else if (!(strncasecmp(bol, "cn=", 3)))
-         namep->cn = &bol[3];
-      else if (!(strncasecmp(bol, "emailAddress=", 13)))
-         namep->email = &bol[13];
-      else if (!(strncasecmp(bol, "description=", 13)))
-         namep->description = &bol[13];
-      bol    = ((eol)) ? &eol[1] : NULL;
-   };
-   return;
 }
 
 

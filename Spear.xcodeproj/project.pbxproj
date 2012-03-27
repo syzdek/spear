@@ -24,6 +24,8 @@
 		A0BC03311496F878001D23FA /* ldapsearch-async.c in Sources */ = {isa = PBXBuildFile; fileRef = A0BC030A1496F4A0001D23FA /* ldapsearch-async.c */; };
 		A0BC03331496F883001D23FA /* libldap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BC03321496F883001D23FA /* libldap.dylib */; };
 		A0BC03351496F891001D23FA /* liblber.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BC03341496F891001D23FA /* liblber.dylib */; };
+		A0BD68CB15213FE8009CEC85 /* common.c in Sources */ = {isa = PBXBuildFile; fileRef = A0BD68C915213FE7009CEC85 /* common.c */; };
+		A0BD68CC15213FE8009CEC85 /* common.c in Sources */ = {isa = PBXBuildFile; fileRef = A0BD68C915213FE7009CEC85 /* common.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -115,6 +117,8 @@
 		A0BC03271496F862001D23FA /* ldapsearch-async */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "ldapsearch-async"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0BC03321496F883001D23FA /* libldap.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libldap.dylib; path = SDKs/MacOSX10.7.sdk/usr/lib/libldap.dylib; sourceTree = DEVELOPER_DIR; };
 		A0BC03341496F891001D23FA /* liblber.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liblber.dylib; path = SDKs/MacOSX10.7.sdk/usr/lib/liblber.dylib; sourceTree = DEVELOPER_DIR; };
+		A0BD68C915213FE7009CEC85 /* common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = common.c; sourceTree = "<group>"; };
+		A0BD68CA15213FE8009CEC85 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,6 +219,8 @@
 			isa = PBXGroup;
 			children = (
 				A06B5C721510B257003189C2 /* Makefile */,
+				A0BD68C915213FE7009CEC85 /* common.c */,
+				A0BD68CA15213FE8009CEC85 /* common.h */,
 				A06B5C821510B2E1003189C2 /* peminfo.c */,
 				A0A7523A151BADB700DCB366 /* serverinfo.c */,
 				A06B5C731510B257003189C2 /* sha1hash.c */,
@@ -467,6 +473,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A06B5C841510B2EA003189C2 /* peminfo.c in Sources */,
+				A0BD68CB15213FE8009CEC85 /* common.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -475,6 +482,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A0A75247151BEE8200DCB366 /* serverinfo.c in Sources */,
+				A0BD68CC15213FE8009CEC85 /* common.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
