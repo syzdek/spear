@@ -162,59 +162,65 @@ int main(int argc, char * argv[])
    bio = BIO_new_mem_buf(buff, len);
 
    // decodes buffer
-   if (!(x = PEM_read_bio_X509(bio, NULL, 0L, NULL)))
+   while((x = PEM_read_bio_X509(bio, NULL, 0L, NULL)))
    {
-      while((err = ERR_get_error()))
+      if (!(x))
       {
-         errmsg[1023] = '\0';
-         ERR_error_string_n(err, errmsg, 1023);
-         fprintf(stderr, "peminfo: %s\n", errmsg);
+         while((err = ERR_get_error()))
+         {
+            errmsg[1023] = '\0';
+            ERR_error_string_n(err, errmsg, 1023);
+            fprintf(stderr, "peminfo: %s\n", errmsg);
+         };
+         BIO_free(bio);
+         free(buff);
+         return(1);
       };
-      BIO_free(bio);
-      free(buff);
-      return(1);
+
+      // prints issuer
+      name = X509_get_issuer_name(x);
+      X509_NAME_oneline(name, xbuff, 1023);
+      xbuff[1023] = '\0';
+      parse_dn(xbuff, &my_name);
+      printf("Issued By:\n");
+      print_dn("   ", &my_name);
+
+      // prints issuer
+      name = X509_get_subject_name(x);
+      X509_NAME_oneline(name, xbuff, 1023);
+      xbuff[1023] = '\0';
+      parse_dn(xbuff, &my_name);
+      printf("Issued To:\n");
+      print_dn("   ", &my_name);
+
+      // prints validity
+      parse_asn1_time(X509_get_notBefore(x), &ts);
+      asctime_r(&ts, timestr);
+      timestr[strlen(timestr)-1] = '\0';
+      printf("Issued On:       %s\n", timestr);
+      parse_asn1_time(X509_get_notAfter(x), &ts);
+      asctime_r(&ts, timestr);
+      timestr[strlen(timestr)-1] = '\0';
+      printf("Expires On:      %s\n", timestr);
+
+      // prints x509 info
+      printf("serial:          ");
+      printf("%02X", x->cert_info->serialNumber->data[0]);
+      for(pos = 1; pos < x->cert_info->serialNumber->length; pos++)
+         printf(":%02X", x->cert_info->serialNumber->data[pos]);
+      printf("\n");
+
+      // calculate & print fingerprint
+      digest = EVP_get_digestbyname("sha1");
+      X509_digest(x, digest, md, &n);
+      printf("Fingerprint:     ");
+      for(pos = 0; pos < 19; pos++)
+         printf("%02x:", md[pos]);
+      printf("%02x\n", md[19]);
+
+      // prints spacer at end of output
+      printf("\n\n");
    };
-
-   // prints issuer
-   name = X509_get_issuer_name(x);
-   X509_NAME_oneline(name, xbuff, 1023);
-   xbuff[1023] = '\0';
-   parse_dn(xbuff, &my_name);
-   printf("Issued By:\n");
-   print_dn("   ", &my_name);
-
-   // prints issuer
-   name = X509_get_subject_name(x);
-   X509_NAME_oneline(name, xbuff, 1023);
-   xbuff[1023] = '\0';
-   parse_dn(xbuff, &my_name);
-   printf("Issued To:\n");
-   print_dn("   ", &my_name);
-
-   // prints validity
-   parse_asn1_time(X509_get_notBefore(x), &ts);
-   asctime_r(&ts, timestr);
-   timestr[strlen(timestr)-1] = '\0';
-   printf("Issued On:       %s\n", timestr);
-   parse_asn1_time(X509_get_notAfter(x), &ts);
-   asctime_r(&ts, timestr);
-   timestr[strlen(timestr)-1] = '\0';
-   printf("Expires On:      %s\n", timestr);
-
-   // prints x509 info
-   printf("serial:          ");
-   printf("%02X", x->cert_info->serialNumber->data[0]);
-   for(pos = 1; pos < x->cert_info->serialNumber->length; pos++)
-      printf(":%02X", x->cert_info->serialNumber->data[pos]);
-   printf("\n");
-
-   // calculate & print fingerprint
-   digest = EVP_get_digestbyname("sha1");
-   X509_digest(x, digest, md, &n);
-   printf("Fingerprint:     ");
-   for(pos = 0; pos < 19; pos++)
-      printf("%02x:", md[pos]);
-   printf("%02x\n", md[19]);
 
    // frees memory
    BIO_free(bio);
