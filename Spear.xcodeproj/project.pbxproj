@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		A028021214F0999700095E98 /* ldapmodify-async.c in Sources */ = {isa = PBXBuildFile; fileRef = A028020314F0995700095E98 /* ldapmodify-async.c */; };
-		A028021314F099AF00095E98 /* libldap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BC03321496F883001D23FA /* libldap.dylib */; };
-		A028021414F099B800095E98 /* liblber.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BC03341496F891001D23FA /* liblber.dylib */; };
 		A028021714F09E5D00095E98 /* ldapcommon.c in Sources */ = {isa = PBXBuildFile; fileRef = A028021614F09E5D00095E98 /* ldapcommon.c */; };
 		A02A234814D625E3000B31C7 /* pipedopen.c in Sources */ = {isa = PBXBuildFile; fileRef = A02A233814D6202E000B31C7 /* pipedopen.c */; };
 		A0378BEB151573A50091EA7D /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A0378BEA151573A50091EA7D /* libcrypto.dylib */; };
@@ -25,14 +23,14 @@
 		A0BC03201496F83F001D23FA /* libldap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BC031F1496F83F001D23FA /* libldap.dylib */; };
 		A0BC03221496F84A001D23FA /* liblber.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BC03211496F84A001D23FA /* liblber.dylib */; };
 		A0BC03311496F878001D23FA /* ldapsearch-async.c in Sources */ = {isa = PBXBuildFile; fileRef = A0BC030A1496F4A0001D23FA /* ldapsearch-async.c */; };
-		A0BC03331496F883001D23FA /* libldap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BC03321496F883001D23FA /* libldap.dylib */; };
-		A0BC03351496F891001D23FA /* liblber.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BC03341496F891001D23FA /* liblber.dylib */; };
 		A0BD68CB15213FE8009CEC85 /* common.c in Sources */ = {isa = PBXBuildFile; fileRef = A0BD68C915213FE7009CEC85 /* common.c */; };
 		A0BD68CC15213FE8009CEC85 /* common.c in Sources */ = {isa = PBXBuildFile; fileRef = A0BD68C915213FE7009CEC85 /* common.c */; };
 		A0F449E71530DC6800498BBB /* common.c in Sources */ = {isa = PBXBuildFile; fileRef = A0BD68C915213FE7009CEC85 /* common.c */; };
 		A0F449E91530DC6800498BBB /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A0378BEC151573AC0091EA7D /* libssl.dylib */; };
 		A0F449EA1530DC6800498BBB /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A0378BEA151573A50091EA7D /* libcrypto.dylib */; };
 		A0F449F11530DC8900498BBB /* servercainfo.c in Sources */ = {isa = PBXBuildFile; fileRef = A0F449E31530DC0D00498BBB /* servercainfo.c */; };
+		A0F449F61530E52100498BBB /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A0378BEC151573AC0091EA7D /* libssl.dylib */; };
+		A0F449F71530E52400498BBB /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A0378BEA151573A50091EA7D /* libcrypto.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -142,8 +140,6 @@
 		A0BC031F1496F83F001D23FA /* libldap.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libldap.dylib; path = /usr/lib/libldap.dylib; sourceTree = "<absolute>"; };
 		A0BC03211496F84A001D23FA /* liblber.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liblber.dylib; path = /usr/lib/liblber.dylib; sourceTree = "<absolute>"; };
 		A0BC03271496F862001D23FA /* ldapsearch-async */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "ldapsearch-async"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A0BC03321496F883001D23FA /* libldap.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libldap.dylib; path = SDKs/MacOSX10.7.sdk/usr/lib/libldap.dylib; sourceTree = DEVELOPER_DIR; };
-		A0BC03341496F891001D23FA /* liblber.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liblber.dylib; path = SDKs/MacOSX10.7.sdk/usr/lib/liblber.dylib; sourceTree = DEVELOPER_DIR; };
 		A0BD68C915213FE7009CEC85 /* common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = common.c; sourceTree = "<group>"; };
 		A0BD68CA15213FE8009CEC85 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
 		A0F449E31530DC0D00498BBB /* servercainfo.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = servercainfo.c; sourceTree = "<group>"; };
@@ -155,8 +151,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A028021414F099B800095E98 /* liblber.dylib in Frameworks */,
-				A028021314F099AF00095E98 /* libldap.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,6 +185,8 @@
 			files = (
 				A0ADAA741522FD5900FD191C /* liblber.dylib in Frameworks */,
 				A0ADAA751522FD5900FD191C /* libldap.dylib in Frameworks */,
+				A0F449F71530E52400498BBB /* libcrypto.dylib in Frameworks */,
+				A0F449F61530E52100498BBB /* libssl.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,8 +203,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A0BC03351496F891001D23FA /* liblber.dylib in Frameworks */,
-				A0BC03331496F883001D23FA /* libldap.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -246,8 +240,6 @@
 			children = (
 				A0378BEC151573AC0091EA7D /* libssl.dylib */,
 				A0378BEA151573A50091EA7D /* libcrypto.dylib */,
-				A0BC03341496F891001D23FA /* liblber.dylib */,
-				A0BC03321496F883001D23FA /* libldap.dylib */,
 				A0BC03211496F84A001D23FA /* liblber.dylib */,
 				A0BC031F1496F83F001D23FA /* libldap.dylib */,
 			);
@@ -823,6 +815,10 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/lib\"",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = ldapcacert;
 			};
@@ -840,6 +836,10 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/lib\"",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = ldapcacert;
 			};
