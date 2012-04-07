@@ -131,7 +131,6 @@ int parse_asn1_time(const ASN1_TIME * atp, struct tm * tsp)
    buff[2]       = '\0';
    val           = strtol(buff, NULL, 10);
    tsp->tm_sec   = val;
-   offset       += 2;
 
    return(0);
 }
