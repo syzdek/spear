@@ -32,22 +32,22 @@
  *  @SYZDEK_BSD_LICENSE_END@
  */
 /**
- *  @file src/sdk/openssl/serverinfo.c simple hash utility for sha1
+ *  @file src/sdk/openssl/servercertinfo.c simple hash utility for sha1
  */
 /*
  *  Simple Build:
- *     gcc -W -Wall -O2 -c serverinfo.c
- *     gcc -W -Wall -O2 -lcrypto -o serverinfo serverinfo.o
+ *     gcc -W -Wall -O2 -c servercertinfo.c
+ *     gcc -W -Wall -O2 -lcrypto -o servercertinfo servercertinfo.o
  *
  *  GNU Libtool Build:
- *     libtool --mode=compile gcc -W -Wall -g -O2 -c serverinfo.c
- *     libtool --mode=link    gcc -W -Wall -g -O2 -o serverinfo serverinfo.lo
+ *     libtool --mode=compile gcc -W -Wall -g -O2 -c servercertinfo.c
+ *     libtool --mode=link    gcc -W -Wall -g -O2 -o servercertinfo servercertinfo.lo
  *
  *  GNU Libtool Install:
- *     libtool --mode=install install -c serverinfo /usr/local/bin/serverinfo
+ *     libtool --mode=install install -c servercertinfo /usr/local/bin/servercertinfo
  *
  *  GNU Libtool Clean:
- *     libtool --mode=clean rm -f serverinfo.lo serverinfo
+ *     libtool --mode=clean rm -f servercertinfo.lo servercertinfo
  */
 
 ///////////////
@@ -147,7 +147,7 @@ int client_ssl_connect(int s, SSL ** sslp, SSL_CTX ** ctxp)
    {
       errmsg[1023] = '\0';
       ERR_error_string_n(ERR_get_error(), errmsg, 1023);
-      fprintf(stderr, "serverinfo: SSL_CTX_new(): %s\n", errmsg);
+      fprintf(stderr, "servercertinfo: SSL_CTX_new(): %s\n", errmsg);
       return(-1);
    };
    *ctxp = ctx;
@@ -156,7 +156,7 @@ int client_ssl_connect(int s, SSL ** sslp, SSL_CTX ** ctxp)
    {
       errmsg[1023] = '\0';
       ERR_error_string_n(ERR_get_error(), errmsg, 1023);
-      fprintf(stderr, "serverinfo: SSL_new(): %s\n", errmsg);
+      fprintf(stderr, "servercertinfo: SSL_new(): %s\n", errmsg);
       return(-1);
    };
    *sslp = ssl;
@@ -165,7 +165,7 @@ int client_ssl_connect(int s, SSL ** sslp, SSL_CTX ** ctxp)
    {
       errmsg[1023] = '\0';
       ERR_error_string_n(ERR_get_error(), errmsg, 1023);
-      fprintf(stderr, "serverinfo: SSL_set_fd(): %s\n", errmsg);
+      fprintf(stderr, "servercertinfo: SSL_set_fd(): %s\n", errmsg);
       return(-1);
    };
 
@@ -175,7 +175,7 @@ int client_ssl_connect(int s, SSL ** sslp, SSL_CTX ** ctxp)
          err = ERR_get_error();
       errmsg[1023] = '\0';
       ERR_error_string_n(err, errmsg, 1023);
-      fprintf(stderr, "serverinfo: SSL_connect(): %s\n", errmsg);
+      fprintf(stderr, "servercertinfo: SSL_connect(): %s\n", errmsg);
       return(-1);
    };
 
@@ -228,12 +228,12 @@ int client_tcp_connect(const char * host, int port)
             return(s);
          };
 
-         fprintf(stderr, "serverinfo: connect(%s): %s\n", addr, strerror(errno));
+         fprintf(stderr, "servercertinfo: connect(%s): %s\n", addr, strerror(errno));
       };
       close(s);
    };
    if (!(hp))
-      fprintf(stderr, "serverinfo: gethostbyname2(AF_INET6): %s\n", hstrerror(h_errno));
+      fprintf(stderr, "servercertinfo: gethostbyname2(AF_INET6): %s\n", hstrerror(h_errno));
 
    // attempts to create connection to IPv4 address
    if ((hp = gethostbyname2(host, AF_INET)))
@@ -266,12 +266,12 @@ int client_tcp_connect(const char * host, int port)
             return(s);
          };
 
-         fprintf(stderr, "serverinfo: connect(%s): %s\n", addr, strerror(errno));
+         fprintf(stderr, "servercertinfo: connect(%s): %s\n", addr, strerror(errno));
       };
       close(s);
    };
    if (!(hp))
-      fprintf(stderr, "serverinfo: gethostbyname2(AF_INET): %s\n", hstrerror(h_errno));
+      fprintf(stderr, "servercertinfo: gethostbyname2(AF_INET): %s\n", hstrerror(h_errno));
 
    return(-1);
 }
@@ -303,7 +303,7 @@ int main(int argc, char * argv[])
    // checks arguments
    if ((argc < 3) || (argc > 4))
    {
-      fprintf(stderr, "Usage: serverinfo <host> <port> [ <output> ]\n");
+      fprintf(stderr, "Usage: servercertinfo <host> <port> [ <output> ]\n");
       return(1);
    };
 
@@ -320,7 +320,7 @@ int main(int argc, char * argv[])
    {
       errmsg[1023] = '\0';
       ERR_error_string_n(ERR_get_error(), errmsg, 1023);
-      fprintf(stderr, "serverinfo: SSL_get_peer_certificate(): %s\n", errmsg);
+      fprintf(stderr, "servercertinfo: SSL_get_peer_certificate(): %s\n", errmsg);
       client_disconnect(s, ssl, ctx);
       return(1);
    };
@@ -370,7 +370,7 @@ int main(int argc, char * argv[])
    {
       if (!(fp = fopen(argv[3], "w")))
       {
-         fprintf(stderr, "serverinfo: fopen(%s, w): %s\n", argv[3], strerror(errno));
+         fprintf(stderr, "servercertinfo: fopen(%s, w): %s\n", argv[3], strerror(errno));
          X509_free(x);
          client_disconnect(s, ssl, ctx);
          return(1);
@@ -379,7 +379,7 @@ int main(int argc, char * argv[])
       {
          errmsg[1023] = '\0';
          ERR_error_string_n(err, errmsg, 1023);
-         fprintf(stderr, "serverinfo: PEM_write_X509(): %s\n", errmsg);
+         fprintf(stderr, "servercertinfo: PEM_write_X509(): %s\n", errmsg);
       };
       fclose(fp);
    };
