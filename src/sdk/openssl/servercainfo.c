@@ -336,7 +336,8 @@ int main(int argc, char * argv[])
       ERR_error_string_n(ERR_get_error(), errmsg, 1023);
       fprintf(stderr, "servercainfo: SSL_get_peer_cert_chain(): %s\n", errmsg);
       client_disconnect(s, ssl, ctx);
-      fclose(fp);
+      if (argc == 4)
+         fclose(fp);
       return(1);
    };
    printf("%i certificates in peer chain\n", sk_num(skx));
