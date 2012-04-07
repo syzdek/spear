@@ -244,6 +244,8 @@ int main(int argc, char * argv[])
    char             msg[1024];
    FILE           * fp;
    char           * datafile;
+   int              skpos;
+   STACK_OF(X509) * skx; 
 
    // local variables for parsing cli arguments
    int                  c;
@@ -423,38 +425,49 @@ int main(int argc, char * argv[])
 
 
    //
-   //  writes certificate
+   //  writes certificates to file
    //
 
-   if (!(x = SSL_get_peer_certificate(ssl)))
-   {
-      msg[1023] = '\0';
-      ERR_error_string_n(ERR_get_error(), msg, 1023);
-      fprintf(stderr, "ldapcacert: SSL_get_peer_certificate(): %s\n", msg);
-      ldap_unbind_ext_s(ld, NULL, NULL);
-      return(1);
-   };
-
+   // opens file for writing
    fp = stdout;
    if ((datafile))
       fp = fopen(datafile, "w");
    if (!(fp))
    {
-      fprintf(stderr, "serverinfo: fopen(%s, w): %s\n", datafile, strerror(errno));
+      fprintf(stderr, "ldapcacert: fopen(%s, w): %s\n", datafile, strerror(errno));
       X509_free(x);
       ldap_unbind_ext_s(ld, NULL, NULL);
       return(1);
    };
-   if ((err = PEM_write_X509(fp, x)) != 1)
+
+   // retrieves stack of certs from peer
+   if (!(skx = SSL_get_peer_cert_chain(ssl)))
    {
       msg[1023] = '\0';
-      ERR_error_string_n(err, msg, 1023);
-      fprintf(stderr, "serverinfo: PEM_write_X509(): %s\n", msg);
+      ERR_error_string_n(ERR_get_error(), msg, 1023);
+      fprintf(stderr, "ldapcacert: SSL_get_peer_cert_chain(): %s\n", msg);
+      ldap_unbind_ext_s(ld, NULL, NULL);
+      if ((datafile))
+         fclose(fp);
+      return(1);
    };
+   printf("%i certificates in peer chain\n", sk_num(skx));
+
+   // loops through stack
+   for(skpos = 0; skpos < sk_num(skx); skpos++)
+   {
+      x = (X509 *)sk_value(skx, skpos);
+      if ((err = PEM_write_X509(fp, x)) != 1)
+      {
+         msg[1023] = '\0';
+         ERR_error_string_n(err, msg, 1023);
+         fprintf(stderr, "ldapcacert: PEM_write_X509(): %s\n", msg);
+      };
+   };
+
+   // closes file
    if ((datafile))
       fclose(fp);
-
-   X509_free(x);
 
 
    //
