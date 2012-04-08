@@ -246,6 +246,8 @@ int main(int argc, char * argv[])
    char           * datafile;
    int              skpos;
    STACK_OF(X509) * skx;
+   BerValue         cred;
+   BerValue       * servercredp;
 
    // local variables for parsing cli arguments
    int                  c;
@@ -263,10 +265,13 @@ int main(int argc, char * argv[])
 
    // reset config data
    memset(&config, 0, sizeof(LDAPConfig));
+   memset(&cred,   0, sizeof(BerValue));
    strncpy(config.ldap_url, "ldap://localhost/", 1024);
    config.ldap_version = LDAP_VERSION3;
    timeoutp            = NULL;
+   ssl                 = NULL;
    x                   = NULL;
+   servercredp         = NULL;
 
    // processes command line arguments
    while((c = getopt_long(argc, argv, short_opt, long_opt, &opt_index)) != -1)
@@ -411,32 +416,66 @@ int main(int argc, char * argv[])
    //  starts TLS/SSL connections
    //
 
-
-   // starts SSL connection
-   ldapexample_verbose(&config, "ldap_start_tls_s()\n");
-   err = ldap_start_tls_s(ld, NULL, NULL);
-   switch(err)
+   // starts connection if using TLS
+   if ((strcasecmp(config.ludp->lud_scheme, "ldaps")))
    {
-      case LDAP_SUCCESS:
-      break;
+      ldapexample_verbose(&config, "ldap_start_tls_s()\n");
+      err = ldap_start_tls_s(ld, NULL, NULL);
+      switch(err)
+      {
+         case LDAP_SUCCESS:
+         break;
 
-      case LDAP_CONNECT_ERROR:
-      ldap_get_option(ld, LDAP_OPT_DIAGNOSTIC_MESSAGE, (void*)&errmsg);
-      fprintf(stderr, "ldap_start_tls_s(): %s\n", errmsg);
-      ldap_memfree(errmsg);
-      ldap_unbind_ext_s(ld, NULL, NULL);
-      return(1);
+         case LDAP_CONNECT_ERROR:
+         ldap_get_option(ld, LDAP_OPT_DIAGNOSTIC_MESSAGE, (void*)&errmsg);
+         fprintf(stderr, "ldap_start_tls_s(): %s\n", errmsg);
+         ldap_memfree(errmsg);
+         ldap_unbind_ext_s(ld, NULL, NULL);
+         return(1);
 
-      default:
-      fprintf(stderr, "ldap_start_tls_s(): %s\n", ldap_err2string(err));
-      ldap_unbind_ext_s(ld, NULL, NULL);
-      return(1);
+         default:
+         fprintf(stderr, "ldap_start_tls_s(): %s\n", ldap_err2string(err));
+         ldap_unbind_ext_s(ld, NULL, NULL);
+         return(1);
+      };
+   };
+
+   // uses anonymous binds to start SSL connection
+   if (!(strcasecmp(config.ludp->lud_scheme, "ldaps")))
+   {
+      ldapexample_verbose(&config, "ldap_sasl_bind_s()\n");
+      err = ldap_sasl_bind_s
+      (
+         ld,                // LDAP           * ld
+         NULL,              // const char     * dn
+         LDAP_SASL_SIMPLE,  // const char     * mechanism
+         &cred,             // struct berval  * cred
+         NULL,              // LDAPControl    * sctrls[]
+         NULL,              // LDAPControl    * cctrls[]
+         &servercredp       // struct berval ** servercredp
+      );
+      if (err != LDAP_SUCCESS)
+      {
+         fprintf(stderr, "ldap_sasl_bind_s(): %s\n", ldap_err2string(err));
+         ldap_unbind_ext_s(ld, NULL, NULL);
+         return(1);
+      };
    };
 
 
    //
    //  writes certificates to file
    //
+
+   // retrieves SSL handle
+   if (!(ssl))
+      ldap_get_option(ld, LDAP_OPT_X_TLS_SSL_CTX, &ssl);
+   if (!(ssl))
+   {
+      fprintf(stderr, "ldapcacert: unable to retrieve SSL handle\n");
+      ldap_unbind_ext_s(ld, NULL, NULL);
+      return(1);
+   };
 
    // opens file for writing
    fp = stdout;
