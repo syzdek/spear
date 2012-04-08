@@ -77,6 +77,15 @@ struct my_x509_name_st
 //////////////////
 #pragma mark - Prototypes
 
+// initiates SSL connection on socket
+int client_ssl_connect(int s, SSL ** sslp, SSL_CTX ** ctxp);
+
+// connects to remote TCP port
+int client_tcp_connect(const char * host, int port);
+
+// disconnects from remote TCP port
+int client_disconnect(int s, SSL * ssl, SSL_CTX * ctx);
+
 // parses ASN1_TIME into struct tm
 int parse_asn1_time(const ASN1_TIME * atp, struct tm * tsp);
 

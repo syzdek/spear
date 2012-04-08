@@ -47,7 +47,16 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <unistd.h>
+#include <netdb.h>
+#include <sys/socket.h>
+#include <sys/un.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 #include <openssl/x509.h>
+#include <openssl/ssl.h>
+#include <openssl/err.h>
+#include <openssl/bio.h>
 
 
 /////////////////
@@ -56,6 +65,178 @@
 //             //
 /////////////////
 #pragma mark - Functions
+
+/// disconnects from remote TCP port
+/// @param[in]  s     socket handle
+int client_disconnect(int s, SSL * ssl, SSL_CTX * ctx)
+{
+   if ((ssl))
+   {
+      SSL_shutdown(ssl);
+      SSL_free(ssl);
+   };
+
+   if ((ctx))
+      SSL_CTX_free(ctx);
+
+   close(s);
+
+   return(0);
+}
+
+
+/// initiates SSL connection on socket
+/// @param[in]  s         active TCP socket
+/// @param[out] sslp      reference to SSL pointer
+/// @param[out] ctxp      reference to SSL Context pointer
+int client_ssl_connect(int s, SSL ** sslp, SSL_CTX ** ctxp)
+{
+   SSL     * ssl;
+   SSL_CTX * ctx;
+   char      errmsg[1024];
+   int       err;
+
+   ssl   = NULL;
+   ctx   = NULL;
+   *sslp = NULL;
+   *ctxp = NULL;
+
+   SSL_load_error_strings();
+   SSL_library_init();
+
+   if (!(ctx = SSL_CTX_new(SSLv23_client_method())))
+   {
+      errmsg[1023] = '\0';
+      ERR_error_string_n(ERR_get_error(), errmsg, 1023);
+      fprintf(stderr, "servercainfo: SSL_CTX_new(): %s\n", errmsg);
+      return(-1);
+   };
+   *ctxp = ctx;
+
+   if (!(ssl = SSL_new(ctx)))
+   {
+      errmsg[1023] = '\0';
+      ERR_error_string_n(ERR_get_error(), errmsg, 1023);
+      fprintf(stderr, "servercainfo: SSL_new(): %s\n", errmsg);
+      return(-1);
+   };
+   *sslp = ssl;
+
+   if ((err = SSL_set_fd(ssl, s)) != 1)
+   {
+      errmsg[1023] = '\0';
+      ERR_error_string_n(ERR_get_error(), errmsg, 1023);
+      fprintf(stderr, "servercainfo: SSL_set_fd(): %s\n", errmsg);
+      return(-1);
+   };
+
+   if ((err = SSL_connect(ssl)) != 1)
+   {
+      if (err == -1)
+         err = ERR_get_error();
+      errmsg[1023] = '\0';
+      ERR_error_string_n(err, errmsg, 1023);
+      fprintf(stderr, "servercainfo: SSL_connect(): %s\n", errmsg);
+      return(-1);
+   };
+
+   return(0);
+}
+
+
+/// connects to remote TCP port
+/// @param[in]  host  remote host name
+/// @param[in]  port  remote TCP port
+int client_tcp_connect(const char * host, int port)
+{
+   int                   s;
+   int                   opt;
+   int                   i;
+   struct hostent      * hp;
+   struct sockaddr_in    sa;
+   struct sockaddr_in6   sa6;
+   char                  addr[INET6_ADDRSTRLEN+1];
+
+   // attempts to create connection to IPv6 address
+   if ((hp = gethostbyname2(host, AF_INET6)))
+   {
+      if ((s = socket(AF_INET6, SOCK_STREAM, 0)) == -1)
+         return(-1);
+
+      opt = 1;
+      setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (void *)&opt, sizeof(int));
+      setsockopt(s, SOL_SOCKET, SO_KEEPALIVE, (void *)&opt, sizeof(int));
+      setsockopt(s, SOL_SOCKET, SO_NOSIGPIPE, (void *)&opt, sizeof(int));
+
+      memset(&sa6, 0, sizeof(struct sockaddr_in6));
+      sa6.sin6_family = hp->h_addrtype;
+      sa6.sin6_port   = htons(port);
+      sa6.sin6_len    = sizeof(struct sockaddr_in6);
+
+      if ((hp))
+      for(i = 0; ((hp->h_addr_list[i])); i++)
+      {
+         inet_ntop(hp->h_addrtype, &hp->h_addr_list[i], addr, INET6_ADDRSTRLEN);
+         addr[INET6_ADDRSTRLEN] = '\0';
+
+         printf("Trying %s...\n", addr);
+
+         memcpy(&sa6.sin6_addr, hp->h_addr_list[0], (size_t)hp->h_length);
+
+         if (connect(s, (struct sockaddr *)&sa6, sizeof(sa6)) != -1)
+         {
+            //fcntl(s, F_SETFL, O_NONBLOCK);
+            return(s);
+         };
+
+         fprintf(stderr, "servercainfo: connect(%s): %s\n", addr, strerror(errno));
+      };
+      close(s);
+   };
+   if (!(hp))
+      fprintf(stderr, "servercainfo: gethostbyname2(AF_INET6): %s\n", hstrerror(h_errno));
+
+   // attempts to create connection to IPv4 address
+   if ((hp = gethostbyname2(host, AF_INET)))
+   {
+      if ((s = socket(AF_INET, SOCK_STREAM, 0)) == -1)
+         return(-1);
+
+      opt = 1;
+      setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (void *)&opt, sizeof(int));
+      setsockopt(s, SOL_SOCKET, SO_KEEPALIVE, (void *)&opt, sizeof(int));
+      setsockopt(s, SOL_SOCKET, SO_NOSIGPIPE, (void *)&opt, sizeof(int));
+
+      memset(&sa, 0, sizeof(struct sockaddr_in));
+      sa.sin_family = hp->h_addrtype;
+      sa.sin_port   = htons(port);
+      sa.sin_len    = sizeof(struct sockaddr_in);
+
+      for(i = 0; (((hp->h_addr_list[i])) && ((hp))); i++)
+      {
+         inet_ntop(hp->h_addrtype, &hp->h_addr_list[i], addr, INET6_ADDRSTRLEN);
+         addr[INET6_ADDRSTRLEN] = '\0';
+
+         printf("Trying %s...\n", addr);
+
+         memcpy(&sa.sin_addr, hp->h_addr_list[i], (size_t)hp->h_length);
+
+         if (connect(s, (struct sockaddr *)&sa, sizeof(sa)) != -1)
+         {
+            //fcntl(s, F_SETFL, O_NONBLOCK);
+            return(s);
+         };
+
+         fprintf(stderr, "servercainfo: connect(%s): %s\n", addr, strerror(errno));
+      };
+      close(s);
+   };
+   if (!(hp))
+      fprintf(stderr, "servercainfo: gethostbyname2(AF_INET): %s\n", hstrerror(h_errno));
+
+   return(-1);
+}
+
 
 // parses ASN1_TIME into struct tm
 int parse_asn1_time(const ASN1_TIME * atp, struct tm * tsp)
