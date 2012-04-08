@@ -500,7 +500,7 @@ int main(int argc, char * argv[])
          fclose(fp);
       return(1);
    };
-   printf("%i certificates in peer chain\n", sk_num(skx));
+   fprintf(stderr, "%i certificates in peer chain\n", sk_num(skx));
 
    // loops through stack
    for(skpos = 0; skpos < sk_num(skx); skpos++)
