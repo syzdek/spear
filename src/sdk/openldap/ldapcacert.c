@@ -1,6 +1,6 @@
 /*
  *  Simple Programming Examples And References
- *  Copyright (C) 2011 David M. Syzdek <david@syzdek.net>.
+ *  Copyright (C) 2012 David M. Syzdek <david@syzdek.net>.
  *
  *  @SYZDEK_BSD_LICENSE_START@
  *
@@ -32,16 +32,17 @@
  *  @SYZDEK_BSD_LICENSE_END@
  */
 /**
- *  @file src/sdk/openldap/ldapcacert.c downloads TLS certificate from LDAP server
+ *  @file src/sdk/openldap/ldapcacert.c downloads TLS/SSL certificate from LDAP server
  */
 /*
  *  Simple Build:
  *     gcc -W -Wall -O2 -c ldapcacert.c
- *     gcc -W -Wall -O2 -lldap -llber -o ldapcacert ldapcacert.o
+ *     gcc -W -Wall -O2 -lldap -llber -lcrypto -lssl -o ldapcacert ldapcacert.o
  *
  *  GNU Libtool Build:
  *     libtool --mode=compile gcc -W -Wall -g -O2 -c ldapcacert.c
- *     libtool --mode=link    gcc -W -Wall -g -O2 -lldap -llber -o ldapcacert ldapcacert.lo
+ *     libtool --mode=link    gcc -W -Wall -g -O2 -lldap -llber -lcrypto \
+ *                                -lssl -o ldapcacert ldapcacert.lo
  *
  *  GNU Libtool Install:
  *     libtool --mode=install install -c ldapcacert /usr/local/bin/ldapcacert
