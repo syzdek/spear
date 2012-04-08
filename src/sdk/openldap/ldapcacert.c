@@ -245,7 +245,7 @@ int main(int argc, char * argv[])
    FILE           * fp;
    char           * datafile;
    int              skpos;
-   STACK_OF(X509) * skx; 
+   STACK_OF(X509) * skx;
 
    // local variables for parsing cli arguments
    int                  c;
@@ -264,9 +264,9 @@ int main(int argc, char * argv[])
    // reset config data
    memset(&config, 0, sizeof(LDAPConfig));
    strncpy(config.ldap_url, "ldap://localhost/", 1024);
-   config.ldap_version   = LDAP_VERSION3;
-   timeoutp = NULL;
-   x = NULL;
+   config.ldap_version = LDAP_VERSION3;
+   timeoutp            = NULL;
+   x                   = NULL;
 
    // processes command line arguments
    while((c = getopt_long(argc, argv, short_opt, long_opt, &opt_index)) != -1)
@@ -275,42 +275,51 @@ int main(int argc, char * argv[])
       {
          case -1:       /* no more arguments */
          case 0:        /* long options toggles */
-            break;
+         break;
+
          case '2':
-            config.ldap_version = LDAP_VERSION2;
-            break;
+         config.ldap_version = LDAP_VERSION2;
+         break;
+
          case '3':
-            config.ldap_version = LDAP_VERSION3;
-            break;
+         config.ldap_version = LDAP_VERSION3;
+         break;
+
          case 'H':
-            if ((ldap_url_parse(optarg, &config.ludp)))
-            {
-               fprintf(stderr, "ldap_url_parse(): invalid LDAP URL\n");
-               return(1);
-            };
-            snprintf(config.ldap_url, 1024, "%s://%s:%i",
-               config.ludp->lud_scheme, config.ludp->lud_host,
-               config.ludp->lud_port);
-            break;
+         if ((ldap_url_parse(optarg, &config.ludp)))
+         {
+            fprintf(stderr, "ldap_url_parse(): invalid LDAP URL\n");
+            return(1);
+         };
+         snprintf(config.ldap_url, 1024, "%s://%s:%i",
+         config.ludp->lud_scheme, config.ludp->lud_host,
+         config.ludp->lud_port);
+         break;
+
          case 'h':
-            ldapexample_usage();
-            return(0);
+         ldapexample_usage();
+         return(0);
+
          case 'T':
-            config.tcp_timeout.tv_sec = (int) strtol(optarg, NULL, 0);
-            break;
+         config.tcp_timeout.tv_sec = (int) strtol(optarg, NULL, 0);
+         break;
+
          case 'V':
-            ldapexample_version();
-            return(0);
+         ldapexample_version();
+         return(0);
+
          case 'v':
-            config.verbose++;
-            break;
+         config.verbose++;
+         break;
+
          case '?':
-            fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
-            return(1);
+         fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
+         return(1);
+
          default:
-            fprintf(stderr, "%s: unrecognized option `-%c'\n", PROGRAM_NAME, c);
-            fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
-            return(1);
+         fprintf(stderr, "%s: unrecognized option `-%c'\n", PROGRAM_NAME, c);
+         fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
+         return(1);
       };
    };
 
@@ -396,6 +405,7 @@ int main(int argc, char * argv[])
          return(1);
       };
    };
+
 
    //
    //  starts TLS/SSL connections
