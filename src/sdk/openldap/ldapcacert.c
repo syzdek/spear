@@ -445,7 +445,6 @@ int main(int argc, char * argv[])
    if (!(fp))
    {
       fprintf(stderr, "ldapcacert: fopen(%s, w): %s\n", datafile, strerror(errno));
-      X509_free(x);
       ldap_unbind_ext_s(ld, NULL, NULL);
       return(1);
    };
