@@ -72,6 +72,7 @@
 #include <inttypes.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <fcntl.h>
 #include <openssl/x509.h>
 #include <openssl/ssl.h>
 #include <openssl/err.h>
@@ -243,12 +244,18 @@ int main(int argc, char * argv[])
    SSL            * ssl;
    void           * invalue;
    char             msg[1024];
-   FILE           * fp;
    char           * datafile;
    int              skpos;
    STACK_OF(X509) * skx;
    BerValue         cred;
    BerValue       * servercredp;
+   BIO            * mem;
+   int              fd;
+   char           * fbuff;
+   char             rbuff[1024];
+   int              flen;
+   int              rlen;
+   void           * ptr;
 
    // local variables for parsing cli arguments
    int                  c;
@@ -478,17 +485,6 @@ int main(int argc, char * argv[])
       return(1);
    };
 
-   // opens file for writing
-   fp = stdout;
-   if ((datafile))
-      fp = fopen(datafile, "a");
-   if (!(fp))
-   {
-      fprintf(stderr, "ldapcacert: fopen(%s, w): %s\n", datafile, strerror(errno));
-      ldap_unbind_ext_s(ld, NULL, NULL);
-      return(1);
-   };
-
    // retrieves stack of certs from peer
    if (!(skx = SSL_get_peer_cert_chain(ssl)))
    {
@@ -496,27 +492,67 @@ int main(int argc, char * argv[])
       ERR_error_string_n(ERR_get_error(), msg, 1023);
       fprintf(stderr, "ldapcacert: SSL_get_peer_cert_chain(): %s\n", msg);
       ldap_unbind_ext_s(ld, NULL, NULL);
-      if ((datafile))
-         fclose(fp);
       return(1);
    };
    fprintf(stderr, "%i certificates in peer chain\n", sk_num(skx));
+
+   // Creates new BIO
+   if (!(mem = BIO_new(BIO_s_mem())))
+   {
+      ERR_error_string_n(ERR_get_error(), msg, 1023);
+      fprintf(stderr, "ldapcacert: BIO_new(): %s\n", msg);
+      ldap_unbind_ext_s(ld, NULL, NULL);
+      return(1);
+   };
 
    // loops through stack
    for(skpos = 0; skpos < sk_num(skx); skpos++)
    {
       x = (X509 *)sk_value(skx, skpos);
-      if ((err = PEM_write_X509(fp, x)) != 1)
+      if ((err = PEM_write_bio_X509(mem, x)) != 1)
+      //if ((err = PEM_write_X509(fp, x)) != 1)
       {
          msg[1023] = '\0';
          ERR_error_string_n(err, msg, 1023);
-         fprintf(stderr, "ldapcacert: PEM_write_X509(): %s\n", msg);
+         fprintf(stderr, "ldapcacert: PEM_write_bio_X509(): %s\n", msg);
       };
    };
 
+   // opens file for writing
+   fd = STDOUT_FILENO;
+   if ((datafile))
+      fd = open(datafile, O_WRONLY|O_CREAT|O_APPEND, 0644);
+   if (fd == -1)
+   {
+      fprintf(stderr, "ldapcacert: open(%s, w): %s\n", datafile, strerror(errno));
+      BIO_free(mem);
+      ldap_unbind_ext_s(ld, NULL, NULL);
+      return(1);
+   };
+
+   // prints data to file handle
+   flen  = 0;
+   fbuff = NULL;
+   while((rlen = BIO_read(mem, rbuff, 1024)) > 0)
+   {
+      if ((ptr = realloc(fbuff, flen+rlen)))
+      {
+         fbuff = ptr;
+         memcpy(&fbuff[flen], rbuff, rlen);
+         flen += rlen;
+      };
+   };
+   write(fd, fbuff, flen);
+
+   // frees buffer
+   free(fbuff);
+
    // closes file
    if ((datafile))
-      fclose(fp);
+      close(fd);
+
+   // frees bio
+   BIO_free(mem);
 
 
    //
