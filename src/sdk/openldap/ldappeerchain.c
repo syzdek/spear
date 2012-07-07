@@ -485,7 +485,10 @@ int main(int argc, char * argv[])
 
    // retrieves SSL handle
    if (!(ssl))
+   {
+      ldappeerchain_verbose(&config, "ldap_get_option(LDAP_OPT_X_TLS_SSL_CTX)\n");
       ldap_get_option(ld, LDAP_OPT_X_TLS_SSL_CTX, &ssl);
+   };
    if (!(ssl))
    {
       fprintf(stderr, "ldappeerchain: unable to retrieve SSL handle\n");
@@ -494,6 +497,7 @@ int main(int argc, char * argv[])
    };
 
    // retrieves stack of certs from peer
+   ldappeerchain_verbose(&config, "SSL_get_peer_cert_chain()\n");
    if (!(skx = SSL_get_peer_cert_chain(ssl)))
    {
       msg[1023] = '\0';
@@ -506,6 +510,7 @@ int main(int argc, char * argv[])
       fprintf(stderr, "%i certificates in peer chain\n", sk_num(skx));
 
    // Creates new BIO
+   ldappeerchain_verbose(&config, "BIO_new()\n");
    if (!(mem = BIO_new(BIO_s_mem())))
    {
       ERR_error_string_n(ERR_get_error(), msg, 1023);
@@ -518,6 +523,7 @@ int main(int argc, char * argv[])
    for(skpos = 0; skpos < sk_num(skx); skpos++)
    {
       x = (X509 *)sk_value(skx, skpos);
+      ldappeerchain_verbose(&config, "PEM_write_bio_X509()\n");
       if ((err = PEM_write_bio_X509(mem, x)) != 1)
       //if ((err = PEM_write_X509(fp, x)) != 1)
       {
@@ -530,7 +536,10 @@ int main(int argc, char * argv[])
    // opens file for writing
    fd = STDOUT_FILENO;
    if ((datafile))
+   {
+      ldappeerchain_verbose(&config, "open(%s)\n", datafile);
       fd = open(datafile, O_WRONLY|O_CREAT|O_APPEND, 0644);
+   };
    if (fd == -1)
    {
       fprintf(stderr, "ldappeerchain: open(%s, w): %s\n", datafile, strerror(errno));
@@ -551,6 +560,7 @@ int main(int argc, char * argv[])
          flen += rlen;
       };
    };
+   ldappeerchain_verbose(&config, "write()\n");
    write(fd, fbuff, flen);
 
    // frees buffer
@@ -558,9 +568,13 @@ int main(int argc, char * argv[])
 
    // closes file
    if ((datafile))
+   {
+      ldappeerchain_verbose(&config, "close()\n");
       close(fd);
+   };
 
    // frees bio
+   ldappeerchain_verbose(&config, "BIO_free()\n");
    BIO_free(mem);
 
 
