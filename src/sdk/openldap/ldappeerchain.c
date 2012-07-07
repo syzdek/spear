@@ -32,23 +32,23 @@
  *  @SYZDEK_BSD_LICENSE_END@
  */
 /**
- *  @file src/sdk/openldap/ldapcacert.c downloads TLS/SSL certificate from LDAP server
+ *  @file src/sdk/openldap/ldappeerchain.c downloads TLS/SSL certificate from LDAP server
  */
 /*
  *  Simple Build:
- *     gcc -W -Wall -O2 -c ldapcacert.c
- *     gcc -W -Wall -O2 -lldap -llber -lcrypto -lssl -o ldapcacert ldapcacert.o
+ *     gcc -W -Wall -O2 -c ldappeerchain.c
+ *     gcc -W -Wall -O2 -lldap -llber -lcrypto -lssl -o ldappeerchain ldappeerchain.o
  *
  *  GNU Libtool Build:
- *     libtool --mode=compile gcc -W -Wall -g -O2 -c ldapcacert.c
+ *     libtool --mode=compile gcc -W -Wall -g -O2 -c ldappeerchain.c
  *     libtool --mode=link    gcc -W -Wall -g -O2 -lldap -llber -lcrypto \
- *                                -lssl -o ldapcacert ldapcacert.lo
+ *                                -lssl -o ldappeerchain ldappeerchain.lo
  *
  *  GNU Libtool Install:
- *     libtool --mode=install install -c ldapcacert /usr/local/bin/ldapcacert
+ *     libtool --mode=install install -c ldappeerchain /usr/local/bin/ldappeerchain
  *
  *  GNU Libtool Clean:
- *     libtool --mode=clean rm -f ldapcacert.lo ldapcacert
+ *     libtool --mode=clean rm -f ldappeerchain.lo ldappeerchain
  */
 /*
  *  NOTES:
@@ -88,7 +88,7 @@
 #endif
 
 #ifndef PROGRAM_NAME
-#define PROGRAM_NAME "ldapcacert"
+#define PROGRAM_NAME "ldappeerchain"
 #endif
 
 #ifndef PACKAGE_BUGREPORT
@@ -115,8 +115,8 @@
 
 
 /// @brief stores data for interactive SASL authentication
-typedef struct ldapexample_config LDAPConfig;
-struct ldapexample_config
+typedef struct ldappeerchain_config LDAPConfig;
+struct ldappeerchain_config
 {
    int              verbose;
    char             ldap_url[1024];
@@ -136,16 +136,16 @@ struct ldapexample_config
 #endif
 
 // TLS callback function
-void ldapexample_tls_cb(LDAP * ld, SSL * ssl, SSL_CTX * ctx, void * arg);
+void ldappeerchain_tls_cb(LDAP * ld, SSL * ssl, SSL_CTX * ctx, void * arg);
 
 // displays usage information
-void ldapexample_usage(void);
+void ldappeerchain_usage(void);
 
 // print verbose message
-void ldapexample_verbose(LDAPConfig * cnfp, const char * fmt, ...);
+void ldappeerchain_verbose(LDAPConfig * cnfp, const char * fmt, ...);
 
 // displays version information
-void ldapexample_version(void);
+void ldappeerchain_version(void);
    
 // main execution loop
 int main(int argc, char * argv[]);
@@ -161,7 +161,7 @@ int main(int argc, char * argv[]);
 #endif
 
 /// TLS callback function
-void ldapexample_tls_cb(LDAP * ld, SSL * ssl, SSL_CTX * ctx, void * arg)
+void ldappeerchain_tls_cb(LDAP * ld, SSL * ssl, SSL_CTX * ctx, void * arg)
 { 
    ld  = NULL;
 
@@ -175,7 +175,7 @@ void ldapexample_tls_cb(LDAP * ld, SSL * ssl, SSL_CTX * ctx, void * arg)
 
 
 /// @brief displays usage information
-void ldapexample_usage(void)
+void ldappeerchain_usage(void)
 {
    printf(("Usage: %s [OPTIONS] <filename>\n"
          "  -2                        use protocol version 2\n"
@@ -198,7 +198,7 @@ void ldapexample_usage(void)
 /// @param verbose    verbose level
 /// @param fmt        printf format
 /// @param ...        printf format arguments
-void ldapexample_verbose(LDAPConfig * cnfp, const char * fmt, ...)
+void ldappeerchain_verbose(LDAPConfig * cnfp, const char * fmt, ...)
 {
    va_list args;
 
@@ -214,7 +214,7 @@ void ldapexample_verbose(LDAPConfig * cnfp, const char * fmt, ...)
 
 
 /// @brief displays version information
-void ldapexample_version(void)
+void ldappeerchain_version(void)
 {
    printf(("%s (%s) %s\n"
          "Written by David M. Syzdek.\n"
@@ -310,7 +310,7 @@ int main(int argc, char * argv[])
          break;
 
          case 'h':
-         ldapexample_usage();
+         ldappeerchain_usage();
          return(0);
 
          case 'T':
@@ -318,7 +318,7 @@ int main(int argc, char * argv[])
          break;
 
          case 'V':
-         ldapexample_version();
+         ldappeerchain_version();
          return(0);
 
          case 'v':
@@ -362,7 +362,7 @@ int main(int argc, char * argv[])
 
 
    // initialize LDAP handle
-   ldapexample_verbose(&config, "ldap_initialize()\n");
+   ldappeerchain_verbose(&config, "ldap_initialize()\n");
    if ((err = ldap_initialize(&ld, config.ldap_url)) != LDAP_SUCCESS)
    {
       fprintf(stderr, "ldap_initialize(): %s\n", ldap_err2string(err));
@@ -376,7 +376,7 @@ int main(int argc, char * argv[])
 
 
    // set LDAP protocol version
-   ldapexample_verbose(&config, "ldap_set_option(LDAP_OPT_PROTOCOL_VERSION)\n");
+   ldappeerchain_verbose(&config, "ldap_set_option(LDAP_OPT_PROTOCOL_VERSION)\n");
    err = ldap_set_option(ld, LDAP_OPT_PROTOCOL_VERSION, &config.ldap_version);
    if (err != LDAP_SUCCESS)
    {
@@ -386,7 +386,7 @@ int main(int argc, char * argv[])
    };
 
    // set TLS callback function argument version
-   ldapexample_verbose(&config, "ldap_set_option(LDAP_OPT_X_TLS_CONNECT_ARG)\n");
+   ldappeerchain_verbose(&config, "ldap_set_option(LDAP_OPT_X_TLS_CONNECT_ARG)\n");
    err = ldap_set_option(ld, LDAP_OPT_X_TLS_CONNECT_ARG, &ssl);
    if (err != LDAP_SUCCESS)
    {
@@ -396,8 +396,8 @@ int main(int argc, char * argv[])
    };
 
    // set TLS callback function
-   invalue = (void *)ldapexample_tls_cb;
-   ldapexample_verbose(&config, "ldap_set_option(LDAP_OPT_X_TLS_CONNECT_CB)\n");
+   invalue = (void *)ldappeerchain_tls_cb;
+   ldappeerchain_verbose(&config, "ldap_set_option(LDAP_OPT_X_TLS_CONNECT_CB)\n");
    err = ldap_set_option(ld, LDAP_OPT_X_TLS_CONNECT_CB, invalue);
    if (err != LDAP_SUCCESS)
    {
@@ -409,7 +409,7 @@ int main(int argc, char * argv[])
    // set network timout
    if ((config.tcp_timeout.tv_sec))
    {
-      ldapexample_verbose(&config, "ldap_set_option(LDAP_OPT_NETWORK_TIMEOUT)\n");
+      ldappeerchain_verbose(&config, "ldap_set_option(LDAP_OPT_NETWORK_TIMEOUT)\n");
       err = ldap_set_option(ld, LDAP_OPT_NETWORK_TIMEOUT, &config.tcp_timeout);
       if (err != LDAP_SUCCESS)
       {
@@ -427,7 +427,7 @@ int main(int argc, char * argv[])
    // starts connection if using TLS
    if ((strcasecmp(config.ludp->lud_scheme, "ldaps")))
    {
-      ldapexample_verbose(&config, "ldap_start_tls_s()\n");
+      ldappeerchain_verbose(&config, "ldap_start_tls_s()\n");
       err = ldap_start_tls_s(ld, NULL, NULL);
       switch(err)
       {
@@ -451,7 +451,7 @@ int main(int argc, char * argv[])
    // uses anonymous binds to start SSL connection
    if (!(strcasecmp(config.ludp->lud_scheme, "ldaps")))
    {
-      ldapexample_verbose(&config, "ldap_sasl_bind_s()\n");
+      ldappeerchain_verbose(&config, "ldap_sasl_bind_s()\n");
       err = ldap_sasl_bind_s
       (
          ld,                // LDAP           * ld
@@ -480,7 +480,7 @@ int main(int argc, char * argv[])
       ldap_get_option(ld, LDAP_OPT_X_TLS_SSL_CTX, &ssl);
    if (!(ssl))
    {
-      fprintf(stderr, "ldapcacert: unable to retrieve SSL handle\n");
+      fprintf(stderr, "ldappeerchain: unable to retrieve SSL handle\n");
       ldap_unbind_ext_s(ld, NULL, NULL);
       return(1);
    };
@@ -490,7 +490,7 @@ int main(int argc, char * argv[])
    {
       msg[1023] = '\0';
       ERR_error_string_n(ERR_get_error(), msg, 1023);
-      fprintf(stderr, "ldapcacert: SSL_get_peer_cert_chain(): %s\n", msg);
+      fprintf(stderr, "ldappeerchain: SSL_get_peer_cert_chain(): %s\n", msg);
       ldap_unbind_ext_s(ld, NULL, NULL);
       return(1);
    };
@@ -500,7 +500,7 @@ int main(int argc, char * argv[])
    if (!(mem = BIO_new(BIO_s_mem())))
    {
       ERR_error_string_n(ERR_get_error(), msg, 1023);
-      fprintf(stderr, "ldapcacert: BIO_new(): %s\n", msg);
+      fprintf(stderr, "ldappeerchain: BIO_new(): %s\n", msg);
       ldap_unbind_ext_s(ld, NULL, NULL);
       return(1);
    };
@@ -514,7 +514,7 @@ int main(int argc, char * argv[])
       {
          msg[1023] = '\0';
          ERR_error_string_n(err, msg, 1023);
-         fprintf(stderr, "ldapcacert: PEM_write_bio_X509(): %s\n", msg);
+         fprintf(stderr, "ldappeerchain: PEM_write_bio_X509(): %s\n", msg);
       };
    };
 
@@ -524,7 +524,7 @@ int main(int argc, char * argv[])
       fd = open(datafile, O_WRONLY|O_CREAT|O_APPEND, 0644);
    if (fd == -1)
    {
-      fprintf(stderr, "ldapcacert: open(%s, w): %s\n", datafile, strerror(errno));
+      fprintf(stderr, "ldappeerchain: open(%s, w): %s\n", datafile, strerror(errno));
       BIO_free(mem);
       ldap_unbind_ext_s(ld, NULL, NULL);
       return(1);
@@ -561,11 +561,11 @@ int main(int argc, char * argv[])
 
 
    // unbind from LDAP server
-   ldapexample_verbose(&config, "ldap_unbind_ext_s()\n");
+   ldappeerchain_verbose(&config, "ldap_unbind_ext_s()\n");
    ldap_unbind_ext_s(ld, NULL, NULL);
 
    // frees resources
-   ldapexample_verbose(&config, "ldap_free_urldesc()\n");
+   ldappeerchain_verbose(&config, "ldap_free_urldesc()\n");
    ldap_free_urldesc(config.ludp);
 
    return(0);
