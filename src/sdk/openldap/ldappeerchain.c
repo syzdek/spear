@@ -219,7 +219,7 @@ void ldappeerchain_version(void)
    printf(("%s (%s) %s\n"
          "Written by David M. Syzdek.\n"
          "\n"
-         "Copyright 2011 David M. Syzdek <david@syzdek.net>.\n"
+         "Copyright 2012 David M. Syzdek <david@syzdek.net>.\n"
          "This is free software; see the source for copying conditions.  There is NO\n"
          "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
       ), PROGRAM_NAME, PACKAGE_NAME, PACKAGE_VERSION
