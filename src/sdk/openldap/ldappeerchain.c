@@ -119,6 +119,7 @@ typedef struct ldappeerchain_config LDAPConfig;
 struct ldappeerchain_config
 {
    int              verbose;
+   int              quiet;
    char             ldap_url[1024];
    int              ldap_version;
    struct timeval   tcp_timeout;
@@ -182,6 +183,7 @@ void ldappeerchain_usage(void)
          "  -3                        use protocol version 3\n"
          "  -H url                    LDAP URL\n"
          "  -h, --help                print this help and exit\n"
+         "  -q, --quiet               suppresses informational messages\n"
          "  -T timeout                TCP timeout\n"
          "\n"
          "LDAP URL: ldap://hostport/dn[?attrs[?scope[?filter[?exts]]]]\n"
@@ -260,7 +262,7 @@ int main(int argc, char * argv[])
    // local variables for parsing cli arguments
    int                  c;
    int                  opt_index;
-   static char          short_opt[] = "23H:hT:Vv";
+   static char          short_opt[] = "23H:hT:qVv";
    static struct option long_opt[] =
    {
       {"help",          no_argument, 0, 'h'},
@@ -312,6 +314,10 @@ int main(int argc, char * argv[])
          case 'h':
          ldappeerchain_usage();
          return(0);
+
+         case 'q':
+         config.quiet++;
+         break;
 
          case 'T':
          config.tcp_timeout.tv_sec = (int) strtol(optarg, NULL, 0);
@@ -494,7 +500,8 @@ int main(int argc, char * argv[])
       ldap_unbind_ext_s(ld, NULL, NULL);
       return(1);
    };
-   fprintf(stderr, "%i certificates in peer chain\n", sk_num(skx));
+   if (!(config.quiet))
+      fprintf(stderr, "%i certificates in peer chain\n", sk_num(skx));
 
    // Creates new BIO
    if (!(mem = BIO_new(BIO_s_mem())))
