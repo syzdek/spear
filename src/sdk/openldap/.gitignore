@@ -1,3 +1,4 @@
+*.pem
 /ldappeerchain
 /ldapsearch
 /ldapsearch-async
