@@ -18,7 +18,7 @@
 		A0A75247151BEE8200DCB366 /* servercertinfo.c in Sources */ = {isa = PBXBuildFile; fileRef = A0A7523A151BADB700DCB366 /* servercertinfo.c */; };
 		A0ADAA741522FD5900FD191C /* liblber.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BC03211496F84A001D23FA /* liblber.dylib */; };
 		A0ADAA751522FD5900FD191C /* libldap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BC031F1496F83F001D23FA /* libldap.dylib */; };
-		A0ADAA7C1522FDA400FD191C /* ldapcacert.c in Sources */ = {isa = PBXBuildFile; fileRef = A0ADAA6F1522FBFD00FD191C /* ldapcacert.c */; };
+		A0ADAA7C1522FDA400FD191C /* ldappeerchain.c in Sources */ = {isa = PBXBuildFile; fileRef = A0ADAA6F1522FBFD00FD191C /* ldappeerchain.c */; };
 		A0BC031E1496F829001D23FA /* ldapsearch-sync.c in Sources */ = {isa = PBXBuildFile; fileRef = A0BC030B1496F4A0001D23FA /* ldapsearch-sync.c */; };
 		A0BC03201496F83F001D23FA /* libldap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BC031F1496F83F001D23FA /* libldap.dylib */; };
 		A0BC03221496F84A001D23FA /* liblber.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BC03211496F84A001D23FA /* liblber.dylib */; };
@@ -131,7 +131,7 @@
 		A06B5C821510B2E1003189C2 /* peminfo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = peminfo.c; sourceTree = "<group>"; };
 		A0A7523A151BADB700DCB366 /* servercertinfo.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = servercertinfo.c; sourceTree = "<group>"; };
 		A0A75245151BEE6F00DCB366 /* servercertinfo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = servercertinfo; sourceTree = BUILT_PRODUCTS_DIR; };
-		A0ADAA6F1522FBFD00FD191C /* ldapcacert.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ldapcacert.c; sourceTree = "<group>"; };
+		A0ADAA6F1522FBFD00FD191C /* ldappeerchain.c */ = {isa = PBXFileReference; path = ldappeerchain.c; sourceTree = "<group>"; };
 		A0ADAA7A1522FD5900FD191C /* ldapcacert */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ldapcacert; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0B9EB3A12CA9FB10012747E /* Makefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = Makefile; sourceTree = "<group>"; tabWidth = 8; };
 		A0BC030A1496F4A0001D23FA /* ldapsearch-async.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "ldapsearch-async.c"; sourceTree = "<group>"; };
@@ -329,7 +329,7 @@
 		A0B9EB3912CA9FB10012747E /* openldap */ = {
 			isa = PBXGroup;
 			children = (
-				A0ADAA6F1522FBFD00FD191C /* ldapcacert.c */,
+				A0ADAA6F1522FBFD00FD191C /* ldappeerchain.c */,
 				A028021A14F09E7E00095E98 /* ldapcommon.h */,
 				A028021614F09E5D00095E98 /* ldapcommon.c */,
 				A028020314F0995700095E98 /* ldapmodify-async.c */,
@@ -569,7 +569,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A0ADAA7C1522FDA400FD191C /* ldapcacert.c in Sources */,
+				A0ADAA7C1522FDA400FD191C /* ldappeerchain.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
