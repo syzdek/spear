@@ -32,7 +32,7 @@
 #   @SYZDEK_BSD_LICENSE_END@
 #
 
-PROGRAMS        = ldapcacert ldapsearch-sync ldapsearch-async
+PROGRAMS        = ldappeerchain ldapsearch-sync ldapsearch-async
 
 CC              ?= gcc
 CFLAGS          ?= -std=gnu99 -pedantic -W -Wall -Werror -O2  -Wno-deprecated
