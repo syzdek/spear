@@ -185,6 +185,8 @@ void ldappeerchain_usage(void)
          "  -h, --help                print this help and exit\n"
          "  -q, --quiet               suppresses informational messages\n"
          "  -T timeout                TCP timeout\n"
+         "  -V, --version             displays version\n"
+         "  -v, --verbose             enable verbose messages\n"
          "\n"
          "LDAP URL: ldap://hostport/dn[?attrs[?scope[?filter[?exts]]]]\n"
          "\n"
