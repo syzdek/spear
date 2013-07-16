@@ -13,7 +13,7 @@ int main(int argc, char * argv[])
    int             x;
    int             count;
 
-   if (argc < 2)
+   if (argc < 3)
    {
       fprintf(stderr, "Usage: %s <db> <query> <param1> <param2>...<paramN>\n", argv[0]);
       fprintf(stderr, "Example:\n");

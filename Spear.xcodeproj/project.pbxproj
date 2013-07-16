@@ -25,6 +25,8 @@
 		A0BC03311496F878001D23FA /* ldapsearch-async.c in Sources */ = {isa = PBXBuildFile; fileRef = A0BC030A1496F4A0001D23FA /* ldapsearch-async.c */; };
 		A0BD68CB15213FE8009CEC85 /* common.c in Sources */ = {isa = PBXBuildFile; fileRef = A0BD68C915213FE7009CEC85 /* common.c */; };
 		A0BD68CC15213FE8009CEC85 /* common.c in Sources */ = {isa = PBXBuildFile; fileRef = A0BD68C915213FE7009CEC85 /* common.c */; };
+		A0C4C6081795C2E9008E856D /* sqlite3-query.c in Sources */ = {isa = PBXBuildFile; fileRef = A0C4C5F01795B470008E856D /* sqlite3-query.c */; };
+		A0C4C60A1795C309008E856D /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A0C4C6091795C309008E856D /* libsqlite3.dylib */; };
 		A0F449E71530DC6800498BBB /* common.c in Sources */ = {isa = PBXBuildFile; fileRef = A0BD68C915213FE7009CEC85 /* common.c */; };
 		A0F449E91530DC6800498BBB /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A0378BEC151573AC0091EA7D /* libssl.dylib */; };
 		A0F449EA1530DC6800498BBB /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A0378BEA151573A50091EA7D /* libcrypto.dylib */; };
@@ -97,6 +99,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
+		A0C4C5FD1795C2DE008E856D /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		A0F449EB1530DC6800498BBB /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -131,7 +142,7 @@
 		A06B5C821510B2E1003189C2 /* peminfo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = peminfo.c; sourceTree = "<group>"; };
 		A0A7523A151BADB700DCB366 /* servercertinfo.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = servercertinfo.c; sourceTree = "<group>"; };
 		A0A75245151BEE6F00DCB366 /* servercertinfo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = servercertinfo; sourceTree = BUILT_PRODUCTS_DIR; };
-		A0ADAA6F1522FBFD00FD191C /* ldappeerchain.c */ = {isa = PBXFileReference; path = ldappeerchain.c; sourceTree = "<group>"; };
+		A0ADAA6F1522FBFD00FD191C /* ldappeerchain.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ldappeerchain.c; sourceTree = "<group>"; };
 		A0ADAA7A1522FD5900FD191C /* ldapcacert */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ldapcacert; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0B9EB3A12CA9FB10012747E /* Makefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; indentWidth = 8; path = Makefile; sourceTree = "<group>"; tabWidth = 8; };
 		A0BC030A1496F4A0001D23FA /* ldapsearch-async.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "ldapsearch-async.c"; sourceTree = "<group>"; };
@@ -142,6 +153,14 @@
 		A0BC03271496F862001D23FA /* ldapsearch-async */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "ldapsearch-async"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0BD68C915213FE7009CEC85 /* common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = common.c; sourceTree = "<group>"; };
 		A0BD68CA15213FE8009CEC85 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		A0C4C5F01795B470008E856D /* sqlite3-query.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "sqlite3-query.c"; sourceTree = "<group>"; };
+		A0C4C5F51795B495008E856D /* hello-postgresql.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "hello-postgresql.c"; sourceTree = "<group>"; };
+		A0C4C5F71795B495008E856D /* hello-mysql.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "hello-mysql.c"; sourceTree = "<group>"; };
+		A0C4C5F81795B514008E856D /* Makefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		A0C4C5F91795B51B008E856D /* Makefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		A0C4C5FA1795B526008E856D /* Makefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		A0C4C5FF1795C2DE008E856D /* sqlite3-query */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "sqlite3-query"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A0C4C6091795C309008E856D /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		A0F449E31530DC0D00498BBB /* servercainfo.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = servercainfo.c; sourceTree = "<group>"; };
 		A0F449EF1530DC6800498BBB /* servercainfo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = servercainfo; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -206,6 +225,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A0C4C5FC1795C2DE008E856D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A0C4C60A1795C309008E856D /* libsqlite3.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A0F449E81530DC6800498BBB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -238,6 +265,7 @@
 		A028021514F09DDC00095E98 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A0C4C6091795C309008E856D /* libsqlite3.dylib */,
 				A0378BEC151573AC0091EA7D /* libssl.dylib */,
 				A0378BEA151573A50091EA7D /* libcrypto.dylib */,
 				A0BC03211496F84A001D23FA /* liblber.dylib */,
@@ -320,8 +348,11 @@
 		A0B9EB0112CA95B00012747E /* sdk */ = {
 			isa = PBXGroup;
 			children = (
+				A0C4C5F61795B495008E856D /* mysql */,
 				A0B9EB3912CA9FB10012747E /* openldap */,
 				A06B5C711510B233003189C2 /* openssl */,
+				A0C4C5F41795B495008E856D /* postgresql */,
+				A0C4C5EC1795B470008E856D /* sqlite3 */,
 			);
 			path = sdk;
 			sourceTree = "<group>";
@@ -351,8 +382,36 @@
 				A0A75245151BEE6F00DCB366 /* servercertinfo */,
 				A0ADAA7A1522FD5900FD191C /* ldapcacert */,
 				A0F449EF1530DC6800498BBB /* servercainfo */,
+				A0C4C5FF1795C2DE008E856D /* sqlite3-query */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		A0C4C5EC1795B470008E856D /* sqlite3 */ = {
+			isa = PBXGroup;
+			children = (
+				A0C4C5F91795B51B008E856D /* Makefile */,
+				A0C4C5F01795B470008E856D /* sqlite3-query.c */,
+			);
+			path = sqlite3;
+			sourceTree = "<group>";
+		};
+		A0C4C5F41795B495008E856D /* postgresql */ = {
+			isa = PBXGroup;
+			children = (
+				A0C4C5F81795B514008E856D /* Makefile */,
+				A0C4C5F51795B495008E856D /* hello-postgresql.c */,
+			);
+			path = postgresql;
+			sourceTree = "<group>";
+		};
+		A0C4C5F61795B495008E856D /* mysql */ = {
+			isa = PBXGroup;
+			children = (
+				A0C4C5FA1795B526008E856D /* Makefile */,
+				A0C4C5F71795B495008E856D /* hello-mysql.c */,
+			);
+			path = mysql;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -477,6 +536,23 @@
 			productReference = A0BC03271496F862001D23FA /* ldapsearch-async */;
 			productType = "com.apple.product-type.tool";
 		};
+		A0C4C5FE1795C2DE008E856D /* sqlite3-query */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A0C4C6051795C2DE008E856D /* Build configuration list for PBXNativeTarget "sqlite3-query" */;
+			buildPhases = (
+				A0C4C5FB1795C2DE008E856D /* Sources */,
+				A0C4C5FC1795C2DE008E856D /* Frameworks */,
+				A0C4C5FD1795C2DE008E856D /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "sqlite3-query";
+			productName = "sqlite3-query";
+			productReference = A0C4C5FF1795C2DE008E856D /* sqlite3-query */;
+			productType = "com.apple.product-type.tool";
+		};
 		A0F449E41530DC6800498BBB /* servercainfo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A0F449EC1530DC6800498BBB /* Build configuration list for PBXNativeTarget "servercainfo" */;
@@ -525,6 +601,7 @@
 				A06B5C771510B2CB003189C2 /* peminfo */,
 				A0F449E41530DC6800498BBB /* servercainfo */,
 				A0A7523B151BEE6F00DCB366 /* servercertinfo */,
+				A0C4C5FE1795C2DE008E856D /* sqlite3-query */,
 			);
 		};
 /* End PBXProject section */
@@ -586,6 +663,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				A0BC03311496F878001D23FA /* ldapsearch-async.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A0C4C5FB1795C2DE008E856D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A0C4C6081795C2E9008E856D /* sqlite3-query.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -926,6 +1011,76 @@
 			};
 			name = Release;
 		};
+		A0C4C6061795C2DE008E856D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		A0C4C6071795C2DE008E856D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 		A0F449ED1530DC6800498BBB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1045,6 +1200,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		A0C4C6051795C2DE008E856D /* Build configuration list for PBXNativeTarget "sqlite3-query" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A0C4C6061795C2DE008E856D /* Debug */,
+				A0C4C6071795C2DE008E856D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		A0F449EC1530DC6800498BBB /* Build configuration list for PBXNativeTarget "servercainfo" */ = {
 			isa = XCConfigurationList;
