@@ -10,7 +10,7 @@ int main(int argc, char * argv[])
    PGconn     * pd;
    char         conninfo[1024];
 
-   if (argc != 2)
+   if (argc < 3)
    {
       fprintf(stderr, "Usage: %s <db>\n", argv[0]);
       return(1);

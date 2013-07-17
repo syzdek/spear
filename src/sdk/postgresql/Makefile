@@ -32,22 +32,22 @@
 #   @SYZDEK_BSD_LICENSE_END@
 #
 
-PROGRAMS        = sqlite3-query
+PROGRAMS        = postgresql-query
 
 CC              ?= gcc
 CFLAGS          ?= -std=gnu99 -pedantic -W -Wall -Werror -O2  -Wno-deprecated
-LDFLAGS         ?= -lsqlite3
+LDFLAGS         ?= -lpq
 
-names.db: Makefile names.sql
+names.log: Makefile names.sql
 	rm -f $(@)
-	cat names.sql |sqlite3 names.db
+	psql -h localhost -f names.sql > $(@)
 
 all: $(PROGRAMS) names.db
 
-test: names.db $(PROGRAMS)
-	./sqlite3-query names.db "SELECT * FROM person WHERE givenName like :1 OR givenName like :2;" john george
+test: names.log $(PROGRAMS)
+	./postgresql-query names "SELECT * FROM person WHERE givenName like :1;" john
 
 clean:
 	rm -f a.out
-	rm -f *.db *.o
+	rm -f *.db *.o *.log
 	rm -f $(PROGRAMS)

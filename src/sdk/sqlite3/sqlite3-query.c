@@ -17,7 +17,7 @@ int main(int argc, char * argv[])
    {
       fprintf(stderr, "Usage: %s <db> <query> <param1> <param2>...<paramN>\n", argv[0]);
       fprintf(stderr, "Example:\n");
-      fprintf(stderr, "    %s test.db \"SELECT * FROM tablename WHERE colid = :1 OR :2;\" 5 19\n", argv[0]);
+      fprintf(stderr, "    %s test.db \"SELECT * FROM tablename WHERE colid = :$ OR $2;\" 5 19\n", argv[0]);
       fprintf(stderr, "\n");
       return(1);
    };

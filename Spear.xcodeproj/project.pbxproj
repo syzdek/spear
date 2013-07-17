@@ -154,13 +154,15 @@
 		A0BD68C915213FE7009CEC85 /* common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = common.c; sourceTree = "<group>"; };
 		A0BD68CA15213FE8009CEC85 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
 		A0C4C5F01795B470008E856D /* sqlite3-query.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "sqlite3-query.c"; sourceTree = "<group>"; };
-		A0C4C5F51795B495008E856D /* hello-postgresql.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "hello-postgresql.c"; sourceTree = "<group>"; };
+		A0C4C5F51795B495008E856D /* postgresql-query.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "postgresql-query.c"; sourceTree = "<group>"; };
 		A0C4C5F71795B495008E856D /* hello-mysql.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "hello-mysql.c"; sourceTree = "<group>"; };
 		A0C4C5F81795B514008E856D /* Makefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		A0C4C5F91795B51B008E856D /* Makefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		A0C4C5FA1795B526008E856D /* Makefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		A0C4C5FF1795C2DE008E856D /* sqlite3-query */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "sqlite3-query"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0C4C6091795C309008E856D /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		A0C4C60B1795C936008E856D /* names.sql */ = {isa = PBXFileReference; lastKnownFileType = text; path = names.sql; sourceTree = "<group>"; };
+		A0C4C60C1795CCDC008E856D /* names.sql */ = {isa = PBXFileReference; lastKnownFileType = text; path = names.sql; sourceTree = "<group>"; };
 		A0F449E31530DC0D00498BBB /* servercainfo.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = servercainfo.c; sourceTree = "<group>"; };
 		A0F449EF1530DC6800498BBB /* servercainfo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = servercainfo; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -390,6 +392,7 @@
 		A0C4C5EC1795B470008E856D /* sqlite3 */ = {
 			isa = PBXGroup;
 			children = (
+				A0C4C60C1795CCDC008E856D /* names.sql */,
 				A0C4C5F91795B51B008E856D /* Makefile */,
 				A0C4C5F01795B470008E856D /* sqlite3-query.c */,
 			);
@@ -399,8 +402,9 @@
 		A0C4C5F41795B495008E856D /* postgresql */ = {
 			isa = PBXGroup;
 			children = (
+				A0C4C60B1795C936008E856D /* names.sql */,
 				A0C4C5F81795B514008E856D /* Makefile */,
-				A0C4C5F51795B495008E856D /* hello-postgresql.c */,
+				A0C4C5F51795B495008E856D /* postgresql-query.c */,
 			);
 			path = postgresql;
 			sourceTree = "<group>";
