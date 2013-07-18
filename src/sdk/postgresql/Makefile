@@ -40,12 +40,12 @@ LDFLAGS         ?= -lpq
 
 names.log: Makefile names.sql
 	rm -f $(@)
-	psql -h localhost -f names.sql > $(@)
+	psql -h localhost -f names.sql > $(@) || rm -f $(@)
 
 all: $(PROGRAMS) names.db
 
 test: names.log $(PROGRAMS)
-	./postgresql-query names "SELECT * FROM person WHERE givenName like :1;" john
+	./postgresql-query names "SELECT * FROM person WHERE givenName like 'John';"
 
 clean:
 	rm -f a.out
