@@ -14,7 +14,10 @@ int main(int argc, char * argv[])
 
    if (argc < 3)
    {
-      fprintf(stderr, "Usage: %s <db>\n", argv[0]);
+      fprintf(stderr, "Usage: %s <db> <query> <param1> <param2>...<paramN>\n", argv[0]);
+      fprintf(stderr, "Example:\n");
+      fprintf(stderr, "    %s test.db \"SELECT * FROM tablename WHERE colid = :$ OR $2;\" 5 19\n", argv[0]);
+      fprintf(stderr, "\n");
       return(1);
    };
 
@@ -56,19 +59,6 @@ int main(int argc, char * argv[])
          {
             printf("NULL, ");
             continue;
-         };
-         switch(PQftype(res, y))
-         {
-            case 25:
-            printf("text");
-            break;
-
-            case VARCHAROID:
-            printf("varchar");
-            break;
-
-            default:
-            break;
          };
          printf("%s, ", PQgetvalue(res, x, y));
       };

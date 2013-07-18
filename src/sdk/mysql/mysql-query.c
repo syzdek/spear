@@ -2,23 +2,24 @@
 
 #include <stdio.h>
 #include <mysql.h>
-//#include <my_global.h>
-//#include <my_sys.h>
+
 
 int main(int argc, char * argv[]);
 int main(int argc, char * argv[])
 {
-   const char * db   = NULL;
    MYSQL      * my;
    MYSQL_RES  * res;
    MYSQL_ROW    row;
+   unsigned     y;
 
-   if (argc != 2)
+   if (argc < 3)
    {
-      fprintf(stderr, "Usage: %s <db>\n", argv[0]);
+      fprintf(stderr, "Usage: %s <db> <query> <param1> <param2>...<paramN>\n", argv[0]);
+      fprintf(stderr, "Example:\n");
+      fprintf(stderr, "    %s test.db \"SELECT * FROM tablename WHERE colid = :$ OR $2;\" 5 19\n", argv[0]);
+      fprintf(stderr, "\n");
       return(1);
    };
-   db = argv[1];
 
    if ((my = mysql_init(NULL)) == NULL)
    {
@@ -26,26 +27,28 @@ int main(int argc, char * argv[])
       return(1);
    };
 
-   if (!(mysql_real_connect(my, NULL, NULL, NULL, db, 0, NULL, 0)))
+   if (!(mysql_real_connect(my, "localhost", "root", NULL, argv[1], 0, NULL, 0)))
    {
       fprintf(stderr, "%s: mysql_real_connect(): %s\n", argv[0], mysql_error(my));
       mysql_close(my);
       return(1);
    };
 
-   if ((mysql_query(my, "SELECT appSchemaUUID, appSchemaName FROM appSchema")))
+   if ((mysql_query(my, argv[2])))
    {
       fprintf(stderr, "%s: mysql_query(): %s\n", argv[0], mysql_error(my));
       mysql_close(my);
       return(1);
    };
 
-   res = mysql_use_result(my);
-   printf("found %i rows\n", mysql_num_fields(res));
+   res = mysql_store_result(my);
+   printf("found %i columns\n", mysql_num_fields(res));
 
    while((row = mysql_fetch_row(res)) != NULL)
    {
-      printf("%s - %s\n", row[0], row[1]);
+      for(y = 0; y < mysql_num_fields(res); y++)
+         printf("%s, ", row[y]);
+      printf("\n");
    };
 
    mysql_free_result(res);
